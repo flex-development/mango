@@ -12,11 +12,7 @@ const prefix = '<rootDir>/'
 const config: Config.InitialOptions = {
   ...baseConfig,
   displayName: pkg.name.split('/')[1],
-  roots: [
-    `${prefix}__tests__/e2e`,
-    `${prefix}__tests__/integration`,
-    `${prefix}src`
-  ]
+  roots: [`${prefix}src`]
 }
 
 export default config

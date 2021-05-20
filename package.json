@@ -1,14 +1,18 @@
 {
-  "name": "@flex-development/ts-pkg",
-  "description": "TypeScript package starter",
+  "name": "@flex-development/mango",
+  "description": "MongoDB query API for in-memory object collections",
   "version": "1.0.0",
   "keywords": [
+    "mingo",
+    "mongodb",
+    "mongodb url query",
+    "qs-to-mongo",
     "typescript"
   ],
-  "homepage": "https://github.com/flex-development/ts-pkg",
-  "repository": "git://github.com/flex-development/ts-pkg.git",
+  "homepage": "https://github.com/flex-development/mango",
+  "repository": "git://github.com/flex-development/mango.git",
   "bugs": {
-    "url": "https://github.com/flex-development/ts-pkg/issues",
+    "url": "https://github.com/flex-development/mango/issues",
     "email": "developers@flexdevelopment.llc"
   },
   "license": "BSD-3-Clause",
@@ -31,7 +35,6 @@
     "format": "prettier --write \"./\"",
     "lint": "eslint . --ext js,ts --fix --cache",
     "test": "zsh scripts/jest.sh",
-    "test:e2e": "zsh scripts/jest-e2e.sh",
     "compile": "zsh scripts/compile.sh",
     "release": "zsh scripts/release.sh",
     "release:github": "node scripts/js/release-github"
@@ -39,7 +42,14 @@
   "dependencies": {
     "@flex-development/exceptions": "2.0.0",
     "@types/debug": "latest",
-    "debug": "latest"
+    "@types/lodash.isempty": "latest",
+    "@types/lodash.merge": "latest",
+    "@types/qs": "latest",
+    "debug": "latest",
+    "lodash.isempty": "latest",
+    "lodash.merge": "latest",
+    "mingo": "latest",
+    "qs-to-mongo": "latest"
   },
   "devDependencies": {
     "@babel/eslint-parser": "latest",
