@@ -1,11 +1,11 @@
 import { SortOrder } from '@/enums/sort-order.enum'
 import type {
-  Criteria,
   Document,
   DocumentPath,
   Expression,
   FieldPath,
-  ProjectStage
+  ProjectStage,
+  QueryCriteria
 } from '@/types'
 import type { OneOrMany } from '@flex-development/tutils'
 import type { RawObject } from 'mingo/util'
@@ -103,7 +103,7 @@ export interface AggregationStages<D extends Document = Document> {
    *
    * - https://docs.mongodb.com/manual/reference/operator/aggregation/match
    */
-  $match?: Criteria<D> | QueryOperators | { $expr: Expression<D> }
+  $match?: QueryCriteria<D> | QueryOperators | { $expr: Expression<D> }
 
   /**
    * Passes along the documents with the requested fields to the next stage in

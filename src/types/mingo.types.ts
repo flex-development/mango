@@ -14,18 +14,6 @@ import type { Document, DocumentPath } from './document.types'
  */
 
 /**
- * Document fields mapped to [JSON Values][1] and [Query Operators][2].
- *
- * @template D - Document (collection object)
- *
- * [1]: https://restfulapi.net/json-data-types
- * [2]: https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
- */
-export type Criteria<D extends Document = Document> = Partial<
-  Record<DocumentPath<D>, JSONValue | QueryOperators>
->
-
-/**
  * Type representing an [Aggregation expression][1].
  *
  * ! Does not include `ExpressionObject` definition due to circular referencing.
@@ -115,4 +103,16 @@ export type Projection<D extends Document = Document> = Partial<
  */
 export type ProjectStage<D extends Document = Document> = Partial<
   Record<DocumentPath<D>, ProjectRule | boolean>
+>
+
+/**
+ * Document fields mapped to [JSON Values][1] and [Query Operators][2].
+ *
+ * @template D - Document (collection object)
+ *
+ * [1]: https://restfulapi.net/json-data-types
+ * [2]: https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
+ */
+export type QueryCriteria<D extends Document = Document> = Partial<
+  Record<DocumentPath<D>, JSONValue | QueryOperators>
 >

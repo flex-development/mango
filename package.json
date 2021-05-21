@@ -1,6 +1,6 @@
 {
   "name": "@flex-development/mango",
-  "description": "MongoDB query API for in-memory object collections",
+  "description": "MongoDB-like API for in-memory object collections",
   "version": "1.0.0",
   "keywords": [
     "mingo",
@@ -45,6 +45,7 @@
     "@types/debug": "latest",
     "@types/lodash.isempty": "latest",
     "@types/lodash.merge": "latest",
+    "@types/node": "latest",
     "@types/qs": "latest",
     "debug": "latest",
     "lodash.isempty": "latest",

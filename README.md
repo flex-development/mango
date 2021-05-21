@@ -1,6 +1,6 @@
 # :mango: Mango
 
-MongoDB query API for in-memory object collections
+MongoDB-like API for in-memory object collections
 
 [![TypeScript](https://badgen.net/badge/-/typescript?icon=typescript&label)](https://www.typescriptlang.org/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
@@ -15,7 +15,7 @@ MongoDB query API for in-memory object collections
 
 ## Getting Started
 
-Mango is a MongoDB query API for in-memory object collections. It combines the
+Mango is a MongoDB-like API for in-memory object collections. It combines the
 power of [mingo][1] and [qs-to-mongo][2] to allow:
 
 - running aggregation pipelines

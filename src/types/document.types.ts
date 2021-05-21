@@ -1,3 +1,4 @@
+import { SortOrder } from '@/enums/sort-order.enum'
 import type {
   ObjectPath,
   OrPartial,
@@ -43,6 +44,15 @@ export type DocumentPartial<
 export type DocumentPath<
   D extends Document = Document
 > = ObjectPath<D> extends string ? ObjectPath<D> : never
+
+/**
+ * Document sorting rules.
+ *
+ * @template D - Document (collection object)
+ */
+export type DocumentSortingRules<D extends Document = Document> = Partial<
+  Record<DocumentPath<D>, SortOrder>
+>
 
 /**
  * Type representing a collection object.

@@ -4,4 +4,5 @@
  */
 
 export * from './document.types'
+export * from './mango.types'
 export * from './mingo.types'
