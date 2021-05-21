@@ -6,7 +6,7 @@ import type { Document } from '@/types'
  */
 
 /**
- * `Mango` query client data cache.
+ * `Mango` client data cache.
  *
  * @template D - Document (collection object)
  */
