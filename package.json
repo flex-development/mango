@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@flex-development/exceptions": "2.0.0",
+    "@flex-development/tutils": "1.0.0",
     "@types/debug": "latest",
     "@types/lodash.isempty": "latest",
     "@types/lodash.merge": "latest",
