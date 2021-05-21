@@ -107,6 +107,8 @@ module.exports = {
         skipIfMatch: [],
         skipWordIfMatch: [],
         skipWords: [
+          'bool',
+          'bson',
           'commitlint',
           'enums',
           'enum',

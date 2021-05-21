@@ -3,4 +3,5 @@
  * @author Lexus Drumgold <https://github.com/lexusdrumgold>
  */
 
+export * from './enums'
 export * from './types'
