@@ -1,7 +1,7 @@
 import type {
   ObjectPath,
   OrPartial,
-  PlainObject
+  UnknownObject
 } from '@flex-development/tutils'
 
 /**
@@ -47,4 +47,4 @@ export type DocumentPath<
 /**
  * Type representing a collection object.
  */
-export type Document = PlainObject
+export type Document = UnknownObject

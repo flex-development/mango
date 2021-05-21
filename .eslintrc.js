@@ -114,6 +114,7 @@ module.exports = {
           'enum',
           'execa',
           'formatter',
+          'mingo',
           'nullable',
           'perf',
           'postpublish',

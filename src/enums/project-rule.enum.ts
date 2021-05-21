@@ -4,7 +4,7 @@
  */
 
 /**
- * Rules for including entity attributes.
+ * Rules for including document fields in responses.
  */
 export enum ProjectRule {
   OMIT = 0,
