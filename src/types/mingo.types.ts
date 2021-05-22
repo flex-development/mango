@@ -4,14 +4,29 @@ import type {
   ProjectionOperators,
   QueryOperators
 } from '@/interfaces'
-import type { JSONValue, OneOrMany } from '@flex-development/tutils'
-import type { Document, DocumentPath } from './document.types'
+import type {
+  JSONValue,
+  OneOrMany,
+  OrPartial,
+  UnknownObject
+} from '@flex-development/tutils'
+import { RawArray } from 'mingo/util'
+import type { DocumentEnhanced, DocumentPath } from './document.types'
 
 /**
  * @file Type Definitions - Mingo
  * @module types/mingo
  * @see https://github.com/kofrasa/mingo
  */
+
+/**
+ * Result from running aggregation pipeline.
+ *
+ * @template D - Document (collection object)
+ */
+export type AggregationPipelineResult<
+  D extends UnknownObject = UnknownObject
+> = OrPartial<DocumentEnhanced<D>>[] | RawArray | UnknownObject
 
 /**
  * Type representing an [Aggregation expression][1].
@@ -22,7 +37,7 @@ import type { Document, DocumentPath } from './document.types'
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expressions
  */
-export type ExpressionBase<D extends Document = Document> =
+export type ExpressionBase<D extends UnknownObject = UnknownObject> =
   | AggregationOperators
   | JSONValue
   | LiteralExpression
@@ -40,7 +55,7 @@ export type ExpressionBase<D extends Document = Document> =
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expression-objects
  */
-export type ExpressionObject<D extends Document = Document> = Record<
+export type ExpressionObject<D extends UnknownObject = UnknownObject> = Record<
   DocumentPath<D>,
   ExpressionBase<D>
 >
@@ -52,7 +67,7 @@ export type ExpressionObject<D extends Document = Document> = Record<
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expression-objects
  */
-export type ExpressionObject2<D extends Document = Document> =
+export type ExpressionObject2<D extends UnknownObject = UnknownObject> =
   | ExpressionObject<D>
   | Record<DocumentPath<D>, ExpressionObject<D>>
 
@@ -63,7 +78,7 @@ export type ExpressionObject2<D extends Document = Document> =
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expressions
  */
-export type Expression<D extends Document = Document> =
+export type Expression<D extends UnknownObject = UnknownObject> =
   | ExpressionBase<D>
   | ExpressionObject2<D>
 
@@ -72,7 +87,9 @@ export type Expression<D extends Document = Document> =
  *
  * @template D - Document (collection object)
  */
-export type FieldPath<D extends Document = Document> = `$${DocumentPath<D>}`
+export type FieldPath<
+  D extends UnknownObject = UnknownObject
+> = `$${DocumentPath<D>}`
 
 /**
  * MongoDB [Literal expression][1].
@@ -90,7 +107,7 @@ export type LiteralExpression<T = any> = { $literal: T }
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/query/#projection-operators
  */
-export type Projection<D extends Document = Document> = Partial<
+export type Projection<D extends UnknownObject = UnknownObject> = Partial<
   Record<DocumentPath<D>, ProjectionOperators>
 >
 
@@ -101,7 +118,7 @@ export type Projection<D extends Document = Document> = Partial<
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/project
  */
-export type ProjectStage<D extends Document = Document> = Partial<
+export type ProjectStage<D extends UnknownObject = UnknownObject> = Partial<
   Record<DocumentPath<D>, ProjectRule | boolean>
 >
 
@@ -113,6 +130,6 @@ export type ProjectStage<D extends Document = Document> = Partial<
  * [1]: https://restfulapi.net/json-data-types
  * [2]: https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
  */
-export type QueryCriteria<D extends Document = Document> = Partial<
+export type QueryCriteria<D extends UnknownObject = UnknownObject> = Partial<
   Record<DocumentPath<D>, JSONValue | QueryOperators>
 >

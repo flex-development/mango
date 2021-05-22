@@ -4,10 +4,14 @@ import type {
   MangoParserOptions,
   QueryCriteriaOptions
 } from '@/interfaces'
-import type { Document, MangoParsedUrlQuery, MangoSearchParams } from '@/types'
+import type { MangoParsedUrlQuery, MangoSearchParams } from '@/types'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type {
+  OneOrMany,
+  PlainObject,
+  UnknownObject
+} from '@flex-development/tutils'
 import qsm from 'qs-to-mongo'
 import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
 
@@ -24,7 +28,7 @@ import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
  * @class
  * @implements {IMangoParser<D>}
  */
-export default class MangoParser<D extends Document = Document>
+export default class MangoParser<D extends UnknownObject = UnknownObject>
   implements IMangoParser<D> {
   /**
    * @readonly
@@ -37,9 +41,9 @@ export default class MangoParser<D extends Document = Document>
   /**
    * @readonly
    * @instance
-   * @property {MangoParserOptions} options - `qs-to-mongo` module options
+   * @property {MangoParserOptions<D>} options - `qs-to-mongo` module options
    */
-  readonly options: MangoParserOptions
+  readonly options: MangoParserOptions<D>
 
   /**
    * Creates a new `MangoParser` client.
@@ -50,7 +54,7 @@ export default class MangoParser<D extends Document = Document>
    * - https://github.com/fox1t/qs-to-mongo
    * - https://github.com/kofrasa/mingo
    *
-   * @param {MangoParserOptions} [options] - Parser options
+   * @param {MangoParserOptions<D>} [options] - Parser options
    * @param {OneOrMany<string>} [options.dateFields] - Fields that will be
    * converted to `Date`; if no fields are passed, any valid date string will be
    * converted to an ISO-8601 string
@@ -63,7 +67,7 @@ export default class MangoParser<D extends Document = Document>
    * @param {CustomQSMongoParser} [options.parser] - Custom query parser
    * @param {any} [options.parserOptions] - Custom query parser options
    */
-  constructor(options: MangoParserOptions = {}) {
+  constructor(options: MangoParserOptions<D> = {}) {
     const parser_options = Object.assign({}, options)
 
     Reflect.deleteProperty(parser_options, 'objectIdFields')

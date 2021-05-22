@@ -19,7 +19,7 @@ Mango is a MongoDB-like API for in-memory object collections. It combines the
 power of [mingo][1] and [qs-to-mongo][2] to allow:
 
 - running aggregation pipelines
-- executing searches with query criteria and options
+- performing searches (with query criteria **and** URL queries)
 - parsing and converting URL query objects and strings
 
 ## Installation
@@ -39,8 +39,8 @@ power of [mingo][1] and [qs-to-mongo][2] to allow:
 ## Usage
 
 [Configuration](#configuration)  
-[🚧 Creating a New Mango Query Client](#🚧-creating-a-new-mango-query-client)  
-[🚧 Mango API](#🚧-mango-api)
+[Creating a New Mango Plugin](#creating-a-new-mango-plugin)  
+[Mango Plugin API](#mango-plugin-api)
 
 ### Configuration
 
@@ -52,11 +52,11 @@ power of [mingo][1] and [qs-to-mongo][2] to allow:
 #### Mingo
 
 The `Mango` class integrates with [mingo][1], a MongoDB query language for
-in-memory objects, to support aggregation pipelines and querying.
+in-memory objects, to support aggregation pipelines and executing searches.
 
 Operators loaded by Mango can be viewed in the [config](src/config/mingo.ts)
-file. If additional operators are needed, you'll need to load them _before_
-[creating a new query client](#🚧-creating-a-new-mango-query-client).
+file. If additional operators are needed, load them _before_
+[creating a new plugin](#creating-a-new-mango-plugin).
 
 #### TypeScript
 
@@ -75,21 +75,145 @@ For shorter import paths, TypeScript users can add the following aliases:
 
 These aliases will be used in following code examples.
 
-### 🚧 Creating a New Mango Query Client
+### Creating a New Mango Plugin
 
-**TODO:** Update documentation.
+#### Documents
 
-### 🚧 Mango API
+A document is an object from an in-memory collection. Each document should have
+a unique identifier (uid).
 
-**TODO:** Update documentation.
+By default, this value is assumed to map to the `_id` field of each document.
+This can be changed via the [plugin settings](#plugin-settings).
+
+```typescript
+import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
+
+export interface ISubscriber {
+  email: string
+  first_name: string
+  last_name: string
+}
+
+export type SubscriberUID = 'email'
+export type SubscriberParams = MangoSearchParams<ISubscriber>
+export type SubscriberQuery = MangoParsedUrlQuery<ISubscriber>
+```
+
+#### Plugin
+
+The Mango plugin accepts an options object thats gets passed down to the
+[mingo][1] and [qs-to-mongo][2] modules.
+
+Via the options dto, you can:
+
+- set initial collection cache
+- set uid field for each document
+- set date fields and fields searchable by text
+
+```typescript
+import { Mango } from '@mango'
+import type { MangoOptionsDTO } from '@mango/dto'
+
+const options: MangoOptionsDTO<ISubscriber, SubscriberUID> = {
+  cache: {
+    collection: [
+      {
+        email: 'nmaxstead0@arizona.edu',
+        first_name: 'Nate',
+        last_name: 'Maxstead'
+      },
+      {
+        email: 'rbrisseau1@sohu.com',
+        first_name: 'Roland',
+        last_name: 'Brisseau'
+      },
+      {
+        email: 'ksmidmoor2@sphinn.com',
+        first_name: 'Kippar',
+        last_name: 'Smidmoor'
+      },
+      {
+        email: 'gdurnford3@360.cn',
+        first_name: 'Godfree',
+        last_name: 'Durnford'
+      },
+      {
+        email: 'mfauguel4@webnode.com',
+        first_name: 'Madelle',
+        last_name: 'Fauguel'
+      }
+    ]
+  },
+  mingo: { idKey: 'email' },
+  parser: {
+    fullTextFields: ['first_name', 'last_name']
+  }
+}
+
+export const SubscribersMango = new Mango<ISubscriber, SubscriberUID>(options)
+```
+
+**Note**: All properties are optional.
+
+To learn more about [qs-to-mongo][3] options, see [Options][4] from the package
+documentation. Note that the `objectIdFields` and `parameters` options are not
+accepted by the Mango parser.
+
+### Mango Plugin API
+
+The Mango plugin allows users to run aggregation pipelines and execute searches
+against in-memory object collections. Query documents using a URL query, or
+search for them using a query criteria and options object.
+
+Documentation can be viewed [here](src/plugins/mango.plugin.ts).
+
+```typescript
+/**
+ * `Mango` plugin interface.
+ *
+ * - https://github.com/kofrasa/mingo
+ * - https://github.com/fox1t/qs-to-mongo
+ *
+ * @template D - Document (collection object)
+ * @template U - Name of document uid field
+ * @template P - Search parameters (query criteria and options)
+ * @template Q - Parsed URL query object
+ */
+export interface IMango<
+  D extends PlainObject = PlainObject,
+  U extends keyof D = '_id',
+  P extends MangoSearchParams<D> = MangoSearchParams<D>,
+  Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
+> {
+  readonly cache: Readonly<MangoCache<D>>
+  readonly logger: Debugger
+  readonly mingo: typeof mingo
+  readonly mparser: IMangoParser<D>
+  readonly options: MangoOptions<D, U>
+
+  aggregate(
+    pipeline?: OneOrMany<AggregationStages<D>>
+  ): AggregationPipelineResult<D>
+  find(params?: P): DocumentPartial<D, U>[]
+  findByIds(uids?: NumberString[], params?: P): DocumentPartial<D, U>[]
+  findOne(uid: NumberString, params?: P): DocumentPartial<D, U> | null
+  findOneOrFail(uid: NumberString, params?: P): DocumentPartial<D, U>
+  query(query?: Q | string): DocumentPartial<D, U>[]
+  queryByIds(uids?: NumberString[], query?: Q | string): DocumentPartial<D, U>[]
+  queryOne(uid: NumberString, query?: Q | string): DocumentPartial<D, U> | null
+  queryOneOrFail(uid: NumberString, query?: Q | string): DocumentPartial<D, U>
+  resetCache(collection?: D[]): MangoCache<D>
+}
+```
 
 ## Built With
 
 - [debug][3] - Debugging utility
 - [mingo][1] - MongoDB query language for in-memory objects
-- [qs-to-mongo][2] - Parse and convert query parameters into MongoDB query
-  criteria and options
+- [qs-to-mongo][2] - Parse and convert URL queries into MongoDB query criteria
+  and options
 
 [1]: https://github.com/kofrasa/mingo
 [2]: https://github.com/fox1t/qs-to-mongo
 [3]: https://github.com/visionmedia/debug
+[4]: https://github.com/fox1t/qs-to-mongo#options

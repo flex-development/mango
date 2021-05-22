@@ -1,7 +1,7 @@
 import { BSONTypeAlias } from '@/enums/bson-type-alias.enum'
 import { BSONTypeCode } from '@/enums/bson-type-code.enum'
-import type { Document, Expression } from '@/types'
-import type { JSONValue } from '@flex-development/tutils'
+import type { Expression } from '@/types'
+import type { JSONValue, UnknownObject } from '@flex-development/tutils'
 import type { AccumulatorOperators } from './accumulator-operators.interface'
 import type { CustomAccumulator } from './custom-accumulator.interface'
 
@@ -19,7 +19,7 @@ import type { CustomAccumulator } from './custom-accumulator.interface'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/#alphabetical-listing-of-expression-operators
  */
-export interface AggregationOperators<D extends Document = Document>
+export interface AggregationOperators<D extends UnknownObject = UnknownObject>
   extends AccumulatorOperators<D> {
   /**
    * Support package users loading additional operators.

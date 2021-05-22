@@ -1,4 +1,5 @@
-import type { Document, Expression } from '@/types'
+import type { Expression } from '@/types'
+import type { UnknownObject } from '@flex-development/tutils'
 import type { CustomAccumulator } from './custom-accumulator.interface'
 
 /**
@@ -14,7 +15,7 @@ import type { CustomAccumulator } from './custom-accumulator.interface'
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/#accumulators---group-
  * [2]: https://docs.mongodb.com/manual/reference/operator/aggregation/group
  */
-export interface AccumulatorOperators<D extends Document = Document> {
+export interface AccumulatorOperators<D extends UnknownObject = UnknownObject> {
   /**
    * Returns the result of a user-defined accumulator function.
    *

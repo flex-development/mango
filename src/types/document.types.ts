@@ -1,7 +1,9 @@
 import { SortOrder } from '@/enums/sort-order.enum'
 import type {
+  NumberString,
   ObjectPath,
   OrPartial,
+  PlainObject,
   UnknownObject
 } from '@flex-development/tutils'
 
@@ -17,7 +19,7 @@ import type {
  * @template D - Document (collection object)
  */
 export type DocumentEnhanced<
-  D extends Document = Document
+  D extends UnknownObject = UnknownObject
 > = DocumentPartial<D> & {
   [x: string]: any
 }
@@ -26,35 +28,30 @@ export type DocumentEnhanced<
  * Response that includes all attributes of a document or a subset.
  *
  * Even when a subset of attributes are requested, a partial `Document` response
- * will always include the `id` field, or the field used as the id key.
+ * will always include the `id` field, or the selected uid field.
  *
  * @template D - Document (collection object)
- * @template ID - Field used as id key
+ * @template U - Name of document uid field
  */
 export type DocumentPartial<
-  D extends Document = Document,
-  ID extends string = 'id'
-> = Omit<OrPartial<D>, 'id'> & Record<ID, string>
+  D extends UnknownObject = UnknownObject,
+  U extends keyof D = '_id'
+> = Omit<OrPartial<D>, 'id'> & Record<U, NumberString>
 
 /**
  * Nested or top level document key.
  *
  * @template D - Document (collection object)
  */
-export type DocumentPath<
-  D extends Document = Document
-> = ObjectPath<D> extends string ? ObjectPath<D> : never
+export type DocumentPath<D extends PlainObject> = ObjectPath<D> extends string
+  ? ObjectPath<D>
+  : never
 
 /**
  * Document sorting rules.
  *
  * @template D - Document (collection object)
  */
-export type DocumentSortingRules<D extends Document = Document> = Partial<
-  Record<DocumentPath<D>, SortOrder>
->
-
-/**
- * Type representing a collection object.
- */
-export type Document = UnknownObject
+export type DocumentSortingRules<
+  D extends UnknownObject = UnknownObject
+> = Partial<Record<DocumentPath<D>, SortOrder>>

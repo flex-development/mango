@@ -1,7 +1,7 @@
 import { BSONTypeAlias } from '@/enums/bson-type-alias.enum'
 import { BSONTypeCode } from '@/enums/bson-type-code.enum'
-import type { Document, Expression } from '@/types'
-import type { JSONValue } from '@flex-development/tutils'
+import type { Expression } from '@/types'
+import type { JSONValue, UnknownObject } from '@flex-development/tutils'
 
 /**
  * @file Interface - QueryOperators
@@ -15,7 +15,7 @@ import type { JSONValue } from '@flex-development/tutils'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
  */
-export interface QueryOperators<D extends Document = Document> {
+export interface QueryOperators<D extends UnknownObject = UnknownObject> {
   /**
    * Selects the documents where the value of a field is an array that contains
    * all the specified elements.

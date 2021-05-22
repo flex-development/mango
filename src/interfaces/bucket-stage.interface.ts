@@ -1,5 +1,5 @@
-import type { Document, Expression } from '@/types'
-import type { NumberString } from '@flex-development/tutils'
+import type { Expression } from '@/types'
+import type { NumberString, UnknownObject } from '@flex-development/tutils'
 import type { AccumulatorOperators } from './accumulator-operators.interface'
 
 /**
@@ -14,7 +14,7 @@ import type { AccumulatorOperators } from './accumulator-operators.interface'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/bucket
  */
-export interface BucketStage<D extends Document = Document> {
+export interface BucketStage<D extends UnknownObject = UnknownObject> {
   /**
    * An array of values based on the `groupBy` expression that specify the
    * boundaries for each bucket.

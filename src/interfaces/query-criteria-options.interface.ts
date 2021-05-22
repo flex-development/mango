@@ -1,4 +1,5 @@
-import type { Document, DocumentSortingRules, ProjectStage } from '@/types'
+import type { DocumentSortingRules, ProjectStage } from '@/types'
+import type { UnknownObject } from '@flex-development/tutils'
 import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
 
 /**
@@ -11,7 +12,7 @@ import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
  *
  * @template D - Document (collection object)
  */
-export interface QueryCriteriaOptions<D extends Document = Document>
+export interface QueryCriteriaOptions<D extends UnknownObject = UnknownObject>
   extends Partial<Omit<ParsedOptions, 'projection' | 'sort'>> {
   $project?: ProjectStage<D>
   sort?: DocumentSortingRules<D>

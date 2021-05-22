@@ -1,6 +1,6 @@
 import type { QueryCriteriaOptions } from '@/interfaces'
-import type { OneOrMany } from '@flex-development/tutils'
-import type { Document, DocumentPath } from './document.types'
+import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type { DocumentPath } from './document.types'
 import type { QueryCriteria } from './mingo.types'
 
 /**
@@ -14,7 +14,7 @@ import type { QueryCriteria } from './mingo.types'
  * @template D - Document (collection object)
  */
 export type MangoSearchParams<
-  D extends Document = Document
+  D extends PlainObject = PlainObject
 > = QueryCriteria<D> & {
   options?: QueryCriteriaOptions<D>
 }
@@ -24,7 +24,7 @@ export type MangoSearchParams<
  *
  * @template D - Document (collection object)
  */
-export type MangoParsedUrlQuery<D extends Document = Document> = Partial<
+export type MangoParsedUrlQuery<D extends PlainObject = PlainObject> = Partial<
   Record<DocumentPath<D>, OneOrMany<string>>
 > & {
   fields?: string

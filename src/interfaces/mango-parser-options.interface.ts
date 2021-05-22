@@ -1,4 +1,5 @@
-import type { OneOrMany } from '@flex-development/tutils'
+import type { DocumentPath } from '@/types'
+import type { OneOrMany, UnknownObject } from '@flex-development/tutils'
 import type { CustomQSMongoParser } from './custom-qs-mongo-parser.interface'
 
 /**
@@ -12,21 +13,23 @@ import type { CustomQSMongoParser } from './custom-qs-mongo-parser.interface'
  *
  * **NOTE**: `objectIdFields` and `parameters` are not accepted.
  *
+ * @template D - Document (collection object)
+ *
  * [1]: https://github.com/fox1t/qs-to-mongo#options
  */
-export interface MangoParserOptions {
+export interface MangoParserOptions<D extends UnknownObject = UnknownObject> {
   /**
    * Fields that will be converted to `Date`. If no fields are passed, any valid
    * date string will be converted to [ISOString][1].
    *
    * [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
    */
-  dateFields?: OneOrMany<string>
+  dateFields?: OneOrMany<DocumentPath<D>>
 
   /**
    * Fields that will be used as criteria when passing `text` query parameter.
    */
-  fullTextFields?: OneOrMany<string>
+  fullTextFields?: OneOrMany<DocumentPath<D>>
 
   /**
    * Array of query parameters that are ignored, in addition to the defaults:

@@ -1,4 +1,4 @@
-import type { Document } from '@/types'
+import type { PlainObject } from '@flex-development/tutils'
 
 /**
  * @file Interface - MangoCache
@@ -6,10 +6,10 @@ import type { Document } from '@/types'
  */
 
 /**
- * `Mango` client data cache.
+ * `Mango` plugin data cache.
  *
  * @template D - Document (collection object)
  */
-export interface MangoCache<D extends Document = Document> {
-  collection: D[]
+export interface MangoCache<D extends PlainObject = PlainObject> {
+  readonly collection: Readonly<D[]>
 }

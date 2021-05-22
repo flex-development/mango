@@ -1,13 +1,12 @@
 import { SortOrder } from '@/enums/sort-order.enum'
 import type {
-  Document,
   DocumentPath,
   Expression,
   FieldPath,
   ProjectStage,
   QueryCriteria
 } from '@/types'
-import type { OneOrMany } from '@flex-development/tutils'
+import type { OneOrMany, PlainObject } from '@flex-development/tutils'
 import type { RawObject } from 'mingo/util'
 import type { AccumulatorOperators } from './accumulator-operators.interface'
 import type { BucketStageAuto } from './bucket-stage-auto.interface'
@@ -26,7 +25,7 @@ import type { QueryOperators } from './query-operators.interface'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline
  */
-export interface AggregationStages<D extends Document = Document> {
+export interface AggregationStages<D extends PlainObject = PlainObject> {
   /**
    * Adds new fields to documents.
    *

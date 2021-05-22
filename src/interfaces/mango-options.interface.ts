@@ -1,5 +1,6 @@
-import type { Options as MingoOptions } from 'mingo/core'
+import type { UnknownObject } from '@flex-development/tutils'
 import type { MangoParserOptions } from './mango-parser-options.interface'
+import type { MingoOptions } from './mingo-options.interface'
 
 /**
  * @file Interface - MangoOptions
@@ -7,18 +8,24 @@ import type { MangoParserOptions } from './mango-parser-options.interface'
  */
 
 /**
- * Options accepted by the `Mango` class.
+ * Options used by the `Mango` class.
+ *
+ * @template D - Document (collection object)
+ * @template U - Name of document uid field
  */
-export interface MangoOptions {
+export interface MangoOptions<
+  D extends UnknownObject = UnknownObject,
+  U extends keyof D = '_id'
+> {
   /**
    * Aggregation and query client options.
    *
    * See: https://github.com/kofrasa/mingo
    */
-  mingo?: MingoOptions
+  mingo: MingoOptions<D, U>
 
   /**
    * `MangoParser` options.
    */
-  parser?: MangoParserOptions
+  parser: MangoParserOptions<D>
 }

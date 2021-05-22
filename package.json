@@ -42,16 +42,16 @@
   "dependencies": {
     "@flex-development/exceptions": "2.0.0",
     "@flex-development/tutils": "1.0.0",
-    "@types/debug": "latest",
-    "@types/lodash.isempty": "latest",
-    "@types/lodash.merge": "latest",
-    "@types/node": "latest",
-    "@types/qs": "latest",
-    "debug": "latest",
-    "lodash.isempty": "latest",
-    "lodash.merge": "latest",
-    "mingo": "latest",
-    "qs-to-mongo": "latest"
+    "@types/debug": "4.1.5",
+    "@types/lodash.isempty": "4.4.6",
+    "@types/lodash.merge": "4.6.6",
+    "@types/node": "15.3.1",
+    "@types/qs": "6.9.6",
+    "debug": "4.3.1",
+    "lodash.isempty": "4.4.0",
+    "lodash.merge": "4.6.2",
+    "mingo": "4.1.2",
+    "qs-to-mongo": "2.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "latest",
@@ -63,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "@zerollup/ts-transform-paths": "latest",
+    "axios": "latest",
     "dotenv-cli": "latest",
     "eslint": "latest",
     "eslint-config-prettier": "latest",
@@ -86,7 +87,6 @@
     "ts-jest": "27.0.0-next.9",
     "ts-node": "latest",
     "ttypescript": "latest",
-    "type-plus": "latest",
     "typescript": "4.2.4",
     "underscore-cli": "latest",
     "yarn": "latest"

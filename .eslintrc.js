@@ -110,18 +110,23 @@ module.exports = {
           'bool',
           'bson',
           'commitlint',
+          'dto',
           'enums',
           'enum',
           'execa',
           'formatter',
           'mingo',
+          'mparser',
           'nullable',
           'perf',
           'postpublish',
           'readonly',
           'tgz',
           'typeof',
+          'uids',
+          'uid',
           'utf8',
+          'vin',
           'wip',
           'zsh'
         ],
@@ -168,7 +173,11 @@ module.exports = {
       }
     },
     {
-      files: ['.eslintrc.*'],
+      files: [
+        '.eslintrc.*',
+        '__tests__/__fixtures__/cars.fixture.ts',
+        'docs/examples/subscribers.ts'
+      ],
       rules: {
         'spellcheck/spell-checker': 0
       }

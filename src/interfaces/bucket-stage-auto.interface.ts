@@ -1,4 +1,4 @@
-import type { Document } from '@/types'
+import type { UnknownObject } from '@flex-development/tutils'
 import type { BucketStage } from './bucket-stage.interface'
 
 /**
@@ -13,7 +13,7 @@ import type { BucketStage } from './bucket-stage.interface'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/bucketAuto
  */
-export interface BucketStageAuto<D extends Document = Document>
+export interface BucketStageAuto<D extends UnknownObject = UnknownObject>
   extends Pick<BucketStage<D>, 'groupBy' | 'output'> {
   /**
    * A positive 32-bit integer that specifies the number of buckets into which
