@@ -121,6 +121,7 @@ module.exports = {
           'perf',
           'postpublish',
           'readonly',
+          'repo',
           'tgz',
           'typeof',
           'uids',
