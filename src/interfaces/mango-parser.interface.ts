@@ -7,7 +7,7 @@ import type { QueryCriteriaOptions } from './query-criteria-options.interface'
 
 /**
  * @file Interface - IMangoParser
- * @module interfaces/IMangoParser
+ * @module interfaces/MangoParser
  */
 
 /**

@@ -1,23 +1,23 @@
-import { Mango } from '@mango'
-import type { MangoOptionsDTO } from '@mango/dto'
+import type { MangoPluginOptionsDTO } from '@/dtos'
+import { MangoPlugin } from '@mango'
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
 
 /**
- * @file Example - Subscribers Collection
- * @module docs/examples/subscribers
+ * @file Example - People Collection
+ * @module docs/examples/people
  */
 
-export interface ISubscriber {
+export interface IPerson {
   email: string
   first_name: string
   last_name: string
 }
 
-export type SubscriberUID = 'email'
-export type SubscriberParams = MangoSearchParams<ISubscriber>
-export type SubscriberQuery = MangoParsedUrlQuery<ISubscriber>
+export type PersonUID = 'email'
+export type PersonParams = MangoSearchParams<IPerson>
+export type PersonQuery = MangoParsedUrlQuery<IPerson>
 
-const options: MangoOptionsDTO<ISubscriber, SubscriberUID> = {
+const options: MangoPluginOptionsDTO<IPerson, PersonUID> = {
   cache: {
     collection: [
       {
@@ -53,4 +53,4 @@ const options: MangoOptionsDTO<ISubscriber, SubscriberUID> = {
   }
 }
 
-export const SubscribersMango = new Mango<ISubscriber, SubscriberUID>(options)
+export const PeopleMango = new MangoPlugin<IPerson, PersonUID>(options)

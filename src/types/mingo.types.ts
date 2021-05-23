@@ -6,6 +6,7 @@ import type {
 } from '@/interfaces'
 import type {
   JSONValue,
+  ObjectPath,
   OneOrMany,
   OrPartial,
   UnknownObject
@@ -89,7 +90,7 @@ export type Expression<D extends UnknownObject = UnknownObject> =
  */
 export type FieldPath<
   D extends UnknownObject = UnknownObject
-> = `$${DocumentPath<D>}`
+> = `$${ObjectPath<D> extends string ? ObjectPath<D> : never}`
 
 /**
  * MongoDB [Literal expression][1].

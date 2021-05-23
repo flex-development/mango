@@ -1,4 +1,4 @@
-import type { UnknownObject } from '@flex-development/tutils'
+import type { DUID } from '@/types'
 import type { Options } from 'mingo/core'
 
 /**
@@ -14,14 +14,12 @@ import type { Options } from 'mingo/core'
  *
  * [1]: https://github.com/kofrasa/mingo
  */
-export interface MingoOptions<
-  D extends UnknownObject = UnknownObject,
-  U extends keyof D = '_id'
-> extends Omit<Options, 'idKey'> {
+export interface MingoOptions<U extends string = DUID>
+  extends Omit<Options, 'idKey'> {
   /**
    * Name of the field containing a unique identifier for a document.
    *
-   * @default '_id'
+   * @default 'id'
    */
   idKey: U
 }

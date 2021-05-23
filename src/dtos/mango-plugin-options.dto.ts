@@ -1,9 +1,10 @@
-import type { MangoOptions } from '@/interfaces'
+import type { MangoPluginOptions } from '@/interfaces'
+import type { DUID } from '@/types'
 import type { PlainObject } from '@flex-development/tutils'
 
 /**
- * @file Interface - MangoOptions
- * @module interfaces/MangoOptions
+ * @file Data Transfer Object - MangoPluginOptionsDTO
+ * @module dto/MangoPluginOptionsDTO
  */
 
 /**
@@ -12,9 +13,9 @@ import type { PlainObject } from '@flex-development/tutils'
  * @template D - Document (collection object)
  * @template U - Name of document uid field
  */
-export interface MangoOptionsDTO<
+export interface MangoPluginOptionsDTO<
   D extends PlainObject = PlainObject,
-  U extends keyof D = '_id'
+  U extends string = DUID
 > {
   /**
    * Initial data cache.
@@ -26,10 +27,10 @@ export interface MangoOptionsDTO<
    *
    * See: https://github.com/kofrasa/mingo
    */
-  mingo?: Partial<MangoOptions<D, U>['mingo']>
+  mingo?: Partial<MangoPluginOptions<D, U>['mingo']>
 
   /**
    * `MangoParser` options.
    */
-  parser?: MangoOptions<D, U>['parser']
+  parser?: MangoPluginOptions<D, U>['parser']
 }

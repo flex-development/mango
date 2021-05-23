@@ -1,4 +1,4 @@
-import type { MangoCache } from '@/interfaces'
+import type { MangoCachePlugin } from '@/interfaces'
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@/types'
 
 /**
@@ -19,11 +19,11 @@ export type CarQuery = MangoParsedUrlQuery<ICar>
 
 export const CARS_IDKEY: CarUID = 'vin'
 
-export const CARS_MOCK_CACHE_EMPTY: MangoCache<ICar> = {
+export const CARS_MOCK_CACHE_EMPTY: MangoCachePlugin<ICar> = {
   collection: Object.freeze([])
 }
 
-export const CARS_MOCK_CACHE: MangoCache<ICar> = {
+export const CARS_MOCK_CACHE: MangoCachePlugin<ICar> = {
   collection: Object.freeze([
     {
       make: 'Scion',

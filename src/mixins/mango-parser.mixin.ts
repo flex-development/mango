@@ -87,6 +87,7 @@ export default class MangoParser<D extends UnknownObject = UnknownObject>
     let build: PlainObject = {}
 
     try {
+      // @ts-expect-error `dateFields` and `fullTextFields` mapped to document
       build = this.parser(query, this.options)
     } catch ({ message, stack }) {
       const code = ExceptionStatusCode.BAD_REQUEST
