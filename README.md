@@ -82,21 +82,21 @@ These aliases will be used in following code examples.
 A document is an object from an in-memory collection. Each document should have
 a unique identifier (uid).
 
-By default, this value is assumed to map to the `_id` field of each document.
+By default, this value is assumed to map to the `id` field of each document.
 This can be changed via the [plugin settings](#plugin-settings).
 
 ```typescript
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
 
-export interface ISubscriber {
+export interface IPerson {
   email: string
   first_name: string
   last_name: string
 }
 
-export type SubscriberUID = 'email'
-export type SubscriberParams = MangoSearchParams<ISubscriber>
-export type SubscriberQuery = MangoParsedUrlQuery<ISubscriber>
+export type PersonUID = 'email'
+export type PersonParams = MangoSearchParams<IPerson>
+export type PersonQuery = MangoParsedUrlQuery<IPerson>
 ```
 
 #### Plugin
@@ -111,10 +111,10 @@ Via the options dto, you can:
 - set date fields and fields searchable by text
 
 ```typescript
-import { Mango } from '@mango'
-import type { MangoOptionsDTO } from '@mango/dto'
+import { MangoPlugin } from '@mango'
+import type { MangoPluginOptionsDTO } from '@mango/dto'
 
-const options: MangoOptionsDTO<ISubscriber, SubscriberUID> = {
+const options: MangoPluginOptionsDTO<IPerson, PersonUID> = {
   cache: {
     collection: [
       {
@@ -150,7 +150,7 @@ const options: MangoOptionsDTO<ISubscriber, SubscriberUID> = {
   }
 }
 
-export const SubscribersMango = new Mango<ISubscriber, SubscriberUID>(options)
+export const PeopleMango = new MangoPlugin<IPerson, PersonUID>(options)
 ```
 
 **Note**: All properties are optional.
@@ -169,7 +169,7 @@ Documentation can be viewed [here](src/plugins/mango.plugin.ts).
 
 ```typescript
 /**
- * `Mango` plugin interface.
+ * `MangoPlugin` interface.
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -179,30 +179,30 @@ Documentation can be viewed [here](src/plugins/mango.plugin.ts).
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMango<
+export interface IMangoPlugin<
   D extends PlainObject = PlainObject,
-  U extends keyof D = '_id',
+  U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
 > {
-  readonly cache: Readonly<MangoCache<D>>
+  readonly cache: Readonly<MangoCachePlugin<D>>
   readonly logger: Debugger
   readonly mingo: typeof mingo
   readonly mparser: IMangoParser<D>
-  readonly options: MangoOptions<D, U>
+  readonly options: MangoPluginOptions<D, U>
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
   ): AggregationPipelineResult<D>
   find(params?: P): DocumentPartial<D, U>[]
-  findByIds(uids?: NumberString[], params?: P): DocumentPartial<D, U>[]
-  findOne(uid: NumberString, params?: P): DocumentPartial<D, U> | null
-  findOneOrFail(uid: NumberString, params?: P): DocumentPartial<D, U>
+  findByIds(uids?: UID[], params?: P): DocumentPartial<D, U>[]
+  findOne(uid: UID, params?: P): DocumentPartial<D, U> | null
+  findOneOrFail(uid: UID, params?: P): DocumentPartial<D, U>
   query(query?: Q | string): DocumentPartial<D, U>[]
-  queryByIds(uids?: NumberString[], query?: Q | string): DocumentPartial<D, U>[]
-  queryOne(uid: NumberString, query?: Q | string): DocumentPartial<D, U> | null
-  queryOneOrFail(uid: NumberString, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCache<D>
+  queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
+  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
+  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
+  resetCache(collection?: D[]): MangoCachePlugin<D>
 }
 ```
 

@@ -1,13 +1,13 @@
 import logger from '@/config/logger'
 import MINGO from '@/config/mingo'
-import type { MangoOptionsDTO } from '@/dto'
+import type { MangoPluginOptionsDTO } from '@/dtos'
 import type {
   AggregationStages,
-  IMango,
   IMangoParser,
-  MangoCache,
-  MangoOptions,
+  IMangoPlugin,
+  MangoCachePlugin,
   MangoParserOptions,
+  MangoPluginOptions,
   MingoOptions,
   QueryCriteriaOptions
 } from '@/interfaces'
@@ -16,14 +16,15 @@ import type {
   AggregationPipelineResult,
   DocumentPartial,
   DocumentSortingRules,
+  DUID,
   MangoParsedUrlQuery,
   MangoSearchParams,
-  ProjectStage
+  ProjectStage,
+  UID
 } from '@/types'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type {
-  NumberString,
   OneOrMany,
   PlainObject,
   UnknownObject
@@ -45,25 +46,25 @@ import type { Options as OriginalMingoOptions } from 'mingo/core'
  * [2]: https://github.com/fox1t/qs-to-mongo
  *
  * @template D - Document (collection object)
+ * @template U - Name of document uid field
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
- * @template U - Name of document uid field
  *
  * @class
- * @implements {IMango<D, U, P, Q>}
+ * @implements {IMangoPlugin<D, U, P, Q>}
  */
-export default class Mango<
+export default class MangoPlugin<
   D extends PlainObject = PlainObject,
-  U extends keyof D = '_id',
+  U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
-> implements IMango<D, U, P, Q> {
+> implements IMangoPlugin<D, U, P, Q> {
   /**
    * @readonly
    * @instance
-   * @property {Readonly<MangoCache<D>>} cache - Data cache
+   * @property {Readonly<MangoCachePlugin<D>>} cache - Data cache
    */
-  readonly cache: Readonly<MangoCache<D>>
+  readonly cache: Readonly<MangoCachePlugin<D>>
 
   /**
    * @readonly
@@ -89,14 +90,14 @@ export default class Mango<
   /**
    * @readonly
    * @instance
-   * @property {MangoOptions<D, U>} options - Plugin options
+   * @property {MangoPluginOptions<D, U>} options - Plugin options
    */
-  readonly options: MangoOptions<D, U>
+  readonly options: MangoPluginOptions<D, U>
 
   /**
    * Creates a new Mango plugin.
    *
-   * By default, collection objects are assumed to have an `_id` field that maps
+   * By default, collection objects are assumed to have an `id` field that maps
    * to a unique identifier (uid) for the document. The name of the uid can be
    * changed by setting {@param options.mingo.idKey}.
    *
@@ -105,17 +106,21 @@ export default class Mango<
    * - https://github.com/kofrasa/mingo
    * - https://github.com/fox1t/qs-to-mongo
    *
-   * @param {MangoOptionsDTO<D, U>} [options] - Plugin options
-   * @param {MingoOptions<D, U>} [options.mingo] - Global mingo options
+   * @param {MangoPluginOptionsDTO<D, U>} [options] - Plugin options
+   * @param {MingoOptions<U>} [options.mingo] - Global mingo options
    * @param {U} [options.mingo.idKey] - Name of document uid field
-   * @param {MangoParserOptions} [options.parser] - MangoParser options
+   * @param {MangoParserOptions<D>} [options.parser] - MangoParser options
    */
-  constructor({ cache, mingo = {}, parser = {} }: MangoOptionsDTO<D, U> = {}) {
+  constructor({
+    cache,
+    mingo = {},
+    parser = {}
+  }: MangoPluginOptionsDTO<D, U> = {}) {
     const { collection = [] } = cache || {}
     const { idKey: midk } = mingo
 
     const documents = Object.freeze(Array.isArray(collection) ? collection : [])
-    const idKey = (typeof midk === 'string' && midk.length ? midk : '_id') as U
+    const idKey = (typeof midk === 'string' && midk.length ? midk : 'id') as U
 
     this.cache = Object.freeze({ collection: documents })
     this.options = { mingo: { ...mingo, idKey }, parser }
@@ -222,7 +227,7 @@ export default class Mango<
   /**
    * Finds multiple documents by id.
    *
-   * @param {NumberString[]} [uids] - Array of unique identifiers
+   * @param {UID[]} [uids] - Array of unique identifiers
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<D>} [params.options] - Search options
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
@@ -232,17 +237,14 @@ export default class Mango<
    * @return {DocumentPartial<D, U>[]} Documents
    * @throws {Exception}
    */
-  findByIds(
-    uids: NumberString[] = [],
-    params: P = {} as P
-  ): DocumentPartial<D, U>[] {
+  findByIds(uids: UID[] = [], params: P = {} as P): DocumentPartial<D, U>[] {
     try {
       // Perform search
       const documents = this.find(params)
 
       // Get specified documents
       const idKey = this.options.mingo.idKey as string
-      return documents.filter(doc => uids.includes(doc[idKey] as NumberString))
+      return documents.filter(doc => uids.includes(doc[idKey] as UID))
     } catch (error) {
       /* eslint-disable-next-line sort-keys */
       const data = { uids, params }
@@ -263,7 +265,7 @@ export default class Mango<
    *
    * Returns `null` if the document isn't found.
    *
-   * @param {NumberString} uid - Unique identifier for document
+   * @param {UID} uid - Unique identifier for document
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<D>} [params.options] - Search options
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
@@ -273,10 +275,7 @@ export default class Mango<
    * @return {DocumentPartial<D, U> | null} Document or null
    * @throws {Exception}
    */
-  findOne(
-    uid: NumberString,
-    params: P = {} as P
-  ): DocumentPartial<D, U> | null {
+  findOne(uid: UID, params: P = {} as P): DocumentPartial<D, U> | null {
     // Perform search
     const documents = this.find({ ...params, [this.options.mingo.idKey]: uid })
     const doc = documents[0]
@@ -290,7 +289,7 @@ export default class Mango<
    *
    * Throws an error if the document isn't found.
    *
-   * @param {NumberString} uid - Unique identifier for document
+   * @param {UID} uid - Unique identifier for document
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<D>} [params.options] - Search options
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
@@ -300,7 +299,7 @@ export default class Mango<
    * @return {DocumentPartial<D, U>} Document
    * @throws {Exception}
    */
-  findOneOrFail(uid: NumberString, params: P = {} as P): DocumentPartial<D, U> {
+  findOneOrFail(uid: UID, params: P = {} as P): DocumentPartial<D, U> {
     const document = this.findOne(uid, params)
 
     if (!document) {
@@ -332,14 +331,11 @@ export default class Mango<
   /**
    * Queries multiple documents by unique identifier.
    *
-   * @param {NumberString[]} [uids] - Array of unique identifiers
+   * @param {UID[]} [uids] - Array of unique identifiers
    * @param {Q | string} [query] - Document query object or string
    * @return {DocumentPartial<D, U>[]} Documents
    */
-  queryByIds(
-    uids: NumberString[] = [],
-    query?: Q | string
-  ): DocumentPartial<D, U>[] {
+  queryByIds(uids: UID[] = [], query?: Q | string): DocumentPartial<D, U>[] {
     return this.findByIds(uids, this.mparser.params(query) as P)
   }
 
@@ -348,14 +344,11 @@ export default class Mango<
    *
    * Returns `null` if the document isn't found.
    *
-   * @param {NumberString} uid - Unique identifier for document
+   * @param {UID} uid - Unique identifier for document
    * @param {Q | string} [query] - Document query object or string
    * @return {DocumentPartial<D, U> | null} Document or null
    */
-  queryOne(
-    uid: NumberString,
-    query?: Q | string
-  ): DocumentPartial<D, U> | null {
+  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null {
     return this.findOne(uid, this.mparser.params(query) as P)
   }
 
@@ -364,20 +357,20 @@ export default class Mango<
    *
    * Throws an error if the document isn't found.
    *
-   * @param {NumberString} uid - Unique identifier for document
+   * @param {UID} uid - Unique identifier for document
    * @param {Q | string} [query] - Document query object or string
    * @return {DocumentPartial<D, U>} Document
    */
-  queryOneOrFail(uid: NumberString, query?: Q | string): DocumentPartial<D, U> {
+  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U> {
     return this.findOneOrFail(uid, this.mparser.params(query) as P)
   }
 
   /**
    * Updates the plugin's the data cache.
    *
-   * @return {MangoCache<D>} Copy of updated cache
+   * @return {MangoCachePlugin<D>} Copy of updated cache
    */
-  resetCache(collection: D[] = []): MangoCache<D> {
+  resetCache(collection: D[] = []): MangoCachePlugin<D> {
     const documents = Object.freeze(Object.assign([], collection))
 
     // @ts-expect-error resetting cache

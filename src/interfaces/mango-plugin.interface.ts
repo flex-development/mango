@@ -1,28 +1,26 @@
 import type {
   AggregationPipelineResult,
   DocumentPartial,
+  DUID,
   MangoParsedUrlQuery,
-  MangoSearchParams
+  MangoSearchParams,
+  UID
 } from '@/types'
-import type {
-  NumberString,
-  OneOrMany,
-  PlainObject
-} from '@flex-development/tutils'
+import type { OneOrMany, PlainObject } from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 import mingo from 'mingo'
 import type { AggregationStages } from './aggregation-stages.interface'
-import type { MangoCache } from './mango-cache.interface'
-import type { MangoOptions } from './mango-options.interface'
+import type { MangoCachePlugin } from './mango-cache-plugin.interface'
 import type { IMangoParser } from './mango-parser.interface'
+import type { MangoPluginOptions } from './mango-plugin-options.interface'
 
 /**
- * @file Interface - Mango
- * @module interfaces/Mango
+ * @file Interface - IMangoPlugin
+ * @module interfaces/MangoPlugin
  */
 
 /**
- * `Mango` plugin interface.
+ * `MangoPlugin` interface.
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -32,28 +30,28 @@ import type { IMangoParser } from './mango-parser.interface'
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMango<
+export interface IMangoPlugin<
   D extends PlainObject = PlainObject,
-  U extends keyof D = '_id',
+  U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
 > {
-  readonly cache: Readonly<MangoCache<D>>
+  readonly cache: Readonly<MangoCachePlugin<D>>
   readonly logger: Debugger
   readonly mingo: typeof mingo
   readonly mparser: IMangoParser<D>
-  readonly options: MangoOptions<D, U>
+  readonly options: MangoPluginOptions<D, U>
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
   ): AggregationPipelineResult<D>
   find(params?: P): DocumentPartial<D, U>[]
-  findByIds(uids?: NumberString[], params?: P): DocumentPartial<D, U>[]
-  findOne(uid: NumberString, params?: P): DocumentPartial<D, U> | null
-  findOneOrFail(uid: NumberString, params?: P): DocumentPartial<D, U>
+  findByIds(uids?: UID[], params?: P): DocumentPartial<D, U>[]
+  findOne(uid: UID, params?: P): DocumentPartial<D, U> | null
+  findOneOrFail(uid: UID, params?: P): DocumentPartial<D, U>
   query(query?: Q | string): DocumentPartial<D, U>[]
-  queryByIds(uids?: NumberString[], query?: Q | string): DocumentPartial<D, U>[]
-  queryOne(uid: NumberString, query?: Q | string): DocumentPartial<D, U> | null
-  queryOneOrFail(uid: NumberString, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCache<D>
+  queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
+  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
+  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
+  resetCache(collection?: D[]): MangoCachePlugin<D>
 }

@@ -4,5 +4,8 @@
  */
 
 export * from './document.types'
-export * from './mango.types'
+export * from './mango-plugin.types'
 export * from './mingo.types'
+export * from './repository.types'
+export * from './utils.types'
+export * from './validation.types'

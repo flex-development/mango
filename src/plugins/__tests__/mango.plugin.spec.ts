@@ -1,4 +1,4 @@
-import type { MangoOptionsDTO } from '@/dto'
+import type { MangoPluginOptionsDTO } from '@/dtos'
 import { SortOrder } from '@/enums/sort-order.enum'
 import type { AggregationStages } from '@/interfaces'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
@@ -19,18 +19,18 @@ import faker from 'faker'
 import TestSubject from '../mango.plugin'
 
 /**
- * @file Unit Tests - Mango
+ * @file Unit Tests - MangoPlugin
  * @module plugins/tests/Mango
  */
 
-describe('unit:plugins/Mango', () => {
-  const dto: MangoOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE as MangoOptionsDTO<ICar>['cache'],
+describe('unit:plugins/MangoPlugin', () => {
+  const dto: MangoPluginOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE as MangoPluginOptionsDTO<ICar>['cache'],
     mingo: { idKey: CARS_IDKEY }
   }
 
-  const dto_e: MangoOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE_EMPTY as MangoOptionsDTO<ICar>['cache'],
+  const dto_e: MangoPluginOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE_EMPTY as MangoPluginOptionsDTO<ICar>['cache'],
     mingo: dto.mingo
   }
 
