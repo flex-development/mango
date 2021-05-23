@@ -1,5 +1,6 @@
 import type { MangoCachePlugin } from '@/interfaces'
-import type { MangoParsedUrlQuery, MangoSearchParams } from '@/types'
+import type { MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
 /**
  * @file Global Test Fixture - Cars Collection
@@ -10,12 +11,29 @@ export interface ICar {
   make: string
   model: string
   model_year: number
-  vin: string
+  vin: UID
 }
 
 export type CarUID = 'vin'
 export type CarParams = MangoSearchParams<ICar>
 export type CarQuery = MangoParsedUrlQuery<ICar>
+
+export class Car implements ICar {
+  @IsString()
+  @IsNotEmpty()
+  make: ICar['make']
+
+  @IsString()
+  @IsNotEmpty()
+  model: ICar['model']
+
+  @IsNumber()
+  model_year: ICar['model_year']
+
+  @IsString()
+  @IsNotEmpty()
+  vin: ICar['vin']
+}
 
 export const CARS_IDKEY: CarUID = 'vin'
 

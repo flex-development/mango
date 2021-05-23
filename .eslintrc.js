@@ -125,6 +125,7 @@ module.exports = {
           'repo',
           'tgz',
           'tutils',
+          'tvo',
           'typeof',
           'uids',
           'uid',
