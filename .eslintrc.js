@@ -128,6 +128,7 @@ module.exports = {
           'typeof',
           'uids',
           'uid',
+          'unix',
           'utf8',
           'vin',
           'wip',
@@ -179,7 +180,8 @@ module.exports = {
       files: [
         '.eslintrc.*',
         '__tests__/__fixtures__/cars.fixture.ts',
-        'docs/examples/subscribers.ts'
+        'docs/examples/subscribers.ts',
+        'src/constraints/__tests__/is-strong-password.constraint.spec.ts'
       ],
       rules: {
         'spellcheck/spell-checker': 0
