@@ -1,4 +1,4 @@
-import type { MangoPluginOptionsDTO } from '@/dtos'
+import type { MangoFinderPluginOptionsDTO } from '@/dtos'
 import { SortOrder } from '@/enums/sort-order.enum'
 import type { AggregationStages } from '@/interfaces'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
@@ -11,26 +11,26 @@ import type {
   ICar
 } from '@tests/fixtures/cars.fixture'
 import {
-  CARS_IDKEY,
   CARS_MOCK_CACHE,
-  CARS_MOCK_CACHE_EMPTY
+  CARS_MOCK_CACHE_EMPTY,
+  CARS_UID
 } from '@tests/fixtures/cars.fixture'
 import faker from 'faker'
-import TestSubject from '../mango.plugin'
+import TestSubject from '../mango-finder.plugin'
 
 /**
- * @file Unit Tests - MangoPlugin
- * @module plugins/tests/Mango
+ * @file Unit Tests - MangoFinder
+ * @module plugins/tests/MangoFinder
  */
 
-describe('unit:plugins/MangoPlugin', () => {
-  const dto: MangoPluginOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE as MangoPluginOptionsDTO<ICar>['cache'],
-    mingo: { idKey: CARS_IDKEY }
+describe('unit:plugins/MangoFinderPlugin', () => {
+  const dto: MangoFinderPluginOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE as MangoFinderPluginOptionsDTO<ICar>['cache'],
+    mingo: { idKey: CARS_UID }
   }
 
-  const dto_e: MangoPluginOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE_EMPTY as MangoPluginOptionsDTO<ICar>['cache'],
+  const dto_e: MangoFinderPluginOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE_EMPTY as MangoFinderPluginOptionsDTO<ICar>['cache'],
     mingo: dto.mingo
   }
 
@@ -156,7 +156,7 @@ describe('unit:plugins/MangoPlugin', () => {
     it('should handle query criteria', () => {
       // Arrange
       const { collection } = Subject.cache
-      const params = { [CARS_IDKEY]: collection[0][CARS_IDKEY] }
+      const params = { [CARS_UID]: collection[0][CARS_UID] }
       const eargs = [collection, params, {}, Subject.options.mingo]
 
       // Act
@@ -169,7 +169,7 @@ describe('unit:plugins/MangoPlugin', () => {
 
     it('should sort results', () => {
       // Arrange
-      const options = { sort: { [CARS_IDKEY]: SortOrder.ASCENDING } }
+      const options = { sort: { [CARS_UID]: SortOrder.ASCENDING } }
 
       // Act
       Subject.find({ options })
@@ -296,11 +296,11 @@ describe('unit:plugins/MangoPlugin', () => {
       spy_find.mockReturnValue([DOCUMENT])
 
       // Act
-      const result = Subject.findOne(DOCUMENT[CARS_IDKEY])
+      const result = Subject.findOne(DOCUMENT[CARS_UID])
 
       // Expect
       expect(spy_find).toBeCalledTimes(1)
-      expect(spy_find).toBeCalledWith({ [CARS_IDKEY]: DOCUMENT[CARS_IDKEY] })
+      expect(spy_find).toBeCalledWith({ [CARS_UID]: DOCUMENT[CARS_UID] })
       expect(result).toMatchObject(DOCUMENT)
     })
 
@@ -313,7 +313,7 @@ describe('unit:plugins/MangoPlugin', () => {
 
       // Expect
       expect(spy_find).toBeCalledTimes(1)
-      expect(spy_find).toBeCalledWith({ [CARS_IDKEY]: FUID })
+      expect(spy_find).toBeCalledWith({ [CARS_UID]: FUID })
       expect(result).toBe(null)
     })
   })
@@ -327,11 +327,11 @@ describe('unit:plugins/MangoPlugin', () => {
       spy_findOne.mockReturnValueOnce(DOCUMENT)
 
       // Act
-      const result = Subject.findOneOrFail(DOCUMENT[CARS_IDKEY])
+      const result = Subject.findOneOrFail(DOCUMENT[CARS_UID])
 
       // Expect
       expect(spy_findOne).toBeCalledTimes(1)
-      expect(spy_findOne).toBeCalledWith(DOCUMENT[CARS_IDKEY], {})
+      expect(spy_findOne).toBeCalledWith(DOCUMENT[CARS_UID], {})
       expect(result).toMatchObject(DOCUMENT)
     })
 
@@ -349,7 +349,7 @@ describe('unit:plugins/MangoPlugin', () => {
       // Expect
       expect(exception.code).toBe(ExceptionStatusCode.NOT_FOUND)
       expect(exception.data).toMatchObject({ params: {} })
-      expect((exception.errors as UnknownObject)[CARS_IDKEY]).toBe(FUID)
+      expect((exception.errors as UnknownObject)[CARS_UID]).toBe(FUID)
       expect(exception.message).toMatch(new RegExp(`"${FUID}" does not exist`))
     })
   })
@@ -395,7 +395,7 @@ describe('unit:plugins/MangoPlugin', () => {
     const spy_findOne = jest.spyOn(Subject, 'findOne')
 
     beforeEach(() => {
-      Subject.queryOne(Subject.cache.collection[0][CARS_IDKEY])
+      Subject.queryOne(Subject.cache.collection[0][CARS_UID])
     })
 
     it('should call #mparser.params', () => {
@@ -416,7 +416,7 @@ describe('unit:plugins/MangoPlugin', () => {
 
     beforeEach(() => {
       spy_findOneOrFail.mockReturnValueOnce(DOCUMENT)
-      Subject.queryOneOrFail(DOCUMENT[CARS_IDKEY])
+      Subject.queryOneOrFail(DOCUMENT[CARS_UID])
     })
 
     it('should call #mparser.params', () => {

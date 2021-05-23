@@ -1,13 +1,13 @@
 import logger from '@/config/logger'
 import MINGO from '@/config/mingo'
-import type { MangoPluginOptionsDTO } from '@/dtos'
+import type { MangoFinderPluginOptionsDTO } from '@/dtos'
 import type {
   AggregationStages,
+  IMangoFinderPlugin,
   IMangoParser,
-  IMangoPlugin,
-  MangoCachePlugin,
+  MangoCacheFinderPlugin,
+  MangoFinderPluginOptions,
   MangoParserOptions,
-  MangoPluginOptions,
   MingoOptions,
   QueryCriteriaOptions
 } from '@/interfaces'
@@ -35,8 +35,8 @@ import merge from 'lodash.merge'
 import type { Options as OriginalMingoOptions } from 'mingo/core'
 
 /**
- * @file Plugin - Mango
- * @module plugins/Mango
+ * @file Plugin - MangoFinder
+ * @module plugins/MangoFinder
  */
 
 /**
@@ -51,20 +51,20 @@ import type { Options as OriginalMingoOptions } from 'mingo/core'
  * @template Q - Parsed URL query object
  *
  * @class
- * @implements {IMangoPlugin<D, U, P, Q>}
+ * @implements {IMangoFinderPlugin<D, U, P, Q>}
  */
-export default class MangoPlugin<
+export default class MangoFinderPlugin<
   D extends PlainObject = PlainObject,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
-> implements IMangoPlugin<D, U, P, Q> {
+> implements IMangoFinderPlugin<D, U, P, Q> {
   /**
    * @readonly
    * @instance
-   * @property {Readonly<MangoCachePlugin<D>>} cache - Data cache
+   * @property {Readonly<MangoCacheFinderPlugin<D>>} cache - Data cache
    */
-  readonly cache: Readonly<MangoCachePlugin<D>>
+  readonly cache: Readonly<MangoCacheFinderPlugin<D>>
 
   /**
    * @readonly
@@ -90,12 +90,12 @@ export default class MangoPlugin<
   /**
    * @readonly
    * @instance
-   * @property {MangoPluginOptions<D, U>} options - Plugin options
+   * @property {MangoFinderPluginOptions<D, U>} options - Plugin options
    */
-  readonly options: MangoPluginOptions<D, U>
+  readonly options: MangoFinderPluginOptions<D, U>
 
   /**
-   * Creates a new Mango plugin.
+   * Creates a new Mango Finder plugin.
    *
    * By default, collection objects are assumed to have an `id` field that maps
    * to a unique identifier (uid) for the document. The name of the uid can be
@@ -106,7 +106,7 @@ export default class MangoPlugin<
    * - https://github.com/kofrasa/mingo
    * - https://github.com/fox1t/qs-to-mongo
    *
-   * @param {MangoPluginOptionsDTO<D, U>} [options] - Plugin options
+   * @param {MangoFinderPluginOptionsDTO<D, U>} [options] - Plugin options
    * @param {MingoOptions<U>} [options.mingo] - Global mingo options
    * @param {U} [options.mingo.idKey] - Name of document uid field
    * @param {MangoParserOptions<D>} [options.parser] - MangoParser options
@@ -115,7 +115,7 @@ export default class MangoPlugin<
     cache,
     mingo = {},
     parser = {}
-  }: MangoPluginOptionsDTO<D, U> = {}) {
+  }: MangoFinderPluginOptionsDTO<D, U> = {}) {
     const { collection = [] } = cache || {}
     const { idKey: midk } = mingo
 
@@ -368,9 +368,10 @@ export default class MangoPlugin<
   /**
    * Updates the plugin's the data cache.
    *
-   * @return {MangoCachePlugin<D>} Copy of updated cache
+   * @param {D[]} collection - Documents to insert into cache
+   * @return {MangoCacheFinderPlugin<D>} Copy of updated cache
    */
-  resetCache(collection: D[] = []): MangoCachePlugin<D> {
+  resetCache(collection: D[] = []): MangoCacheFinderPlugin<D> {
     const documents = Object.freeze(Object.assign([], collection))
 
     // @ts-expect-error resetting cache
