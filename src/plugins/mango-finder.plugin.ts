@@ -26,6 +26,7 @@ import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type {
   OneOrMany,
+  OrPromise,
   PlainObject,
   UnknownObject
 } from '@flex-development/tutils'
@@ -134,12 +135,12 @@ export default class MangoFinderPlugin<
    * developers to call {@method Mango#resetCache}.
    *
    * @param {OneOrMany<AggregationStages<D>>} pipeline - Aggregation stage(s)
-   * @return {AggregationPipelineResult<D>} Pipeline results
+   * @return {OrPromise<AggregationPipelineResult<D>>} Pipeline results
    * @throws {Exception}
    */
   aggregate(
     pipeline: OneOrMany<AggregationStages<D>> = []
-  ): AggregationPipelineResult<D> {
+  ): OrPromise<AggregationPipelineResult<D>> {
     const collection = Object.assign([], this.cache.collection)
 
     if (!collection.length) {
@@ -173,10 +174,10 @@ export default class MangoFinderPlugin<
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
-   * @return {DocumentPartial<D, U>[]} Search results
+   * @return {OrPromise<DocumentPartial<D, U>[]>} Search results
    * @throws {Exception}
    */
-  find(params: P = {} as P): DocumentPartial<D, U>[] {
+  find(params: P = {} as P): OrPromise<DocumentPartial<D, U>[]> {
     const { options = {}, ...criteria } = params
     const { $project = {}, limit, skip, sort } = options
 
@@ -234,13 +235,16 @@ export default class MangoFinderPlugin<
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
-   * @return {DocumentPartial<D, U>[]} Documents
+   * @return {OrPromise<DocumentPartial<D, U>[]>} Documents
    * @throws {Exception}
    */
-  findByIds(uids: UID[] = [], params: P = {} as P): DocumentPartial<D, U>[] {
+  findByIds(
+    uids: UID[] = [],
+    params: P = {} as P
+  ): OrPromise<DocumentPartial<D, U>[]> {
     try {
       // Perform search
-      const documents = this.find(params)
+      const documents = this.find(params) as DocumentPartial<D, U>[]
 
       // Get specified documents
       const idKey = this.options.mingo.idKey as string
@@ -272,10 +276,13 @@ export default class MangoFinderPlugin<
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
-   * @return {DocumentPartial<D, U> | null} Document or null
+   * @return {OrPromise<DocumentPartial<D, U> | null>} Document or null
    * @throws {Exception}
    */
-  findOne(uid: UID, params: P = {} as P): DocumentPartial<D, U> | null {
+  findOne(
+    uid: UID,
+    params: P = {} as P
+  ): OrPromise<DocumentPartial<D, U> | null> {
     // Perform search
     const documents = this.find({ ...params, [this.options.mingo.idKey]: uid })
     const doc = documents[0]
@@ -296,11 +303,14 @@ export default class MangoFinderPlugin<
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
-   * @return {DocumentPartial<D, U>} Document
+   * @return {OrPromise<DocumentPartial<D, U>>} Document
    * @throws {Exception}
    */
-  findOneOrFail(uid: UID, params: P = {} as P): DocumentPartial<D, U> {
-    const document = this.findOne(uid, params)
+  findOneOrFail(
+    uid: UID,
+    params: P = {} as P
+  ): OrPromise<DocumentPartial<D, U>> {
+    const document = this.findOne(uid, params) as DocumentPartial<D, U>
 
     if (!document) {
       const { idKey } = this.options.mingo
@@ -322,9 +332,9 @@ export default class MangoFinderPlugin<
    * developers to call {@method Mango#resetCache}.
    *
    * @param {Q | string} [query] - Document query object or string
-   * @return {DocumentPartial<D, U>[]} Search results
+   * @return {OrPromise<DocumentPartial<D, U>[]>} Search results
    */
-  query(query?: Q | string): DocumentPartial<D, U>[] {
+  query(query?: Q | string): OrPromise<DocumentPartial<D, U>[]> {
     return this.find(this.mparser.params(query) as P)
   }
 
@@ -333,9 +343,12 @@ export default class MangoFinderPlugin<
    *
    * @param {UID[]} [uids] - Array of unique identifiers
    * @param {Q | string} [query] - Document query object or string
-   * @return {DocumentPartial<D, U>[]} Documents
+   * @return {OrPromise<DocumentPartial<D, U>[]>} Documents
    */
-  queryByIds(uids: UID[] = [], query?: Q | string): DocumentPartial<D, U>[] {
+  queryByIds(
+    uids: UID[] = [],
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U>[]> {
     return this.findByIds(uids, this.mparser.params(query) as P)
   }
 
@@ -346,9 +359,12 @@ export default class MangoFinderPlugin<
    *
    * @param {UID} uid - Unique identifier for document
    * @param {Q | string} [query] - Document query object or string
-   * @return {DocumentPartial<D, U> | null} Document or null
+   * @return {OrPromise<DocumentPartial<D, U> | null>} Document or null
    */
-  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null {
+  queryOne(
+    uid: UID,
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U> | null> {
     return this.findOne(uid, this.mparser.params(query) as P)
   }
 
@@ -359,9 +375,12 @@ export default class MangoFinderPlugin<
    *
    * @param {UID} uid - Unique identifier for document
    * @param {Q | string} [query] - Document query object or string
-   * @return {DocumentPartial<D, U>} Document
+   * @return {OrPromise<DocumentPartial<D, U>>} Document
    */
-  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U> {
+  queryOneOrFail(
+    uid: UID,
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U>> {
     return this.findOneOrFail(uid, this.mparser.params(query) as P)
   }
 
@@ -369,9 +388,9 @@ export default class MangoFinderPlugin<
    * Updates the plugin's the data cache.
    *
    * @param {D[]} collection - Documents to insert into cache
-   * @return {MangoCacheFinderPlugin<D>} Copy of updated cache
+   * @return {OrPromise<MangoCacheFinderPlugin<D>>} Copy of updated cache
    */
-  resetCache(collection: D[] = []): MangoCacheFinderPlugin<D> {
+  resetCache(collection: D[] = []): OrPromise<MangoCacheFinderPlugin<D>> {
     const documents = Object.freeze(Object.assign([], collection))
 
     // @ts-expect-error resetting cache

@@ -235,7 +235,7 @@ describe('unit:plugins/MangoFinderPlugin', () => {
       const ids = [collection[0].vin, collection[2].vin]
 
       // Act
-      const documents = Subject.findByIds(ids)
+      const documents = Subject.findByIds(ids) as ICar[]
 
       // Expect
       expect(spy_find).toBeCalledTimes(1)

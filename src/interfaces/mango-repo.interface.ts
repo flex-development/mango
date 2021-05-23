@@ -1,6 +1,10 @@
 import type { CreateEntityDTO, EntityDTO, PatchEntityDTO } from '@/dtos'
 import type { DUID, MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
-import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type {
+  OneOrMany,
+  OrPromise,
+  PlainObject
+} from '@flex-development/tutils'
 import type { ClassType } from 'class-transformer-validator'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
 import type { IMangoFinderPlugin } from './mango-finder-plugin.interface'
@@ -31,10 +35,11 @@ export interface IMangoRepository<
   readonly options: MangoRepoOptions<E, U>
   readonly validator: IMangoValidator<E>
 
-  clear(): boolean
-  create(dto: CreateEntityDTO<E, U>): Promise<E>
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): UID[]
+  clear(): OrPromise<boolean>
+  create(dto: CreateEntityDTO<E, U>): OrPromise<E>
+  delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   euid(): string
-  patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): Promise<E>
-  save(dto: OneOrMany<EntityDTO<E, U>>): Promise<E[]>
+  patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): OrPromise<E>
+  resetCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
+  save(dto: OneOrMany<EntityDTO<E, U>>): OrPromise<E[]>
 }

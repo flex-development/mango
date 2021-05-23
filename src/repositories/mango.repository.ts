@@ -25,9 +25,13 @@ import type {
 } from '@/types'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type {
+  OneOrMany,
+  OrPromise,
+  PlainObject
+} from '@flex-development/tutils'
 import { classToPlain } from 'class-transformer'
-import { ClassType } from 'class-transformer-validator'
+import type { ClassType } from 'class-transformer-validator'
 import type { Debugger } from 'debug'
 import isEmpty from 'lodash.isempty'
 import merge from 'lodash.merge'
@@ -128,9 +132,9 @@ export default class MangoRepository<
   /**
    * Clears all data from the repository.
    *
-   * @return {true} `true` when data is cleared
+   * @return {OrPromise<true>} `true` when data is cleared
    */
-  clear(): true {
+  clear(): OrPromise<true> {
     this.resetCache()
     return true
   }
@@ -209,10 +213,10 @@ export default class MangoRepository<
    *
    * @param {OneOrMany<UID>} uid - Entity uid or array of uids
    * @param {boolean} [should_exist] - Throw if any entities don't exist
-   * @return {UID[]} Array of uids
+   * @return {OrPromise<UID[]>} Array of uids
    * @throws {Exception}
    */
-  delete(uid: OneOrMany<UID>, should_exist: boolean = false): UID[] {
+  delete(uid: OneOrMany<UID>, should_exist: boolean = false): OrPromise<UID[]> {
     let uids = Array.isArray(uid) ? uid : [uid]
 
     try {
@@ -304,10 +308,10 @@ export default class MangoRepository<
    * Refreshes the repository data cache.
    *
    * @param {E[]} collection - Entities to insert into cache
-   * @return {MangoCacheRepo<E>} Updated repository cache
+   * @return {OrPromise<MangoCacheRepo<E>>} Updated repository cache
    * @throws {Exception}
    */
-  resetCache(collection: E[] = []): MangoCacheRepo<E> {
+  resetCache(collection: E[] = []): OrPromise<MangoCacheRepo<E>> {
     // Get name of entity uid field
     const euid = this.euid()
 

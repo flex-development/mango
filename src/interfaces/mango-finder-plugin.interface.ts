@@ -6,7 +6,11 @@ import type {
   MangoSearchParams,
   UID
 } from '@/types'
-import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type {
+  OneOrMany,
+  OrPromise,
+  PlainObject
+} from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 import mingo from 'mingo'
 import type { AggregationStages } from './aggregation-stages.interface'
@@ -44,14 +48,20 @@ export interface IMangoFinderPlugin<
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
-  ): AggregationPipelineResult<D>
-  find(params?: P): DocumentPartial<D, U>[]
-  findByIds(uids?: UID[], params?: P): DocumentPartial<D, U>[]
-  findOne(uid: UID, params?: P): DocumentPartial<D, U> | null
-  findOneOrFail(uid: UID, params?: P): DocumentPartial<D, U>
-  query(query?: Q | string): DocumentPartial<D, U>[]
-  queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
-  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
-  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCacheFinderPlugin<D>
+  ): OrPromise<AggregationPipelineResult<D>>
+  find(params?: P): OrPromise<DocumentPartial<D, U>[]>
+  findByIds(uids?: UID[], params?: P): OrPromise<DocumentPartial<D, U>[]>
+  findOne(uid: UID, params?: P): OrPromise<DocumentPartial<D, U> | null>
+  findOneOrFail(uid: UID, params?: P): OrPromise<DocumentPartial<D, U>>
+  query(query?: Q | string): OrPromise<DocumentPartial<D, U>[]>
+  queryByIds(
+    uids?: UID[],
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U>[]>
+  queryOne(
+    uid: UID,
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U> | null>
+  queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
+  resetCache(collection?: D[]): OrPromise<MangoCacheFinderPlugin<D>>
 }
