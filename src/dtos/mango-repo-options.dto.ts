@@ -1,7 +1,7 @@
 import type { MangoRepoOptions } from '@/interfaces'
 import type { DUID } from '@/types'
 import type { PlainObject } from '@flex-development/tutils'
-import type { MangoPluginOptionsDTO } from './mango-plugin-options.dto'
+import type { MangoFinderPluginOptionsDTO } from './mango-finder-plugin-options.dto'
 
 /**
  * @file Data Transfer Objects - MangoRepoOptionsDTO
@@ -17,7 +17,7 @@ import type { MangoPluginOptionsDTO } from './mango-plugin-options.dto'
 export interface MangoRepoOptionsDTO<
   E extends PlainObject = PlainObject,
   U extends string = DUID
-> extends Omit<MangoPluginOptionsDTO<E, U>, 'cache'> {
+> extends MangoFinderPluginOptionsDTO<E, U> {
   /**
    * Repository Validation API options.
    *

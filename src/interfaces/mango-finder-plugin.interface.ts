@@ -10,17 +10,17 @@ import type { OneOrMany, PlainObject } from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 import mingo from 'mingo'
 import type { AggregationStages } from './aggregation-stages.interface'
-import type { MangoCachePlugin } from './mango-cache-plugin.interface'
+import type { MangoCacheFinderPlugin } from './mango-cache-finder-plugin.interface'
+import type { MangoFinderPluginOptions } from './mango-finder-plugin-options.interface'
 import type { IMangoParser } from './mango-parser.interface'
-import type { MangoPluginOptions } from './mango-plugin-options.interface'
 
 /**
- * @file Interface - IMangoPlugin
- * @module interfaces/MangoPlugin
+ * @file Interface - IMangoFinderPlugin
+ * @module interfaces/MangoFinderPlugin
  */
 
 /**
- * `MangoPlugin` interface.
+ * `MangoFinderPlugin` interface.
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -30,17 +30,17 @@ import type { MangoPluginOptions } from './mango-plugin-options.interface'
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMangoPlugin<
+export interface IMangoFinderPlugin<
   D extends PlainObject = PlainObject,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
 > {
-  readonly cache: Readonly<MangoCachePlugin<D>>
+  readonly cache: Readonly<MangoCacheFinderPlugin<D>>
   readonly logger: Debugger
   readonly mingo: typeof mingo
   readonly mparser: IMangoParser<D>
-  readonly options: MangoPluginOptions<D, U>
+  readonly options: MangoFinderPluginOptions<D, U>
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
@@ -53,5 +53,5 @@ export interface IMangoPlugin<
   queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
   queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
   queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCachePlugin<D>
+  resetCache(collection?: D[]): MangoCacheFinderPlugin<D>
 }

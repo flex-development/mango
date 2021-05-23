@@ -1,6 +1,6 @@
 import type { DUID } from '@/types'
 import type { PlainObject } from '@flex-development/tutils'
-import type { MangoPluginOptions } from './mango-plugin-options.interface'
+import type { MangoFinderPluginOptions } from './mango-finder-plugin-options.interface'
 import type { MangoValidatorOptions } from './mango-validator-options.interface'
 
 /**
@@ -17,7 +17,7 @@ import type { MangoValidatorOptions } from './mango-validator-options.interface'
 export interface MangoRepoOptions<
   E extends PlainObject = PlainObject,
   U extends string = DUID
-> extends MangoPluginOptions<E, U> {
+> extends MangoFinderPluginOptions<E, U> {
   /**
    * Repository Validation API options.
    *

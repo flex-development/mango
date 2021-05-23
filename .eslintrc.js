@@ -114,6 +114,7 @@ module.exports = {
           'dto',
           'enums',
           'enum',
+          'euid',
           'execa',
           'formatter',
           'mingo',
@@ -130,6 +131,7 @@ module.exports = {
           'uids',
           'uid',
           'unix',
+          'upsert',
           'utf8',
           'vin',
           'wip',
@@ -181,7 +183,7 @@ module.exports = {
       files: [
         '.eslintrc.*',
         '__tests__/__fixtures__/cars.fixture.ts',
-        'docs/examples/subscribers.ts',
+        'docs/examples/people.ts',
         'src/constraints/__tests__/is-strong-password.constraint.spec.ts'
       ],
       rules: {

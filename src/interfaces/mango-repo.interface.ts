@@ -3,7 +3,7 @@ import type { DUID, MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
 import type { OneOrMany, PlainObject } from '@flex-development/tutils'
 import type { ClassType } from 'class-transformer-validator'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
-import type { IMangoPlugin } from './mango-plugin.interface'
+import type { IMangoFinderPlugin } from './mango-finder-plugin.interface'
 import type { MangoRepoOptions } from './mango-repo-options.interface'
 import type { IMangoValidator } from './mango-validator.interface'
 
@@ -25,16 +25,16 @@ export interface IMangoRepository<
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IMangoPlugin<E, U, P, Q> {
+> extends IMangoFinderPlugin<E, U, P, Q> {
   readonly cache: MangoCacheRepo<E>
   readonly model: ClassType<E>
   readonly options: MangoRepoOptions<E, U>
   readonly validator: IMangoValidator<E>
 
-  clear(): Promise<boolean>
+  clear(): boolean
   create(dto: CreateEntityDTO<E, U>): Promise<E>
-  delete(uid: UID, should_exist?: boolean): Promise<typeof uid>
+  delete(uid: OneOrMany<UID>, should_exist?: boolean): UID[]
+  euid(): string
   patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): Promise<E>
-  remove(uid: OneOrMany<UID>, should_exist?: boolean): UID[]
   save(dto: OneOrMany<EntityDTO<E, U>>): Promise<E[]>
 }

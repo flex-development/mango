@@ -9,7 +9,7 @@ import type { MangoValidatorOptions } from './mango-validator-options.interface'
  */
 
 /**
- * `MangoValidator` mixin class interface.
+ * `MangoValidator` mixin interface.
  *
  * @template E - Entity
  */
