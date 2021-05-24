@@ -1,6 +1,6 @@
 # :mango: Mango
 
-MongoDB-like API for in-memory object collections
+MongoDB query plugin and repository API for in-memory object collections
 
 [![TypeScript](https://badgen.net/badge/-/typescript?icon=typescript&label)](https://www.typescriptlang.org/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
@@ -15,7 +15,7 @@ MongoDB-like API for in-memory object collections
 
 ## Getting Started
 
-Mango is a MongoDB-like API for in-memory object collections.
+MongoDB query plugin and repository API for in-memory object collections.
 
 - run aggregation pipelines
 - perform searches (with query criteria **and** URL queries)
@@ -111,18 +111,28 @@ export interface IMangoFinderPlugin<
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
-  ): AggregationPipelineResult<D>
-  find(params?: P): DocumentPartial<D, U>[]
-  findByIds(uids?: UID[], params?: P): DocumentPartial<D, U>[]
-  findOne(uid: UID, params?: P): DocumentPartial<D, U> | null
-  findOneOrFail(uid: UID, params?: P): DocumentPartial<D, U>
-  query(query?: Q | string): DocumentPartial<D, U>[]
-  queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
-  queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
-  queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCacheFinderPlugin<D>
+  ): OrPromise<AggregationPipelineResult<D>>
+  find(params?: P): OrPromise<DocumentPartial<D, U>[]>
+  findByIds(uids?: UID[], params?: P): OrPromise<DocumentPartial<D, U>[]>
+  findOne(uid: UID, params?: P): OrPromise<DocumentPartial<D, U> | null>
+  findOneOrFail(uid: UID, params?: P): OrPromise<DocumentPartial<D, U>>
+  query(query?: Q | string): OrPromise<DocumentPartial<D, U>[]>
+  queryByIds(
+    uids?: UID[],
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U>[]>
+  queryOne(
+    uid: UID,
+    query?: Q | string
+  ): OrPromise<DocumentPartial<D, U> | null>
+  queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
+  resetCache(collection?: D[]): OrPromise<MangoCacheFinderPlugin<D>>
 }
 ```
+
+All `MangoFinder` methods are implemented as **synchronous** functions, but the
+`IMangoFinder` interface allows classes and interfaces that extend the plugin to
+use asynchronous overrides (`OrPromise`).
 
 #### Documents
 
@@ -233,14 +243,21 @@ export interface IMangoRepository<
   readonly options: MangoRepoOptions<E, U>
   readonly validator: IMangoValidator<E>
 
-  clear(): boolean
-  create(dto: CreateEntityDTO<E, U>): Promise<E>
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): UID[]
+  clear(): OrPromise<boolean>
+  create(dto: CreateEntityDTO<E, U>): OrPromise<E>
+  delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   euid(): string
-  patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): Promise<E>
-  save(dto: OneOrMany<EntityDTO<E, U>>): Promise<E[]>
+  patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): OrPromise<E>
+  resetCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
+  save(dto: OneOrMany<EntityDTO<E, U>>): OrPromise<E[]>
 }
 ```
+
+With the exception of `create`, `patch`, and `save`, all `MangoRepository`
+methods are implemented as **synchronous** functions.
+
+The `IMangoRepository` interface, however, allows classes and interfaces that
+extend the repository to use asynchronous overrides (`OrPromise`).
 
 #### Modeling Entities
 

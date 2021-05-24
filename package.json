@@ -1,12 +1,16 @@
 {
   "name": "@flex-development/mango",
-  "description": "MongoDB-like API for in-memory object collections",
+  "description": "MongoDB query plugin and repository API for in-memory object collections",
   "version": "2.0.0",
   "keywords": [
+    "in-memory",
+    "in-memory-database",
     "mingo",
     "mongodb",
-    "mongodb url query",
+    "mongodb-query-language",
+    "mongodb-url-query",
     "qs-to-mongo",
+    "repository-pattern",
     "typescript"
   ],
   "homepage": "https://github.com/flex-development/mango",
