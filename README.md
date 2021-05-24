@@ -18,7 +18,7 @@ MongoDB query plugin and repository API for in-memory object collections
 MongoDB query plugin and repository API for in-memory object collections.
 
 - run aggregation pipelines
-- perform searches (with query criteria **and** URL queries)
+- execute searches (with query criteria **and** URL queries)
 - parse and convert URL query objects and strings
 - perform CRUD operations on repositories
 - validate collection objects
@@ -131,8 +131,8 @@ export interface IMangoFinder<
 ```
 
 All `MangoFinder` methods are implemented as **synchronous** functions, but the
-`IMangoFinder` interface allows classes and interfaces that extend the plugin to
-use asynchronous overrides (`OrPromise`).
+`IMangoFinder` interface allows classes and interfaces that `extend` the plugin
+to use asynchronous overrides (`OrPromise`).
 
 #### Documents
 
@@ -257,7 +257,7 @@ With the exception of `create`, `patch`, and `save`, all `MangoRepository`
 methods are implemented as **synchronous** functions.
 
 The `IMangoRepository` interface, however, allows classes and interfaces that
-extend the repository to use asynchronous overrides (`OrPromise`).
+`extend` the repository to use asynchronous overrides (`OrPromise`).
 
 #### Modeling Entities
 
