@@ -1,4 +1,4 @@
-import type { MangoCacheFinderPlugin } from '@/interfaces'
+import type { MangoCacheFinder } from '@/interfaces'
 import type { MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
@@ -70,10 +70,10 @@ const CARS_ROOT = {
   }
 }
 
-export const CARS_MOCK_CACHE_EMPTY: MangoCacheFinderPlugin<ICar> = {
+export const CARS_MOCK_CACHE_EMPTY: MangoCacheFinder<ICar> = {
   collection: Object.freeze([])
 }
 
-export const CARS_MOCK_CACHE: MangoCacheFinderPlugin<ICar> = {
+export const CARS_MOCK_CACHE: MangoCacheFinder<ICar> = {
   collection: Object.freeze(Object.values(CARS_ROOT))
 }

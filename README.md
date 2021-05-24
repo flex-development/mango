@@ -87,7 +87,7 @@ Documentation can be viewed [here](src/plugins/mango-finder.plugin.ts).
 
 ```typescript
 /**
- * `MangoFinderPlugin` interface.
+ * `MangoFinder` interface.
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -97,17 +97,17 @@ Documentation can be viewed [here](src/plugins/mango-finder.plugin.ts).
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMangoFinderPlugin<
+export interface IMangoFinder<
   D extends PlainObject = PlainObject,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
 > {
-  readonly cache: Readonly<MangoCacheFinderPlugin<D>>
+  readonly cache: Readonly<MangoCacheFinder<D>>
   readonly logger: Debugger
   readonly mingo: typeof mingo
   readonly mparser: IMangoParser<D>
-  readonly options: MangoFinderPluginOptions<D, U>
+  readonly options: MangoFinderOptions<D, U>
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
@@ -126,7 +126,7 @@ export interface IMangoFinderPlugin<
     query?: Q | string
   ): OrPromise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
-  resetCache(collection?: D[]): OrPromise<MangoCacheFinderPlugin<D>>
+  resetCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
 }
 ```
 
@@ -156,7 +156,7 @@ export type PersonParams = MangoSearchParams<IPerson>
 export type PersonQuery = MangoParsedUrlQuery<IPerson>
 ```
 
-#### Creating a New Plugin
+#### Creating a New Finder
 
 The `MangoFinder` plugin accepts an options object thats gets passed down to the
 [mingo][5] and [qs-to-mongo][6] modules.
@@ -168,10 +168,10 @@ Via the options dto, you can:
 - set date fields and fields searchable by text
 
 ```typescript
-import { MangoFinderPlugin } from '@mango'
-import type { MangoFinderPluginOptionsDTO } from '@mango/dto'
+import { MangoFinder } from '@mango'
+import type { MangoFinderOptionsDTO } from '@mango/dto'
 
-const options: MangoFinderPluginOptionsDTO<IPerson, PersonUID> = {
+const options: MangoFinderOptionsDTO<IPerson, PersonUID> = {
   cache: {
     collection: [
       {
@@ -207,7 +207,7 @@ const options: MangoFinderPluginOptionsDTO<IPerson, PersonUID> = {
   }
 }
 
-export const PeopleFinder = new MangoFinderPlugin<IPerson, PersonUID>(options)
+export const PeopleFinder = new MangoFinder<IPerson, PersonUID>(options)
 ```
 
 **Note**: All properties are optional.
@@ -237,7 +237,7 @@ export interface IMangoRepository<
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IMangoFinderPlugin<E, U, P, Q> {
+> extends IMangoFinder<E, U, P, Q> {
   readonly cache: MangoCacheRepo<E>
   readonly model: ClassType<E>
   readonly options: MangoRepoOptions<E, U>
@@ -323,7 +323,7 @@ Mango also exposes a set of [custom decorators](src/decorators/index.ts).
 #### Creating a New Repository
 
 The `MangoRepository` class accepts an options object that gets passed down to
-the [`MangoFinder`](#creating-a-new-plugin) and
+the [`MangoFinder`](#creating-a-new-finder) and
 [`MangoValidator`](#mango-validator).
 
 ```typescript

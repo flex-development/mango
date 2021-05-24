@@ -1,6 +1,6 @@
 import type { RepoRoot } from '@/types'
 import type { PlainObject } from '@flex-development/tutils'
-import type { MangoCacheFinderPlugin } from './mango-cache-finder-plugin.interface'
+import type { MangoCacheFinder } from './mango-cache-finder.interface'
 
 /**
  * @file Interface - MangoCacheRepo
@@ -13,6 +13,6 @@ import type { MangoCacheFinderPlugin } from './mango-cache-finder-plugin.interfa
  * @template E - Entity
  */
 export interface MangoCacheRepo<E extends PlainObject = PlainObject>
-  extends MangoCacheFinderPlugin<E> {
+  extends MangoCacheFinder<E> {
   root: RepoRoot<E>
 }

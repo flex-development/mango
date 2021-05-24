@@ -15,7 +15,7 @@ import type {
   MingoOptions
 } from '@/interfaces'
 import MangoValidator from '@/mixins/mango-validator.mixin'
-import MangoFinderPlugin from '@/plugins/mango-finder.plugin'
+import MangoFinder from '@/plugins/mango-finder.plugin'
 import type {
   DUID,
   MangoParsedUrlQuery,
@@ -53,7 +53,7 @@ import { v4 as uuid } from 'uuid'
  * @template Q - Parsed URL query object
  *
  * @class
- * @extends MangoFinderPlugin
+ * @extends MangoFinder
  * @implements {IMangoRepository<E, U, P, Q>}
  */
 export default class MangoRepository<
@@ -62,7 +62,7 @@ export default class MangoRepository<
     P extends MangoSearchParams<E> = MangoSearchParams<E>,
     Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
   >
-  extends MangoFinderPlugin<E, U, P, Q>
+  extends MangoFinder<E, U, P, Q>
   implements IMangoRepository<E, U, P, Q> {
   /**
    * @readonly

@@ -1,4 +1,4 @@
-import type { MangoFinderPluginOptionsDTO } from '@/dtos'
+import type { MangoFinderOptionsDTO } from '@/dtos'
 import { SortOrder } from '@/enums/sort-order.enum'
 import type { AggregationStages } from '@/interfaces'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
@@ -23,14 +23,14 @@ import TestSubject from '../mango-finder.plugin'
  * @module plugins/tests/MangoFinder
  */
 
-describe('unit:plugins/MangoFinderPlugin', () => {
-  const dto: MangoFinderPluginOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE as MangoFinderPluginOptionsDTO<ICar>['cache'],
+describe('unit:plugins/MangoFinder', () => {
+  const dto: MangoFinderOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE as MangoFinderOptionsDTO<ICar>['cache'],
     mingo: { idKey: CARS_UID }
   }
 
-  const dto_e: MangoFinderPluginOptionsDTO<ICar, CarUID> = {
-    cache: CARS_MOCK_CACHE_EMPTY as MangoFinderPluginOptionsDTO<ICar>['cache'],
+  const dto_e: MangoFinderOptionsDTO<ICar, CarUID> = {
+    cache: CARS_MOCK_CACHE_EMPTY as MangoFinderOptionsDTO<ICar>['cache'],
     mingo: dto.mingo
   }
 

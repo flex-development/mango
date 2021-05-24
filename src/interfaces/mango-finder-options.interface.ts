@@ -4,17 +4,17 @@ import type { MangoParserOptions } from './mango-parser-options.interface'
 import type { MingoOptions } from './mingo-options.interface'
 
 /**
- * @file Interface - MangoFinderPluginOptions
- * @module interfaces/MangoFinderPluginOptions
+ * @file Interface - MangoFinderOptions
+ * @module interfaces/MangoFinderOptions
  */
 
 /**
- * Options used by the `MangoFinderPlugin` class.
+ * Options used by the `MangoFinder` class.
  *
  * @template D - Document (collection object)
  * @template U - Name of document uid field
  */
-export interface MangoFinderPluginOptions<
+export interface MangoFinderOptions<
   D extends PlainObject = PlainObject,
   U extends string = DUID
 > {

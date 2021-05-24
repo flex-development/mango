@@ -3,4 +3,4 @@
  * @module plugins
  */
 
-export { default as MangoFinderPlugin } from './mango-finder.plugin'
+export { default as MangoFinder } from './mango-finder.plugin'

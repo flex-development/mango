@@ -7,7 +7,7 @@ import type {
 } from '@flex-development/tutils'
 import type { ClassType } from 'class-transformer-validator'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
-import type { IMangoFinderPlugin } from './mango-finder-plugin.interface'
+import type { IMangoFinder } from './mango-finder.interface'
 import type { MangoRepoOptions } from './mango-repo-options.interface'
 import type { IMangoValidator } from './mango-validator.interface'
 
@@ -29,7 +29,7 @@ export interface IMangoRepository<
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IMangoFinderPlugin<E, U, P, Q> {
+> extends IMangoFinder<E, U, P, Q> {
   readonly cache: MangoCacheRepo<E>
   readonly model: ClassType<E>
   readonly options: MangoRepoOptions<E, U>

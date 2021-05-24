@@ -1,5 +1,5 @@
-import type { MangoFinderPluginOptionsDTO } from '@/dtos'
-import { MangoFinderPlugin } from '@mango'
+import type { MangoFinderOptionsDTO } from '@/dtos'
+import { MangoFinder } from '@mango'
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
 
 /**
@@ -17,7 +17,7 @@ export type PersonUID = 'email'
 export type PersonParams = MangoSearchParams<IPerson>
 export type PersonQuery = MangoParsedUrlQuery<IPerson>
 
-const options: MangoFinderPluginOptionsDTO<IPerson, PersonUID> = {
+const options: MangoFinderOptionsDTO<IPerson, PersonUID> = {
   cache: {
     collection: [
       {
@@ -53,4 +53,4 @@ const options: MangoFinderPluginOptionsDTO<IPerson, PersonUID> = {
   }
 }
 
-export const PeopleFinder = new MangoFinderPlugin<IPerson, PersonUID>(options)
+export const PeopleFinder = new MangoFinder<IPerson, PersonUID>(options)

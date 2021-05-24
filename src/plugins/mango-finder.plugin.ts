@@ -1,12 +1,12 @@
 import logger from '@/config/logger'
 import MINGO from '@/config/mingo'
-import type { MangoFinderPluginOptionsDTO } from '@/dtos'
+import type { MangoFinderOptionsDTO } from '@/dtos'
 import type {
   AggregationStages,
-  IMangoFinderPlugin,
+  IMangoFinder,
   IMangoParser,
-  MangoCacheFinderPlugin,
-  MangoFinderPluginOptions,
+  MangoCacheFinder,
+  MangoFinderOptions,
   MangoParserOptions,
   MingoOptions,
   QueryCriteriaOptions
@@ -52,20 +52,20 @@ import type { Options as OriginalMingoOptions } from 'mingo/core'
  * @template Q - Parsed URL query object
  *
  * @class
- * @implements {IMangoFinderPlugin<D, U, P, Q>}
+ * @implements {IMangoFinder<D, U, P, Q>}
  */
-export default class MangoFinderPlugin<
+export default class MangoFinder<
   D extends PlainObject = PlainObject,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
-> implements IMangoFinderPlugin<D, U, P, Q> {
+> implements IMangoFinder<D, U, P, Q> {
   /**
    * @readonly
    * @instance
-   * @property {Readonly<MangoCacheFinderPlugin<D>>} cache - Data cache
+   * @property {Readonly<MangoCacheFinder<D>>} cache - Data cache
    */
-  readonly cache: Readonly<MangoCacheFinderPlugin<D>>
+  readonly cache: Readonly<MangoCacheFinder<D>>
 
   /**
    * @readonly
@@ -91,9 +91,9 @@ export default class MangoFinderPlugin<
   /**
    * @readonly
    * @instance
-   * @property {MangoFinderPluginOptions<D, U>} options - Plugin options
+   * @property {MangoFinderOptions<D, U>} options - Plugin options
    */
-  readonly options: MangoFinderPluginOptions<D, U>
+  readonly options: MangoFinderOptions<D, U>
 
   /**
    * Creates a new Mango Finder plugin.
@@ -107,7 +107,7 @@ export default class MangoFinderPlugin<
    * - https://github.com/kofrasa/mingo
    * - https://github.com/fox1t/qs-to-mongo
    *
-   * @param {MangoFinderPluginOptionsDTO<D, U>} [options] - Plugin options
+   * @param {MangoFinderOptionsDTO<D, U>} [options] - Plugin options
    * @param {MingoOptions<U>} [options.mingo] - Global mingo options
    * @param {U} [options.mingo.idKey] - Name of document uid field
    * @param {MangoParserOptions<D>} [options.parser] - MangoParser options
@@ -116,7 +116,7 @@ export default class MangoFinderPlugin<
     cache,
     mingo = {},
     parser = {}
-  }: MangoFinderPluginOptionsDTO<D, U> = {}) {
+  }: MangoFinderOptionsDTO<D, U> = {}) {
     const { collection = [] } = cache || {}
     const { idKey: midk } = mingo
 
@@ -388,9 +388,9 @@ export default class MangoFinderPlugin<
    * Updates the plugin's the data cache.
    *
    * @param {D[]} collection - Documents to insert into cache
-   * @return {OrPromise<MangoCacheFinderPlugin<D>>} Copy of updated cache
+   * @return {OrPromise<MangoCacheFinder<D>>} Copy of updated cache
    */
-  resetCache(collection: D[] = []): OrPromise<MangoCacheFinderPlugin<D>> {
+  resetCache(collection: D[] = []): OrPromise<MangoCacheFinder<D>> {
     const documents = Object.freeze(Object.assign([], collection))
 
     // @ts-expect-error resetting cache

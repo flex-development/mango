@@ -14,17 +14,17 @@ import type {
 import type { Debugger } from 'debug'
 import mingo from 'mingo'
 import type { AggregationStages } from './aggregation-stages.interface'
-import type { MangoCacheFinderPlugin } from './mango-cache-finder-plugin.interface'
-import type { MangoFinderPluginOptions } from './mango-finder-plugin-options.interface'
+import type { MangoCacheFinder } from './mango-cache-finder.interface'
+import type { MangoFinderOptions } from './mango-finder-options.interface'
 import type { IMangoParser } from './mango-parser.interface'
 
 /**
- * @file Interface - IMangoFinderPlugin
- * @module interfaces/MangoFinderPlugin
+ * @file Interface - IMangoFinder
+ * @module interfaces/MangoFinder
  */
 
 /**
- * `MangoFinderPlugin` interface.
+ * `MangoFinder` interface.
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -34,17 +34,17 @@ import type { IMangoParser } from './mango-parser.interface'
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMangoFinderPlugin<
+export interface IMangoFinder<
   D extends PlainObject = PlainObject,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
 > {
-  readonly cache: Readonly<MangoCacheFinderPlugin<D>>
+  readonly cache: Readonly<MangoCacheFinder<D>>
   readonly logger: Debugger
   readonly mingo: typeof mingo
   readonly mparser: IMangoParser<D>
-  readonly options: MangoFinderPluginOptions<D, U>
+  readonly options: MangoFinderOptions<D, U>
 
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
@@ -63,5 +63,5 @@ export interface IMangoFinderPlugin<
     query?: Q | string
   ): OrPromise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
-  resetCache(collection?: D[]): OrPromise<MangoCacheFinderPlugin<D>>
+  resetCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
 }

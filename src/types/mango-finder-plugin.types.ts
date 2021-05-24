@@ -4,7 +4,7 @@ import type { DocumentPath } from './document.types'
 import type { QueryCriteria } from './mingo.types'
 
 /**
- * @file Type Definitions - MangoFinderPlugin
+ * @file Type Definitions - MangoFinder
  * @module types/mango-plugin
  */
 
