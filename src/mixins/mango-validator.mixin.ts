@@ -4,9 +4,11 @@ import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type { PlainObject } from '@flex-development/tutils'
 import type { ClassTransformOptions as TransformOpts } from 'class-transformer'
-import { plainToClass } from 'class-transformer'
 import type { ClassType } from 'class-transformer-validator'
-import { transformAndValidate } from 'class-transformer-validator'
+import {
+  transformAndValidate as tv,
+  transformAndValidateSync as tvSync
+} from 'class-transformer-validator'
 import type { ValidationError, ValidatorOptions } from 'class-validator'
 import merge from 'lodash.merge'
 
@@ -42,6 +44,13 @@ export default class MangoValidator<E extends PlainObject>
   /**
    * @readonly
    * @instance
+   * @property {string} model_name - Name of entity model
+   */
+  readonly model_name: string
+
+  /**
+   * @readonly
+   * @instance
    * @property {Omit<MangoValidatorOptions, 'enabled'>} tvo - Validation options
    */
   readonly tvo: Omit<MangoValidatorOptions, 'enabled'>
@@ -49,9 +58,16 @@ export default class MangoValidator<E extends PlainObject>
   /**
    * @readonly
    * @instance
-   * @property {typeof transformAndValidate} tvo - Validation function
+   * @property {typeof tv} validator - Async validation function
    */
-  readonly validator: typeof transformAndValidate = transformAndValidate
+  readonly validator: typeof tv = tv
+
+  /**
+   * @readonly
+   * @instance
+   * @property {typeof tvSync} validatorSync - Synchronous validation function
+   */
+  readonly validatorSync: typeof tvSync = tvSync
 
   /**
    * Creates a new repository validator.
@@ -73,6 +89,7 @@ export default class MangoValidator<E extends PlainObject>
 
     this.enabled = enabled
     this.model = model
+    this.model_name = new this.model().constructor.name
     this.tvo = merge(TVO_DEFAULTS, { transformer, validator })
   }
 
@@ -87,7 +104,7 @@ export default class MangoValidator<E extends PlainObject>
    * @template Value - Type of value being validated
    *
    * @param {Value} value - Data to validate
-   * @return {Promise<E | Value>} - Promise containing value
+   * @return {Promise<E | Value>} - Promise containing entity or original value
    * @throws {Exception}
    */
   async check<Value extends unknown = PlainObject>(
@@ -98,27 +115,60 @@ export default class MangoValidator<E extends PlainObject>
     try {
       return (await this.validator<E>(this.model, value as any, this.tvo)) as E
     } catch (error) {
-      let code = ExceptionStatusCode.INTERNAL_SERVER_ERROR
-      let data = {}
-      let message = error.message
-
-      if (Array.isArray(error)) {
-        const errors = error as ValidationError[]
-        const properties = errors.map(e => e.property)
-        const target = plainToClass(this.model, value, this.tvo.transformer)
-        const target_name = target.constructor.name
-
-        code = ExceptionStatusCode.BAD_REQUEST
-        data = { errors, target }
-        message = `${target_name} entity validation failure: [${properties}]`
-      }
-
-      throw new Exception(
-        code,
-        message,
-        merge(data, { options: this.tvo }),
-        error.stack
-      )
+      throw this.handleError(error)
     }
+  }
+
+  /**
+   * Synchronous version of {@see MangoValidator#check}.
+   *
+   * @template Value - Type of value being validated
+   *
+   * @param {Value} value - Data to validate
+   * @return {E | Value} - Entity or original value
+   * @throws {Exception}
+   */
+  checkSync<Value extends unknown = PlainObject>(
+    value: Value = {} as Value
+  ): E | Value {
+    if (!this.enabled) return value
+
+    try {
+      return this.validatorSync<E>(this.model, value as any, this.tvo) as E
+    } catch (error) {
+      throw this.handleError(error)
+    }
+  }
+
+  /**
+   * Converts an error into an `Exception`.
+   *
+   * @param {Error | ValidationError[]} error - Error to convert
+   * @return {Exception} New exception
+   */
+  handleError(error: Error | ValidationError[]): Exception {
+    let code = ExceptionStatusCode.INTERNAL_SERVER_ERROR
+    let data = { model_name: this.model_name }
+    let message = ''
+    let stack: string | undefined = undefined
+
+    if (Array.isArray(error)) {
+      const errors = error as ValidationError[]
+      const properties = errors.map(e => e.property)
+
+      code = ExceptionStatusCode.BAD_REQUEST
+      data = merge(data, { errors })
+      message = `${this.model_name} entity validation failure: [${properties}]`
+    } else {
+      message = error.message
+      stack = error.stack
+    }
+
+    return new Exception(
+      code,
+      message,
+      merge(data, { options: this.tvo }),
+      stack
+    )
   }
 }

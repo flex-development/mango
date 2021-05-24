@@ -24,10 +24,12 @@ const config: Config.InitialOptions = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix }),
   prettierPath: `${prefix}node_modules/prettier`,
   setupFilesAfterEnv: [`${prefix}__tests__/setup.ts`],
-  testPathIgnorePatterns: [
-    `${prefix}__tests__`,
-    `${prefix}src/*/*/__fixtures__`
+  testMatch: [
+    '**/__tests__/**/*.ts?(x)',
+    '**/?(*.)+spec.ts?(x)',
+    '!**/__fixtures__/**'
   ],
+  testPathIgnorePatterns: [`${prefix}__tests__`],
   verbose: true
 }
 
