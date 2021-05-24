@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/flex-development/mango/compare/v2.0.0...v3.0.0) (2021-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **plugins:** MangoFinder
+
+### :sparkles: Features
+
+* **mango:** allow async extensions ([e74cfbb](https://github.com/flex-development/mango/commit/e74cfbb9b5a991704854a5c6e50f58d6cb39be30))
+* **mango:** synchronous validator api ([6731ef8](https://github.com/flex-development/mango/commit/6731ef8a6e87c1815ad184e48ca16916f8c58c36))
+
+
+### :nail_care: Formatting & Structure
+
+* **plugins:** MangoFinder ([0e99498](https://github.com/flex-development/mango/commit/0e99498003b5ffe03bfe496194f981ca5e97d07f))
+
+
+### :pencil2: Housekeeping
+
+* update github release script logic ([bd57029](https://github.com/flex-development/mango/commit/bd57029961f9b1eba0d12b49bff6b4ff332b6ca4))
+* use github release script from ts-pkg template ([5623d5f](https://github.com/flex-development/mango/commit/5623d5ff4f681712c64da0e2006df299b433478c))
+
+
+### :book: Documentation
+
+* **mango:** update code samples ([af9d632](https://github.com/flex-development/mango/commit/af9d632191d83d60ca4b15308fc3ebaf655a3288))
+* **release:** getting started, mango finder, mango repo ([10c98dd](https://github.com/flex-development/mango/commit/10c98dd7805c1a4378529f9b64eeeaae731a00e3))
+
 ## [2.0.0](https://github.com/flex-development/mango/compare/v1.0.0...v2.0.0) (2021-05-23)
 
 
