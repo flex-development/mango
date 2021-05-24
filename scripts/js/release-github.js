@@ -84,12 +84,12 @@ const releaseNotes = (remove = false) => {
   // Read CHANGELOG
   let notes = readFileSync(CHANGELOG, 'utf8')
 
-  // Get index of recent changes
-  let first_heading_index = notes.indexOf(`## [${version}]`)
+  // Get index of minor / patch headings
+  let first_heading_index = notes.indexOf(`### [${version}]`)
 
-  // Check for minor / patch headings
+  // Check for major headings
   if (first_heading_index === -1) {
-    first_heading_index = notes.indexOf(`### [${version}]`)
+    first_heading_index = notes.indexOf(`## [${version}]`)
   }
 
   // Check if index is equal to -1 (no recent changes)
