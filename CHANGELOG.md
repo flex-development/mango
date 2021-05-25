@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/flex-development/mango/compare/v3.1.0...v3.1.1) (2021-05-25)
+
+
+### :bug: Fixes
+
+* **dtos:** `EntityDTO` definition ([30b379d](https://github.com/flex-development/mango/commit/30b379da1ca83fdd5aed54c62d35cfa71ec52593))
+
 ## [3.1.0](https://github.com/flex-development/mango/compare/v3.0.0...v3.1.0) (2021-05-25)
 
 
