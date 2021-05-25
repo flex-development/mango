@@ -2,7 +2,7 @@ import type { DeepPick, ObjectPlain, Path } from '@flex-development/tutils'
 
 /**
  * @file Data Transfer Objects - PatchEntityDTO
- * @module dto/PatchEntityDTO
+ * @module dtos/PatchEntityDTO
  */
 
 /**

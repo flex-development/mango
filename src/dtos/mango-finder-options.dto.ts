@@ -4,7 +4,7 @@ import type { ObjectPlain } from '@flex-development/tutils'
 
 /**
  * @file Data Transfer Object - MangoFinderOptionsDTO
- * @module dto/MangoFinderOptionsDTO
+ * @module dtos/MangoFinderOptionsDTO
  */
 
 /**

@@ -1,11 +1,10 @@
-import type { DUID } from '@/types'
 import type { ObjectPlain, Path } from '@flex-development/tutils'
 import type { CreateEntityDTO } from './create-entity.dto'
 import type { PatchEntityDTO } from './patch-entity.dto'
 
 /**
  * @file Data Transfer Objects - EntityDTO
- * @module dto/EntityDTO
+ * @module dtos/EntityDTO
  */
 
 /**
@@ -16,6 +15,5 @@ import type { PatchEntityDTO } from './patch-entity.dto'
  */
 export type EntityDTO<
   E extends ObjectPlain = ObjectPlain,
-  // @ts-expect-error default uid field for documents
-  P extends Path<E> = DUID
+  P extends Path<E> = Path<E>
 > = CreateEntityDTO<E, P> | PatchEntityDTO<E, P>

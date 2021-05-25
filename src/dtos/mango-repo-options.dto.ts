@@ -5,7 +5,7 @@ import type { MangoFinderOptionsDTO } from './mango-finder-options.dto'
 
 /**
  * @file Data Transfer Objects - MangoRepoOptionsDTO
- * @module dto/MangoRepoOptionsDTO
+ * @module dtos/MangoRepoOptionsDTO
  */
 
 /**
