@@ -3,7 +3,7 @@ import { SortOrder } from '@/enums/sort-order.enum'
 import type { AggregationStages } from '@/interfaces'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { UnknownObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 import type {
   CarParams,
   CarQuery,
@@ -349,7 +349,7 @@ describe('unit:plugins/MangoFinder', () => {
       // Expect
       expect(exception.code).toBe(ExceptionStatusCode.NOT_FOUND)
       expect(exception.data).toMatchObject({ params: {} })
-      expect((exception.errors as UnknownObject)[CARS_UID]).toBe(FUID)
+      expect((exception.errors as ObjectPlain)[CARS_UID]).toBe(FUID)
       expect(exception.message).toMatch(new RegExp(`"${FUID}" does not exist`))
     })
   })

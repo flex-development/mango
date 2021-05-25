@@ -1,5 +1,5 @@
 import type { DUID } from '@/types'
-import type { PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 import type { MangoFinderOptions } from './mango-finder-options.interface'
 import type { MangoValidatorOptions } from './mango-validator-options.interface'
 
@@ -15,7 +15,7 @@ import type { MangoValidatorOptions } from './mango-validator-options.interface'
  * @template U - Name of entity uid field
  */
 export interface MangoRepoOptions<
-  E extends PlainObject = PlainObject,
+  E extends ObjectPlain = ObjectPlain,
   U extends string = DUID
 > extends MangoFinderOptions<E, U> {
   /**

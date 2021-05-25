@@ -8,9 +8,9 @@ import type { MangoParsedUrlQuery, MangoSearchParams } from '@/types'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type {
-  OneOrMany,
-  PlainObject,
-  UnknownObject
+  ObjectPlain,
+  ObjectUnknown,
+  OneOrMany
 } from '@flex-development/tutils'
 import qsm from 'qs-to-mongo'
 import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
@@ -28,7 +28,7 @@ import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
  * @class
  * @implements {IMangoParser<D>}
  */
-export default class MangoParser<D extends UnknownObject = UnknownObject>
+export default class MangoParser<D extends ObjectUnknown = ObjectUnknown>
   implements IMangoParser<D> {
   /**
    * @readonly
@@ -84,7 +84,7 @@ export default class MangoParser<D extends UnknownObject = UnknownObject>
    * @throws {Exception}
    */
   params(query: MangoParsedUrlQuery<D> | string = ''): MangoSearchParams<D> {
-    let build: PlainObject = {}
+    let build: ObjectPlain = {}
 
     try {
       // @ts-expect-error `dateFields` and `fullTextFields` mapped to document

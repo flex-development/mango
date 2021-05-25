@@ -6,7 +6,7 @@ import type {
   ProjectStage,
   QueryCriteria
 } from '@/types'
-import type { OneOrMany, PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain, OneOrMany } from '@flex-development/tutils'
 import type { RawObject } from 'mingo/util'
 import type { AccumulatorOperators } from './accumulator-operators.interface'
 import type { BucketStageAuto } from './bucket-stage-auto.interface'
@@ -25,7 +25,7 @@ import type { QueryOperators } from './query-operators.interface'
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline
  */
-export interface AggregationStages<D extends PlainObject = PlainObject> {
+export interface AggregationStages<D extends ObjectPlain = ObjectPlain> {
   /**
    * Adds new fields to documents.
    *

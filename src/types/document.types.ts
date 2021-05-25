@@ -1,9 +1,5 @@
 import { SortOrder } from '@/enums/sort-order.enum'
-import type {
-  ObjectPath,
-  OrPartial,
-  PlainObject
-} from '@flex-development/tutils'
+import type { ObjectPlain, OrPartial, Path } from '@flex-development/tutils'
 import type { UID } from './utils.types'
 
 /**
@@ -24,7 +20,7 @@ export type DUID = 'id'
  * @template U - Name of document uid field
  */
 export type DocumentEnhanced<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID
 > = DocumentPartial<D, U> & {
   [x: string]: any
@@ -40,7 +36,7 @@ export type DocumentEnhanced<
  * @template U - Name of document uid field
  */
 export type DocumentPartial<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID
 > = Omit<OrPartial<D>, U> & Record<U, UID>
 
@@ -49,13 +45,13 @@ export type DocumentPartial<
  *
  * @template D - Document (collection object)
  */
-export type DocumentPath<D extends PlainObject> = ObjectPath<D>
+export type DocumentPath<D extends ObjectPlain> = Path<D>
 
 /**
  * Document sorting rules.
  *
  * @template D - Document (collection object)
  */
-export type DocumentSortingRules<D extends PlainObject = PlainObject> = Partial<
+export type DocumentSortingRules<D extends ObjectPlain = ObjectPlain> = Partial<
   Record<DocumentPath<D>, SortOrder>
 >

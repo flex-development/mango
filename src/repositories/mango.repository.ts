@@ -26,9 +26,10 @@ import type {
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type {
+  ObjectPlain,
   OneOrMany,
   OrPromise,
-  PlainObject
+  Path
 } from '@flex-development/tutils'
 import { classToPlain } from 'class-transformer'
 import type { ClassType } from 'class-transformer-validator'
@@ -57,7 +58,7 @@ import { v4 as uuid } from 'uuid'
  * @implements {IMangoRepository<E, U, P, Q>}
  */
 export default class MangoRepository<
-    E extends PlainObject = PlainObject,
+    E extends ObjectPlain = ObjectPlain,
     U extends string = DUID,
     P extends MangoSearchParams<E> = MangoSearchParams<E>,
     Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
@@ -150,12 +151,14 @@ export default class MangoRepository<
    *
    * [1]: https://github.com/uuidjs/uuid
    *
+   * @template W - Object paths of `dto`
+   *
    * @async
-   * @param {CreateEntityDTO<E, U>} dto - Data to create new entity
+   * @param {CreateEntityDTO<E, W>} dto - Data to create new entity
    * @return {Promise<E>} Promise containing new entity
    * @throws {Exception}
    */
-  async create(dto: CreateEntityDTO<E, U>): Promise<E> {
+  async create<W extends Path<E>>(dto: CreateEntityDTO<E, W>): Promise<E> {
     // Get name of entity uid field
     const euid = this.euid()
 
@@ -261,16 +264,18 @@ export default class MangoRepository<
    * Throws an error if the entity isn't found, or if schema validation is
    * enabled and fails.
    *
+   * @template W - Object paths of `dto`
+   *
    * @async
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, U>} dto - Data to patch entity
+   * @param {PatchEntityDTO<E, W>} dto - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {Promise<E>} Promise containing updated entity
    * @throws {Exception}
    */
-  async patch(
+  async patch<W extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, U>,
+    dto: PatchEntityDTO<E, W>,
     rfields: string[] = []
   ): Promise<E> {
     // Make sure entity exists
@@ -342,28 +347,32 @@ export default class MangoRepository<
    * If any entity already exists, it will be patched.
    * If any entity does not exist in the database, it will be inserted.
    *
+   * @template W - Object paths of `dto`
+   *
    * @async
-   * @param {OneOrMany<EntityDTO<E, U>>} dto - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E, W>>} dto - Entities to upsert
    * @return {Promise<E[]>} Promise containing new or updated entities
    */
-  async save(dto: OneOrMany<EntityDTO<E, U>>): Promise<E[]> {
+  async save<W extends Path<E>>(dto: OneOrMany<EntityDTO<E, W>>): Promise<E[]> {
     /**
      * Creates or updates a single entity.
      *
      * If the entity already exists in the database, it will be updated.
      * If the entity does not exist in the database, it will be inserted.
      *
+     * @template W - Object paths of `dto`
+     *
      * @async
-     * @param {EntityDTO<E, U>} dto - Data to upsert entity
+     * @param {EntityDTO<E, W>} dto - Data to upsert entity
      * @return {Promise<E>} Promise containing new or updated entiy
      */
-    const upsert = async (dto: EntityDTO<E, U>): Promise<E> => {
+    const upsert = async (dto: EntityDTO<E, W>): Promise<E> => {
       const uid = dto[this.euid()] as UID
 
       const exists = this.findOne(uid)
 
-      if (!exists) return await this.create(dto as CreateEntityDTO<E, U>)
-      return await this.patch(uid, dto)
+      if (!exists) return await this.create<W>(dto as CreateEntityDTO<E, W>)
+      return await this.patch<W>(uid, dto as PatchEntityDTO<E, W>)
     }
 
     // Convert into array of DTOs

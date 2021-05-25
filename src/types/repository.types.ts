@@ -1,4 +1,4 @@
-import type { EmptyObject, PlainObject } from '@flex-development/tutils'
+import type { ObjectEmpty, ObjectPlain } from '@flex-development/tutils'
 import type { UID } from './utils.types'
 
 /**
@@ -11,6 +11,6 @@ import type { UID } from './utils.types'
  *
  * @template E - Entity
  */
-export type RepoRoot<E extends PlainObject = PlainObject> =
+export type RepoRoot<E extends ObjectPlain = ObjectPlain> =
   | Record<UID, E>
-  | EmptyObject
+  | ObjectEmpty

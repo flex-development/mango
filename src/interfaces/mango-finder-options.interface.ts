@@ -1,5 +1,5 @@
 import type { DUID } from '@/types'
-import type { PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 import type { MangoParserOptions } from './mango-parser-options.interface'
 import type { MingoOptions } from './mingo-options.interface'
 
@@ -15,7 +15,7 @@ import type { MingoOptions } from './mingo-options.interface'
  * @template U - Name of document uid field
  */
 export interface MangoFinderOptions<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID
 > {
   /**

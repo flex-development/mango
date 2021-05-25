@@ -25,10 +25,9 @@ import type {
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type {
+  ObjectPlain,
   OneOrMany,
-  OrPromise,
-  PlainObject,
-  UnknownObject
+  OrPromise
 } from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 import isEmpty from 'lodash.isempty'
@@ -55,7 +54,7 @@ import type { Options as OriginalMingoOptions } from 'mingo/core'
  * @implements {IMangoFinder<D, U, P, Q>}
  */
 export default class MangoFinder<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
@@ -148,7 +147,7 @@ export default class MangoFinder<
       return collection
     }
 
-    let _pipeline = pipeline as UnknownObject[]
+    let _pipeline = pipeline as ObjectPlain[]
     if (!Array.isArray(_pipeline)) _pipeline = [_pipeline]
 
     const options = this.options.mingo as OriginalMingoOptions

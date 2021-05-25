@@ -482,10 +482,10 @@
     lodash.isplainobject latest
     lodash.omit latest
 
-"@flex-development/tutils@1.0.0":
-  version "1.0.0"
-  resolved "https://npm.pkg.github.com/download/@flex-development/tutils/1.0.0/5e3844ce29f5a3f9af7fe5d24b0c2494d0234335072be07cfd784155b586c096#43597960862e8645b27da1895ad719b271eb2707"
-  integrity sha512-tVW+GA2evwaFnK3ZAr4ZhiU6gabdCRfxLoQOODFM6gTVqBgYw8jGZgOFSPw68K7cCdzK9ux9dfD1ieNHrUyE5w==
+"@flex-development/tutils@3.0.0":
+  version "3.0.0"
+  resolved "https://npm.pkg.github.com/download/@flex-development/tutils/3.0.0/1a52d68f160bc813d0d25184c29244d5893a45de7e1d6e9e8f2d334af2641e38#7c79246977fda7cec70019defdc7b7dc4caba4b5"
+  integrity sha512-kRj9z+KMR3IbLhGjV1pmwucThaMV4R+C2uSlAMR554DpOOOWxEJtYw/wbRUjHC/QO1vER7OUYkZ5fD65bDvxhg==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"

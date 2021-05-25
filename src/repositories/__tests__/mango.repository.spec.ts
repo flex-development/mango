@@ -1,7 +1,7 @@
 import type { MangoRepoOptionsDTO } from '@/dtos'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { UnknownObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 import {
   Car,
   CarParams,
@@ -93,7 +93,7 @@ describe('unit:repositories/MangoRepository', () => {
 
     it('should assign uid if dto uid is nullable or empty string', async () => {
       // Act
-      await Subject.create({ ...ENTITY, [EUID]: undefined })
+      await Subject.create({ ...ENTITY })
 
       // Expect
       expect(mockMerge.mock.results[0].value[EUID]).toBeString()
@@ -118,7 +118,7 @@ describe('unit:repositories/MangoRepository', () => {
       // Expect
       expect(exception.code).toBe(ExceptionStatusCode.CONFLICT)
       expect(exception.data.dto).toMatchObject(this_dto)
-      expect((exception.errors as UnknownObject)[EUID]).toBe(this_dto[EUID])
+      expect((exception.errors as ObjectPlain)[EUID]).toBe(this_dto[EUID])
       expect(exception.message).toMatch(emessage_match)
     })
 

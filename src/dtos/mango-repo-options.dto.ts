@@ -1,6 +1,6 @@
 import type { MangoRepoOptions } from '@/interfaces'
 import type { DUID } from '@/types'
-import type { PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 import type { MangoFinderOptionsDTO } from './mango-finder-options.dto'
 
 /**
@@ -15,7 +15,7 @@ import type { MangoFinderOptionsDTO } from './mango-finder-options.dto'
  * @template U - Name of entity uid field
  */
 export interface MangoRepoOptionsDTO<
-  E extends PlainObject = PlainObject,
+  E extends ObjectPlain = ObjectPlain,
   U extends string = DUID
 > extends MangoFinderOptionsDTO<E, U> {
   /**

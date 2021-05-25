@@ -1,4 +1,4 @@
-import type { PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain } from '@flex-development/tutils'
 
 /**
  * @file Interface - MangoCacheFinder
@@ -10,6 +10,6 @@ import type { PlainObject } from '@flex-development/tutils'
  *
  * @template D - Document (collection object)
  */
-export interface MangoCacheFinder<D extends PlainObject = PlainObject> {
+export interface MangoCacheFinder<D extends ObjectPlain = ObjectPlain> {
   readonly collection: Readonly<D[]>
 }

@@ -1,5 +1,5 @@
 import type { DUID } from '@/types'
-import type { PlainObject } from '@flex-development/tutils'
+import type { ObjectPlain, Path } from '@flex-development/tutils'
 import type { CreateEntityDTO } from './create-entity.dto'
 import type { PatchEntityDTO } from './patch-entity.dto'
 
@@ -12,9 +12,10 @@ import type { PatchEntityDTO } from './patch-entity.dto'
  * Data used to create or patch an entity.
  *
  * @template E - Entity
- * @template U - Name of entity uid field
+ * @template P - Object paths of `CreateEntityDTO` | `PatchEntityDTO`
  */
 export type EntityDTO<
-  E extends PlainObject = PlainObject,
-  U extends string = DUID
-> = CreateEntityDTO<E, U> | PatchEntityDTO<E, U>
+  E extends ObjectPlain = ObjectPlain,
+  // @ts-expect-error default uid field for documents
+  P extends Path<E> = DUID
+> = CreateEntityDTO<E, P> | PatchEntityDTO<E, P>

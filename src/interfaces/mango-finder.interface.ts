@@ -7,9 +7,9 @@ import type {
   UID
 } from '@/types'
 import type {
+  ObjectPlain,
   OneOrMany,
-  OrPromise,
-  PlainObject
+  OrPromise
 } from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 import mingo from 'mingo'
@@ -35,7 +35,7 @@ import type { IMangoParser } from './mango-parser.interface'
  * @template Q - Parsed URL query object
  */
 export interface IMangoFinder<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>

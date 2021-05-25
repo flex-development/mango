@@ -1,5 +1,5 @@
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@/types'
-import type { UnknownObject } from '@flex-development/tutils'
+import type { ObjectUnknown } from '@flex-development/tutils'
 import qsm from 'qs-to-mongo'
 import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
 import type { MangoParserOptions } from './mango-parser-options.interface'
@@ -15,7 +15,7 @@ import type { QueryCriteriaOptions } from './query-criteria-options.interface'
  *
  * @template D - Document (collection object)
  */
-export interface IMangoParser<D extends UnknownObject = UnknownObject> {
+export interface IMangoParser<D extends ObjectUnknown = ObjectUnknown> {
   readonly parser: typeof qsm
   readonly options: MangoParserOptions<D>
 

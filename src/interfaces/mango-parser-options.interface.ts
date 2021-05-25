@@ -1,5 +1,5 @@
 import type { DocumentPath } from '@/types'
-import type { OneOrMany, UnknownObject } from '@flex-development/tutils'
+import type { ObjectUnknown, OneOrMany } from '@flex-development/tutils'
 import type { CustomQSMongoParser } from './custom-qs-mongo-parser.interface'
 
 /**
@@ -17,7 +17,9 @@ import type { CustomQSMongoParser } from './custom-qs-mongo-parser.interface'
  *
  * [1]: https://github.com/fox1t/qs-to-mongo#options
  */
-export interface MangoParserOptions<D extends UnknownObject = UnknownObject> {
+export interface MangoParserOptions<
+  D extends Record<string, unknown> = ObjectUnknown
+> {
   /**
    * Fields that will be converted to `Date`. If no fields are passed, any valid
    * date string will be converted to [ISOString][1].

@@ -98,7 +98,7 @@ Documentation can be viewed [here](src/plugins/mango-finder.plugin.ts).
  * @template Q - Parsed URL query object
  */
 export interface IMangoFinder<
-  D extends PlainObject = PlainObject,
+  D extends ObjectPlain = ObjectPlain,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
@@ -233,7 +233,7 @@ Documentation can be viewed [here](src/repositories/mango.repository.ts).
  * @template Q - Parsed URL query object
  */
 export interface IMangoRepository<
-  E extends PlainObject = PlainObject,
+  E extends ObjectPlain = ObjectPlain,
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
@@ -361,13 +361,13 @@ Documentation can be viewed [here](src/mixins/mango-validator.mixin.ts).
  *
  * @template E - Entity
  */
-export interface IMangoValidator<E extends PlainObject = PlainObject> {
+export interface IMangoValidator<E extends ObjectPlain = ObjectPlain> {
   readonly enabled: boolean
   readonly model: ClassType<E>
   readonly tvo: Omit<MangoValidatorOptions, 'enabled'>
   readonly validator: typeof transformAndValidate
 
-  check<V extends unknown = PlainObject>(value?: V): Promise<E | V>
+  check<V extends unknown = ObjectPlain>(value?: V): Promise<E | V>
 }
 ```
 

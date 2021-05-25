@@ -6,10 +6,10 @@ import type {
 } from '@/interfaces'
 import type {
   JSONValue,
-  ObjectPath,
+  ObjectPlain,
   OneOrMany,
   OrPartial,
-  UnknownObject
+  Path
 } from '@flex-development/tutils'
 import { RawArray } from 'mingo/util'
 import type { DocumentEnhanced, DocumentPath } from './document.types'
@@ -25,9 +25,10 @@ import type { DocumentEnhanced, DocumentPath } from './document.types'
  *
  * @template D - Document (collection object)
  */
-export type AggregationPipelineResult<
-  D extends UnknownObject = UnknownObject
-> = OrPartial<DocumentEnhanced<D>>[] | RawArray | UnknownObject
+export type AggregationPipelineResult<D extends ObjectPlain = ObjectPlain> =
+  | OrPartial<DocumentEnhanced<D>>[]
+  | RawArray
+  | ObjectPlain
 
 /**
  * Type representing an [Aggregation expression][1].
@@ -38,7 +39,7 @@ export type AggregationPipelineResult<
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expressions
  */
-export type ExpressionBase<D extends UnknownObject = UnknownObject> =
+export type ExpressionBase<D extends ObjectPlain = ObjectPlain> =
   | AggregationOperators
   | JSONValue
   | LiteralExpression
@@ -56,7 +57,7 @@ export type ExpressionBase<D extends UnknownObject = UnknownObject> =
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expression-objects
  */
-export type ExpressionObject<D extends UnknownObject = UnknownObject> = Record<
+export type ExpressionObject<D extends ObjectPlain = ObjectPlain> = Record<
   DocumentPath<D>,
   ExpressionBase<D>
 >
@@ -68,7 +69,7 @@ export type ExpressionObject<D extends UnknownObject = UnknownObject> = Record<
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expression-objects
  */
-export type ExpressionObject2<D extends UnknownObject = UnknownObject> =
+export type ExpressionObject2<D extends ObjectPlain = ObjectPlain> =
   | ExpressionObject<D>
   | Record<DocumentPath<D>, ExpressionObject<D>>
 
@@ -79,7 +80,7 @@ export type ExpressionObject2<D extends UnknownObject = UnknownObject> =
  *
  * [1]: https://docs.mongodb.com/manual/meta/aggregation-quick-reference/#expressions
  */
-export type Expression<D extends UnknownObject = UnknownObject> =
+export type Expression<D extends ObjectPlain = ObjectPlain> =
   | ExpressionBase<D>
   | ExpressionObject2<D>
 
@@ -89,8 +90,8 @@ export type Expression<D extends UnknownObject = UnknownObject> =
  * @template D - Document (collection object)
  */
 export type FieldPath<
-  D extends UnknownObject = UnknownObject
-> = `$${ObjectPath<D> extends string ? ObjectPath<D> : never}`
+  D extends ObjectPlain = ObjectPlain
+> = `$${Path<D> extends string ? Path<D> : never}`
 
 /**
  * MongoDB [Literal expression][1].
@@ -108,7 +109,7 @@ export type LiteralExpression<T = any> = { $literal: T }
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/query/#projection-operators
  */
-export type Projection<D extends UnknownObject = UnknownObject> = Partial<
+export type Projection<D extends ObjectPlain = ObjectPlain> = Partial<
   Record<DocumentPath<D>, ProjectionOperators>
 >
 
@@ -119,7 +120,7 @@ export type Projection<D extends UnknownObject = UnknownObject> = Partial<
  *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/project
  */
-export type ProjectStage<D extends UnknownObject = UnknownObject> = Partial<
+export type ProjectStage<D extends ObjectPlain = ObjectPlain> = Partial<
   Record<DocumentPath<D>, ProjectRule | boolean>
 >
 
@@ -131,6 +132,6 @@ export type ProjectStage<D extends UnknownObject = UnknownObject> = Partial<
  * [1]: https://restfulapi.net/json-data-types
  * [2]: https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
  */
-export type QueryCriteria<D extends UnknownObject = UnknownObject> = Partial<
+export type QueryCriteria<D extends ObjectPlain = ObjectPlain> = Partial<
   Record<DocumentPath<D>, JSONValue | QueryOperators>
 >

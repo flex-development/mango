@@ -1,6 +1,4 @@
-import type { DUID } from '@/types'
-import type { PlainObject } from '@flex-development/tutils'
-import type { CreateEntityDTO } from './create-entity.dto'
+import type { DeepPick, ObjectPlain, Path } from '@flex-development/tutils'
 
 /**
  * @file Data Transfer Objects - PatchEntityDTO
@@ -11,9 +9,9 @@ import type { CreateEntityDTO } from './create-entity.dto'
  * Data used to patch an entity.
  *
  * @template E - Entity
- * @template U - Name of entity uid field
+ * @template P - Object paths of dto
  */
 export type PatchEntityDTO<
-  E extends PlainObject = PlainObject,
-  U extends string = DUID
-> = Partial<CreateEntityDTO<E, U>>
+  E extends ObjectPlain = ObjectPlain,
+  P extends Path<E> = Path<E>
+> = Partial<DeepPick<E, P>>
