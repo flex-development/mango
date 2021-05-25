@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/flex-development/mango/compare/v3.0.0...v3.1.0) (2021-05-25)
+
+
+### :hammer: Build
+
+* **deps:** use @flex-development/tutils@3.0.0 ([36e4e21](https://github.com/flex-development/mango/commit/36e4e21858c407b36e6234f21a1174bd09994bac))
+
 ## [3.0.0](https://github.com/flex-development/mango/compare/v2.0.0...v3.0.0) (2021-05-24)
 
 
