@@ -514,4 +514,10 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
       expect(SubjectE.cache.collection).toIncludeAllMembers(collection)
     })
   })
+
+  describe('#uid', () => {
+    it('should return name of document uid field', () => {
+      expect(Subject.uid()).toBe(CARS_UID)
+    })
+  })
 })

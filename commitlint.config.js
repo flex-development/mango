@@ -75,8 +75,8 @@ module.exports = {
         [
           ...directories(readdirSync(SRC)),
           'deps',
+          'finder',
           'mango',
-          'plugin',
           'release',
           'repo'
         ]
