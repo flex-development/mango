@@ -357,8 +357,8 @@ options.
 
 ### Mango Validator
 
-The `MangoValidator` mixin allows for decorator-based model validation. Under
-the hood, it uses [class-transformer-validator][1].
+The `MangoValidator` mixin allows for **decorator-based** model validation.
+Under the hood, it uses [class-transformer-validator][1].
 
 Documentation can be viewed [here](src/mixins/mango-validator.mixin.ts).
 
@@ -368,13 +368,17 @@ Documentation can be viewed [here](src/mixins/mango-validator.mixin.ts).
  *
  * @template E - Entity
  */
-export interface IMangoValidator<E extends ObjectPlain = ObjectPlain> {
+export interface IMangoValidator<E extends ObjectPlain = ObjectUnknown> {
   readonly enabled: boolean
   readonly model: ClassType<E>
+  readonly model_name: string
   readonly tvo: Omit<MangoValidatorOptions, 'enabled'>
   readonly validator: typeof transformAndValidate
+  readonly validatorSync: typeof transformAndValidateSync
 
   check<V extends unknown = ObjectPlain>(value?: V): Promise<E | V>
+  checkSync<V extends unknown = ObjectPlain>(value?: V): E | V
+  handleError(error: Error | ValidationError[]): Exception
 }
 ```
 
