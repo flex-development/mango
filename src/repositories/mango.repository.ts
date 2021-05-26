@@ -316,6 +316,7 @@ export default class MangoRepository<
    * @return {OrPromise<MangoCacheRepo<E>>} Updated repository cache
    * @throws {Exception}
    */
+  // @ts-expect-error in the midst of adding separate async and sync apis
   resetCache(collection: E[] = []): OrPromise<MangoCacheRepo<E>> {
     // Get name of entity uid field
     const euid = this.euid()

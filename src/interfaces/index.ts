@@ -3,6 +3,7 @@
  * @module interfaces
  */
 
+export type { IAbstractMangoFinder } from './abstract-mango-finder.interface'
 export type { AccumulatorOperators } from './accumulator-operators.interface'
 export type { AggregationOperators } from './aggregation-operators.interface'
 export type { AggregationStages } from './aggregation-stages.interface'
