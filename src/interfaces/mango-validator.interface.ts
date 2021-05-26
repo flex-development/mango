@@ -1,5 +1,5 @@
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { ObjectPlain } from '@flex-development/tutils'
+import type { ObjectPlain, ObjectUnknown } from '@flex-development/tutils'
 import type { ClassType } from 'class-transformer-validator'
 import {
   transformAndValidate,
@@ -18,7 +18,7 @@ import type { MangoValidatorOptions } from './mango-validator-options.interface'
  *
  * @template E - Entity
  */
-export interface IMangoValidator<E extends ObjectPlain = ObjectPlain> {
+export interface IMangoValidator<E extends ObjectPlain = ObjectUnknown> {
   readonly enabled: boolean
   readonly model: ClassType<E>
   readonly model_name: string
