@@ -1,5 +1,10 @@
 import { SortOrder } from '@/enums/sort-order.enum'
-import type { ObjectPlain, OrPartial, Path } from '@flex-development/tutils'
+import type {
+  ObjectPlain,
+  ObjectUnknown,
+  OrPartial,
+  Path
+} from '@flex-development/tutils'
 import type { UID } from './utils.types'
 
 /**
@@ -13,6 +18,17 @@ import type { UID } from './utils.types'
 export type DUID = 'id'
 
 /**
+ * Array of collection objects.
+ *
+ * @template D - Document (collection object)
+ * @template U - Name of document uid field
+ */
+export type DocumentArray<
+  D extends ObjectPlain = ObjectUnknown,
+  U extends string = DUID
+> = (D | DocumentPartial<D, U>)[] | ReadonlyArray<D | DocumentPartial<D, U>>
+
+/**
  * Document that can have additional properties after being evaluated during an
  * aggregation pipeline.
  *
@@ -20,7 +36,7 @@ export type DUID = 'id'
  * @template U - Name of document uid field
  */
 export type DocumentEnhanced<
-  D extends ObjectPlain = ObjectPlain,
+  D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID
 > = DocumentPartial<D, U> & {
   [x: string]: any
@@ -36,7 +52,7 @@ export type DocumentEnhanced<
  * @template U - Name of document uid field
  */
 export type DocumentPartial<
-  D extends ObjectPlain = ObjectPlain,
+  D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID
 > = Omit<OrPartial<D>, U> & Record<U, UID>
 

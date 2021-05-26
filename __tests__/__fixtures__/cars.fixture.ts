@@ -1,3 +1,4 @@
+import type { MangoFinderOptionsDTO } from '@/dtos'
 import type { MangoCacheFinder } from '@/interfaces'
 import type { MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
@@ -76,4 +77,9 @@ export const CARS_MOCK_CACHE_EMPTY: MangoCacheFinder<ICar> = {
 
 export const CARS_MOCK_CACHE: MangoCacheFinder<ICar> = {
   collection: Object.freeze(Object.values(CARS_ROOT))
+}
+
+export const CARS_FINDER_OPTIONS: MangoFinderOptionsDTO<ICar, CarUID> = {
+  cache: CARS_MOCK_CACHE as MangoFinderOptionsDTO<ICar>['cache'],
+  mingo: { idKey: CARS_UID }
 }

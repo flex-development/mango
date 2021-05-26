@@ -3,6 +3,7 @@
  * @author Lexus Drumgold <https://github.com/lexusdrumgold>
  */
 
+export * from './abstracts'
 export * from './decorators'
 export * from './dtos'
 export * from './enums'

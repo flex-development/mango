@@ -107,6 +107,7 @@ module.exports = {
         skipIfMatch: [],
         skipWordIfMatch: [],
         skipWords: [
+          'apis',
           'bool',
           'bson',
           'commitlint',
@@ -171,6 +172,12 @@ module.exports = {
       rules: {
         '@typescript-eslint/triple-slash-reference': 0,
         'prettier/prettier': 0
+      }
+    },
+    {
+      files: ['src/abstracts/__tests__/__fixtures__/cars-finder.fixture.ts'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 0
       }
     },
     {
