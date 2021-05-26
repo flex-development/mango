@@ -70,4 +70,5 @@ export interface IAbstractMangoFinder<
   ): OrPromise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
   resetCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
+  uid(): string
 }

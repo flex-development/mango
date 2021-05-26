@@ -608,4 +608,13 @@ export default abstract class AbstractMangoFinder<
 
     return { ...this.cache }
   }
+
+  /**
+   * Returns the name of the document uid field.
+   *
+   * @return {string} Name of document uid field
+   */
+  uid(): string {
+    return this.options.mingo.idKey as string
+  }
 }
