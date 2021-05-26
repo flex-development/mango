@@ -70,16 +70,16 @@ describe.skip('unit:repositories/MangoRepository', () => {
   describe('#clear', () => {
     const Subject = getSubject()
 
-    it('should call #resetCache', () => {
+    it('should call #setCache', () => {
       // Arrange
-      const spy_resetCache = jest.spyOn(Subject, 'resetCache')
+      const spy_setCache = jest.spyOn(Subject, 'setCache')
 
       // Act
       Subject.clear()
 
       // Expect
-      expect(spy_resetCache).toBeCalledTimes(1)
-      expect(spy_resetCache).toBeCalledWith()
+      expect(spy_setCache).toBeCalledTimes(1)
+      expect(spy_setCache).toBeCalledWith()
     })
   })
 
@@ -133,16 +133,16 @@ describe.skip('unit:repositories/MangoRepository', () => {
       expect(spy_validator_check).toBeCalledTimes(1)
     })
 
-    it('should create new entity and call #resetCache', async () => {
+    it('should create new entity and call #setCache', async () => {
       // Arrange
-      const spy_resetCache = jest.spyOn(Subject, 'resetCache')
+      const spy_setCache = jest.spyOn(Subject, 'setCache')
 
       // Act
       const result = await Subject.create(ENTITY)
 
       // Expect
       expect(result).toMatchObject(ENTITY)
-      expect(spy_resetCache).toBeCalledTimes(1)
+      expect(spy_setCache).toBeCalledTimes(1)
     })
   })
 
@@ -179,16 +179,16 @@ describe.skip('unit:repositories/MangoRepository', () => {
       expect(result).toBeArrayOfSize(0)
     })
 
-    it('should remove entities from root and call #resetCache', () => {
+    it('should remove entities from root and call #setCache', () => {
       // Arrange
-      const spy_resetCache = jest.spyOn(Subject, 'resetCache')
+      const spy_setCache = jest.spyOn(Subject, 'setCache')
       const uids = [ENTITY[EUID], faker.datatype.string()]
 
       // Act
       Subject.delete(uids)
 
       // Expect
-      expect(spy_resetCache).toBeCalledTimes(1)
+      expect(spy_setCache).toBeCalledTimes(1)
       expect(Subject.cache.root[ENTITY[EUID]]).not.toBeDefined()
     })
   })
@@ -236,9 +236,9 @@ describe.skip('unit:repositories/MangoRepository', () => {
       expect(spy_validator_check).toBeCalledTimes(1)
     })
 
-    it('should patch existing entity and call #resetCache', async () => {
+    it('should patch existing entity and call #setCache', async () => {
       // Arrange
-      const spy_resetCache = jest.spyOn(Subject, 'resetCache')
+      const spy_setCache = jest.spyOn(Subject, 'setCache')
       const dto = { make: 'MAKE' }
 
       // Act
@@ -246,17 +246,17 @@ describe.skip('unit:repositories/MangoRepository', () => {
 
       // Expect
       expect(Subject.cache.root[ENTITY[EUID]]).toMatchObject(dto)
-      expect(spy_resetCache).toBeCalledTimes(1)
+      expect(spy_setCache).toBeCalledTimes(1)
     })
   })
 
-  describe('#resetCache', () => {
+  describe('#setCache', () => {
     it('should clear cache', () => {
       // Arrange
       const Subject = getSubject(CACHE)
 
       // Act
-      Subject.resetCache()
+      Subject.setCache()
 
       // Expect
       expect(Subject.cache).toMatchObject(mockCacheEmpty)
@@ -268,7 +268,7 @@ describe.skip('unit:repositories/MangoRepository', () => {
       const collection = [ENTITY]
 
       // Act
-      Subject.resetCache(collection)
+      Subject.setCache(collection)
 
       // Expect
       expect(Subject.cache.collection).toIncludeAllMembers(collection)

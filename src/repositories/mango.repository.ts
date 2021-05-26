@@ -136,7 +136,7 @@ export default class MangoRepository<
    * @return {OrPromise<true>} `true` when data is cleared
    */
   clear(): OrPromise<true> {
-    this.resetCache()
+    this.setCache()
     return true
   }
 
@@ -195,7 +195,7 @@ export default class MangoRepository<
       data = classToPlain<E>(await this.validator.check<E>(data)) as E
 
       // ! Create new entity and reset cache
-      this.resetCache(Object.values({ ...this.cache.root, [uid]: data }))
+      this.setCache(Object.values({ ...this.cache.root, [uid]: data }))
 
       return data
     } catch (error) {
@@ -228,7 +228,7 @@ export default class MangoRepository<
       else uids = uids.filter(id => this.findOne(id))
 
       // ! Remove entities and update cache
-      this.resetCache(Object.values(omit(this.cache.root, uids)) as E[])
+      this.setCache(Object.values(omit(this.cache.root, uids)) as E[])
 
       return uids
     } catch (error) {
@@ -295,7 +295,7 @@ export default class MangoRepository<
       data = classToPlain<E>(await this.validator.check<E>(data)) as E
 
       // ! Refresh cache
-      this.resetCache(Object.values({ ...this.cache.root, [uid]: data }))
+      this.setCache(Object.values({ ...this.cache.root, [uid]: data }))
 
       return data
     } catch (error) {
@@ -317,7 +317,7 @@ export default class MangoRepository<
    * @throws {Exception}
    */
   // @ts-expect-error in the midst of adding separate async and sync apis
-  resetCache(collection: E[] = []): OrPromise<MangoCacheRepo<E>> {
+  setCache(collection: E[] = []): OrPromise<MangoCacheRepo<E>> {
     // Get name of entity uid field
     const euid = this.euid()
 

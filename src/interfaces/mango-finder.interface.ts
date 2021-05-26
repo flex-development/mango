@@ -45,5 +45,5 @@ export interface IMangoFinder<
   queryByIds(uids?: UID[], query?: Q | string): DocumentPartial<D, U>[]
   queryOne(uid: UID, query?: Q | string): DocumentPartial<D, U> | null
   queryOneOrFail(uid: UID, query?: Q | string): DocumentPartial<D, U>
-  resetCache(collection?: D[]): MangoCacheFinder<D>
+  setCache(collection?: D[]): MangoCacheFinder<D>
 }

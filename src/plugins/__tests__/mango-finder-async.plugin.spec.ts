@@ -154,16 +154,16 @@ describe('unit:plugins/MangoFinderAsync', () => {
     })
   })
 
-  describe('#resetCache', () => {
+  describe('#setCache', () => {
     it('should clear #cache.collection', async () => {
       // Arrange
-      const spy_super_resetCache = jest.spyOn(MockSuper.prototype, 'resetCache')
+      const spy_super_setCache = jest.spyOn(MockSuper.prototype, 'setCache')
 
       // Act
-      const result = await Subject.resetCache()
+      const result = await Subject.setCache()
 
       // Expect
-      expect(spy_super_resetCache).toBeCalledTimes(1)
+      expect(spy_super_setCache).toBeCalledTimes(1)
       expect(result).toMatchObject({ collection: [] })
     })
   })

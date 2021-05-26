@@ -136,7 +136,7 @@ export interface IAbstractMangoFinder<
     query?: Q | string
   ): OrPromise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
-  resetCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
+  setCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
 }
 ```
 
@@ -255,7 +255,7 @@ export interface IMangoRepository<
   delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   euid(): string
   patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): OrPromise<E>
-  resetCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
+  setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
   save(dto: OneOrMany<EntityDTO<E, U>>): OrPromise<E[]>
 }
 ```

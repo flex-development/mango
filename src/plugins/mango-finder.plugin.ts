@@ -57,7 +57,7 @@ export default class MangoFinder<
    * Runs an aggregation pipeline for `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @param {OneOrMany<AggregationStages<D>>} [pipeline] - Aggregation stage(s)
    * @return {AggregationPipelineResult<D>} Pipeline results
@@ -72,7 +72,7 @@ export default class MangoFinder<
    * Executes a search against `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<D>} [params.options] - Search options
@@ -146,7 +146,7 @@ export default class MangoFinder<
    * Queries `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @param {Q | string} [query] - Document query object or string
    * @return {DocumentPartial<D, U>[]} Search results
@@ -199,7 +199,7 @@ export default class MangoFinder<
    * @param {D[]} [collection] - Documents to overwrite cache
    * @return {MangoCacheFinder<D>} Copy of new cache
    */
-  resetCache(collection?: D[]): MangoCacheFinder<D> {
-    return super.resetCache(collection) as MangoCacheFinder<D>
+  setCache(collection?: D[]): MangoCacheFinder<D> {
+    return super.setCache(collection) as MangoCacheFinder<D>
   }
 }

@@ -66,7 +66,7 @@ export default class MangoFinderAsync<
    * Runs an aggregation pipeline for `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @async
    * @param {OneOrMany<AggregationStages<D>>} [pipeline] - Aggregation stage(s)
@@ -83,7 +83,7 @@ export default class MangoFinderAsync<
    * Executes a search against `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @async
    * @param {P} [params] - Search parameters
@@ -161,7 +161,7 @@ export default class MangoFinderAsync<
    * Queries `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @async
    * @param {Q | string} [query] - Document query object or string
@@ -229,7 +229,7 @@ export default class MangoFinderAsync<
    * @param {D[]} [collection] - Documents to overwrite cache
    * @return {Promise<MangoCacheFinder<D>>} Promise containing copy of new cache
    */
-  async resetCache(collection?: D[]): Promise<MangoCacheFinder<D>> {
-    return super.resetCache(collection)
+  async setCache(collection?: D[]): Promise<MangoCacheFinder<D>> {
+    return super.setCache(collection)
   }
 }
