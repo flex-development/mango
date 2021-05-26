@@ -116,13 +116,12 @@ describe('unit:mixins/MangoValidator', () => {
       const exception = Subject.handleError(ERROR)
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.INTERNAL_SERVER_ERROR)
-      expect(exception.message).toBe(ERROR.message)
-      expect(exception.data).toMatchObject({
-        model_name: Subject.model_name,
-        options: Subject.tvo
+      expect(exception).toMatchObject({
+        code: ExceptionStatusCode.INTERNAL_SERVER_ERROR,
+        data: { model_name: Subject.model_name, options: Subject.tvo },
+        errors: null,
+        message: ERROR.message
       })
-      expect(exception.errors).toBeNull()
     })
 
     it('should convert ValidationError[] into Exception', () => {
@@ -133,14 +132,14 @@ describe('unit:mixins/MangoValidator', () => {
       const exception = Subject.handleError(VALIDATION_ERRORS)
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.BAD_REQUEST)
+
       expect(exception.message).toMatch(new RegExp(mpattern))
-      expect(exception.data).toMatchObject({
-        model_name: Subject.model_name,
-        options: Subject.tvo
-      })
       expect(exception.errors).toBeArray()
       expect(exception.errors).toIncludeSameMembers(VALIDATION_ERRORS)
+      expect(exception).toMatchObject({
+        code: ExceptionStatusCode.BAD_REQUEST,
+        data: { model_name: Subject.model_name, options: Subject.tvo }
+      })
     })
   })
 })

@@ -5,7 +5,7 @@ import type { QueryCriteria } from './mingo.types'
 
 /**
  * @file Type Definitions - MangoFinder
- * @module types/mango-plugin
+ * @module types/mango-finder
  */
 
 /**

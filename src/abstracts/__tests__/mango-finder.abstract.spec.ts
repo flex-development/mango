@@ -12,9 +12,8 @@ import { PlainObject } from '@flex-development/exceptions/types'
 import type { ObjectPlain } from '@flex-development/tutils'
 import type { CarUID, ICar } from '@tests/fixtures/cars.fixture'
 import {
-  CARS_FINDER_OPTIONS as OPTIONS,
-  CARS_MOCK_CACHE_EMPTY,
-  CARS_UID
+  CARS_MANGO_OPTIONS as OPTIONS,
+  CARS_MOCK_CACHE_EMPTY
 } from '@tests/fixtures/cars.fixture'
 import faker from 'faker'
 import TestSubjectAbstract from '../mango-finder.abstract'
@@ -38,8 +37,8 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
   const MOPTIONS = OPTIONS.mingo as MingoOptions<CarUID>
 
   const DOCUMENT = COLLECTION[3]
-  const UID = DOCUMENT[CARS_UID]
-  const UIDS = [UID, COLLECTION[0][CARS_UID], COLLECTION[2][CARS_UID]]
+  const UID = DOCUMENT[MOPTIONS.idKey]
+  const UIDS = [UID, COLLECTION[0][MOPTIONS.idKey]]
   const FUID = `vin-0${faker.datatype.number(5)}`
 
   describe('constructor', () => {
@@ -77,9 +76,11 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
       }
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.BAD_REQUEST)
-      expect(exception.data).toMatchObject({ pipeline: [] })
-      expect(exception.message).toBe(error_message)
+      expect(exception.toJSON()).toMatchObject({
+        code: ExceptionStatusCode.BAD_REQUEST,
+        data: { pipeline: [] },
+        message: error_message
+      })
     })
 
     describe('runs pipeline', () => {
@@ -140,7 +141,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
     it('should handle query criteria', () => {
       // Arrange
-      const params = { [CARS_UID]: UID }
+      const params = { [MOPTIONS.idKey]: UID }
 
       // Act
       TestSubject.find(params, COLLECTION, MOPTIONS, mockMingo)
@@ -152,7 +153,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
     it('should sort results', () => {
       // Arrange
-      const options = { sort: { [CARS_UID]: SortOrder.ASCENDING } }
+      const options = { sort: { [MOPTIONS.idKey]: SortOrder.ASCENDING } }
 
       // Act
       TestSubject.find({ options }, COLLECTION, MOPTIONS, mockMingo)
@@ -204,9 +205,11 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
       }
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.BAD_REQUEST)
-      expect(exception.data).toMatchObject({ params: {} })
-      expect(exception.message).toBe(error_message)
+      expect(exception.toJSON()).toMatchObject({
+        code: ExceptionStatusCode.BAD_REQUEST,
+        data: { params: {} },
+        message: error_message
+      })
     })
   })
 
@@ -273,7 +276,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
     it('should return document', () => {
       // Arrange
-      const eparams = { [CARS_UID]: UID }
+      const eparams = { [MOPTIONS.idKey]: UID }
       spy_find.mockReturnValueOnce([DOCUMENT] as ObjectPlain[])
 
       // Act
@@ -287,7 +290,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
     it('should return null if document is not found', () => {
       // Arrange
-      const eparams = { [CARS_UID]: FUID }
+      const eparams = { [MOPTIONS.idKey]: FUID }
       spy_find.mockReturnValueOnce([])
 
       // Act
@@ -328,10 +331,12 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
       }
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.NOT_FOUND)
-      expect(exception.data).toMatchObject({ params: {} })
-      expect((exception.errors as ObjectPlain)[CARS_UID]).toBe(FUID)
-      expect(exception.message).toMatch(new RegExp(`"${FUID}" does not exist`))
+      expect(exception.toJSON()).toMatchObject({
+        code: ExceptionStatusCode.NOT_FOUND,
+        data: { params: {} },
+        errors: { [MOPTIONS.idKey]: FUID },
+        message: `Document with ${MOPTIONS.idKey} "${FUID}" does not exist`
+      })
     })
   })
 
@@ -455,7 +460,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
     const spy_findOne = jest.spyOn(TestSubjectAbstract, 'findOne')
 
     beforeEach(() => {
-      Subject.queryOne(Subject.cache.collection[0][CARS_UID])
+      Subject.queryOne(Subject.cache.collection[0][MOPTIONS.idKey])
     })
 
     it('should call #mparser.params', () => {
@@ -476,7 +481,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
     beforeEach(() => {
       spy_findOneOrFail.mockReturnValueOnce(DOCUMENT as ObjectPlain)
-      Subject.queryOneOrFail(DOCUMENT[CARS_UID])
+      Subject.queryOneOrFail(DOCUMENT[MOPTIONS.idKey])
     })
 
     it('should call #mparser.params', () => {
@@ -517,7 +522,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
 
   describe('#uid', () => {
     it('should return name of document uid field', () => {
-      expect(Subject.uid()).toBe(CARS_UID)
+      expect(Subject.uid()).toBe(MOPTIONS.idKey)
     })
   })
 })

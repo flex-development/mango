@@ -38,7 +38,7 @@ export class Car implements ICar {
 
 export const CARS_UID: CarUID = 'vin'
 
-const CARS_ROOT = {
+export const CARS_ROOT = {
   '5b38c222-bf0c-4972-9810-d8cd7e399a56': {
     make: 'Mitsubishi',
     model: '3000GT',
@@ -79,7 +79,7 @@ export const CARS_MOCK_CACHE: MangoCacheFinder<ICar> = {
   collection: Object.freeze(Object.values(CARS_ROOT))
 }
 
-export const CARS_FINDER_OPTIONS: MangoFinderOptionsDTO<ICar, CarUID> = {
+export const CARS_MANGO_OPTIONS: MangoFinderOptionsDTO<ICar, CarUID> = {
   cache: CARS_MOCK_CACHE as MangoFinderOptionsDTO<ICar>['cache'],
   mingo: { idKey: CARS_UID }
 }

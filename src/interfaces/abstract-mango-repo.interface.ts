@@ -40,7 +40,7 @@ export interface IAbstractMangoRepository<
 
   clear(): OrPromise<boolean>
   create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): OrPromise<E>
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
+  delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   patch<F extends Path<E>>(
     uid: UID,
     dto: PatchEntityDTO<E, F>,

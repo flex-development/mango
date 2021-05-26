@@ -5,10 +5,7 @@ import type {
   CarUID,
   ICar
 } from '@tests/fixtures/cars.fixture'
-import {
-  CARS_FINDER_OPTIONS as OPTIONS,
-  CARS_UID
-} from '@tests/fixtures/cars.fixture'
+import { CARS_MANGO_OPTIONS as OPTIONS } from '@tests/fixtures/cars.fixture'
 import TestSubject from '../mango-finder.plugin'
 
 /**
@@ -23,7 +20,7 @@ describe('unit:plugins/MangoFinder', () => {
   const Subject = new TestSubject<ICar, CarUID, CarParams, CarQuery>(OPTIONS)
 
   const DOCUMENT = Object.assign({}, Subject.cache.collection[0])
-  const UID = DOCUMENT[CARS_UID]
+  const UID = DOCUMENT[OPTIONS.mingo?.idKey as string]
 
   describe('#aggregate', () => {
     it('should run aggregation pipeline', () => {

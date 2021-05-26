@@ -175,7 +175,10 @@ module.exports = {
       }
     },
     {
-      files: ['src/abstracts/__tests__/__fixtures__/cars-finder.fixture.ts'],
+      files: [
+        'src/abstracts/__tests__/__fixtures__/cars-finder.fixture.ts',
+        'src/abstracts/__tests__/__fixtures__/cars-repo.fixture.ts'
+      ],
       rules: {
         '@typescript-eslint/no-unused-vars': 0
       }
