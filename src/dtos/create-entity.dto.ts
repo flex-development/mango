@@ -9,7 +9,7 @@ import type { DeepPick, ObjectPlain, Path } from '@flex-development/tutils'
  * Data used to create a new entity.
  *
  * @template E - Entity
- * @template P - Object paths of dto
+ * @template P - Object field paths of dto
  */
 export type CreateEntityDTO<
   E extends ObjectPlain = ObjectPlain,

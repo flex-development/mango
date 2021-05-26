@@ -39,13 +39,13 @@ export interface IAbstractMangoRepository<
   readonly validator: IMangoValidator<E>
 
   clear(): OrPromise<boolean>
-  create<W extends Path<E>>(dto: CreateEntityDTO<E, W>): OrPromise<E>
+  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): OrPromise<E>
   delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
-  patch<W extends Path<E>>(
+  patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, W>,
+    dto: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): OrPromise<E>
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
-  save<W extends Path<E>>(dto: OneOrMany<EntityDTO<E, W>>): OrPromise<E[]>
+  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): OrPromise<E[]>
 }

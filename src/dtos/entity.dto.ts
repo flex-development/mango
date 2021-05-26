@@ -11,7 +11,7 @@ import type { PatchEntityDTO } from './patch-entity.dto'
  * Data used to create or patch an entity.
  *
  * @template E - Entity
- * @template P - Object paths of `CreateEntityDTO` | `PatchEntityDTO`
+ * @template P - Object field paths of `CreateEntityDTO` | `PatchEntityDTO`
  */
 export type EntityDTO<
   E extends ObjectPlain = ObjectPlain,
