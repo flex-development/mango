@@ -1,5 +1,5 @@
 import type { MangoFinderOptionsDTO } from '@/dtos'
-import { MangoFinder } from '@mango'
+import { MangoFinder, MangoFinderAsync } from '@mango'
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
 
 /**
@@ -54,3 +54,4 @@ const options: MangoFinderOptionsDTO<IPerson, PersonUID> = {
 }
 
 export const PeopleFinder = new MangoFinder<IPerson, PersonUID>(options)
+export const PeopleFinderA = new MangoFinderAsync<IPerson, PersonUID>(options)

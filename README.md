@@ -53,8 +53,9 @@ MongoDB query plugin and repository API for in-memory object collections.
 
 #### Mingo
 
-The `Mango` class integrates with [mingo][5], a MongoDB query language for
-in-memory objects, to support aggregation pipelines and executing searches.
+The `MangoFinder` and `MangoFinderAsync` plugins integrate with [mingo][5], a
+MongoDB query language for in-memory objects, to support aggregation pipelines
+and executing searches.
 
 Operators loaded by Mango can be viewed in the [config](src/config/mingo.ts)
 file. If additional operators are needed, load them _before_
@@ -79,15 +80,24 @@ These aliases will be used in following code examples.
 
 ### Mango Finder
 
-The `MangoFinder` plugin allows users to run aggregation pipelines and execute
+The Mango Finder plugins allow users to run aggregation pipelines and execute
 searches against in-memory object collections. Query documents using a URL
 query, or search for them using a query criteria and options object.
 
-Documentation can be viewed [here](src/plugins/mango-finder.plugin.ts).
+#### Documentation
+
+- [`AbstractMangoFinder`](src/abstracts/mango-finder.abstract.ts)
+- [`MangoFinderAsync`](src/plugins/mango-finder-async.plugin.ts)
+- [`MangoFinder`](src/plugins/mango-finder.plugin.ts)
 
 ```typescript
 /**
- * `MangoFinder` interface.
+ * `AbstractMangoFinder` plugin interface.
+ *
+ * This class is used to inject common functionality into the `MangoFinder`
+ * and `MangoFinderAsync` classes.
+ *
+ * See:
  *
  * - https://github.com/kofrasa/mingo
  * - https://github.com/fox1t/qs-to-mongo
@@ -97,8 +107,8 @@ Documentation can be viewed [here](src/plugins/mango-finder.plugin.ts).
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
  */
-export interface IMangoFinder<
-  D extends ObjectPlain = ObjectPlain,
+export interface IAbstractMangoFinder<
+  D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
@@ -130,10 +140,6 @@ export interface IMangoFinder<
 }
 ```
 
-All `MangoFinder` methods are implemented as **synchronous** functions, but the
-`IMangoFinder` interface allows classes and interfaces that `extend` the plugin
-to use asynchronous overrides (`OrPromise`).
-
 #### Documents
 
 A document is an object from an in-memory collection. Each document should have
@@ -158,8 +164,8 @@ export type PersonQuery = MangoParsedUrlQuery<IPerson>
 
 #### Creating a New Finder
 
-The `MangoFinder` plugin accepts an options object thats gets passed down to the
-[mingo][5] and [qs-to-mongo][6] modules.
+Both the `MangoFinder` and `MangoFinderAsync` plugins accept an options object
+thats gets passed down to the [mingo][5] and [qs-to-mongo][6] modules.
 
 Via the options dto, you can:
 
@@ -168,7 +174,7 @@ Via the options dto, you can:
 - set date fields and fields searchable by text
 
 ```typescript
-import { MangoFinder } from '@mango'
+import { MangoFinder, MangoFinderAsync } from '@mango'
 import type { MangoFinderOptionsDTO } from '@mango/dto'
 
 const options: MangoFinderOptionsDTO<IPerson, PersonUID> = {
@@ -208,13 +214,14 @@ const options: MangoFinderOptionsDTO<IPerson, PersonUID> = {
 }
 
 export const PeopleFinder = new MangoFinder<IPerson, PersonUID>(options)
+export const PeopleFinderA = new MangoFinderAsync<IPerson, PersonUID>(options)
 ```
 
 **Note**: All properties are optional.
 
 To learn more about [qs-to-mongo][6] options, see [Options][8] from the package
 documentation. Note that the `objectIdFields` and `parameters` options are not
-accepted by the `MangoParser`.
+accepted by the [`MangoParser`](src/mixins/mango-parser.mixin.ts).
 
 ### Mango Repository
 
