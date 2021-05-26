@@ -1,6 +1,6 @@
 import type { MangoFinderOptions } from '@/interfaces'
 import type { DUID } from '@/types'
-import type { ObjectPlain } from '@flex-development/tutils'
+import type { ObjectPlain, ObjectUnknown } from '@flex-development/tutils'
 
 /**
  * @file Data Transfer Object - MangoFinderOptionsDTO
@@ -14,7 +14,7 @@ import type { ObjectPlain } from '@flex-development/tutils'
  * @template U - Name of document uid field
  */
 export interface MangoFinderOptionsDTO<
-  D extends ObjectPlain = ObjectPlain,
+  D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID
 > {
   /**

@@ -21,14 +21,18 @@ import type { ParsedOptions } from 'qs-to-mongo/lib/query/options-to-mongo'
  */
 
 /**
- * Converts Mongo URL queries into repository search parameters objects.
+ * Converts Mongo URL queries into search parameters objects.
+ *
+ * See:
+ *
+ * - https://github.com/fox1t/qs-to-mongo
  *
  * @template D - Document (collection object)
  *
  * @class
  * @implements {IMangoParser<D>}
  */
-export default class MangoParser<D extends ObjectUnknown = ObjectUnknown>
+export default class MangoParser<D extends ObjectPlain = ObjectUnknown>
   implements IMangoParser<D> {
   /**
    * @readonly
