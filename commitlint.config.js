@@ -78,7 +78,8 @@ module.exports = {
           'finder',
           'mango',
           'release',
-          'repo'
+          'repo',
+          'validator'
         ]
       ]
     },

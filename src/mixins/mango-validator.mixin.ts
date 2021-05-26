@@ -2,7 +2,7 @@ import { TVO_DEFAULTS } from '@/constants'
 import type { IMangoValidator, MangoValidatorOptions } from '@/interfaces'
 import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { ObjectPlain } from '@flex-development/tutils'
+import type { ObjectPlain, ObjectUnknown } from '@flex-development/tutils'
 import type { ClassTransformOptions as TransformOpts } from 'class-transformer'
 import type { ClassType } from 'class-transformer-validator'
 import {
@@ -25,7 +25,7 @@ import merge from 'lodash.merge'
  * @class
  * @implements {IMangoValidator<E>}
  */
-export default class MangoValidator<E extends ObjectPlain>
+export default class MangoValidator<E extends ObjectPlain = ObjectUnknown>
   implements IMangoValidator<E> {
   /**
    * @readonly
