@@ -85,8 +85,10 @@ describe('unit:mixins/MangoParser', () => {
       }
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.BAD_REQUEST)
-      expect(exception.data).toMatchObject({ parser_options: {}, query })
+      expect(exception.toJSON()).toMatchObject({
+        code: ExceptionStatusCode.BAD_REQUEST,
+        data: { parser_options: {}, query }
+      })
     })
   })
 
