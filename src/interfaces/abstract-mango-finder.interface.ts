@@ -27,8 +27,8 @@ import type { IMangoParser } from './mango-parser.interface'
 /**
  * `AbstractMangoFinder` plugin interface.
  *
- * This class is used to inject common functionality into the `MangoFinder`
- * and `MangoFinderAsync` classes.
+ * Used to define class contract of `MangoFinder`, `MangoFinderAsync`, and
+ * possible derivatives.
  *
  * See:
  *
