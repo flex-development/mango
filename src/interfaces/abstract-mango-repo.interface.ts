@@ -46,6 +46,6 @@ export interface IAbstractMangoRepository<
     dto: PatchEntityDTO<E, W>,
     rfields?: string[]
   ): OrPromise<E>
-  resetCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
+  setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
   save<W extends Path<E>>(dto: OneOrMany<EntityDTO<E, W>>): OrPromise<E[]>
 }

@@ -45,5 +45,5 @@ export interface IMangoFinderAsync<
   queryByIds(uids?: UID[], query?: Q | string): Promise<DocumentPartial<D, U>[]>
   queryOne(uid: UID, query?: Q | string): Promise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): Promise<DocumentPartial<D, U>>
-  resetCache(collection?: D[]): Promise<MangoCacheFinder<D>>
+  setCache(collection?: D[]): Promise<MangoCacheFinder<D>>
 }

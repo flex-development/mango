@@ -400,7 +400,7 @@ export default abstract class AbstractMangoFinder<
    * Runs an aggregation pipeline for `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @param {OneOrMany<AggregationStages<D>>} [pipeline] - Aggregation stage(s)
    * @return {OrPromise<AggregationPipelineResult<D>>} Pipeline results
@@ -411,7 +411,7 @@ export default abstract class AbstractMangoFinder<
     const collection = Object.assign([], this.cache.collection)
 
     if (!collection.length) {
-      this.logger('Cache empty; calling #resetCache before running pipeline.')
+      this.logger('Cache empty; calling #setCache before running pipeline.')
       return collection
     }
 
@@ -426,7 +426,7 @@ export default abstract class AbstractMangoFinder<
    * Executes a search against `this.cache.collection`.
    *
    * If the cache is empty, a warning will be logged to the console instructing
-   * developers to call `resetCache`.
+   * developers to call `setCache`.
    *
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<D>} [params.options] - Search options
@@ -438,7 +438,7 @@ export default abstract class AbstractMangoFinder<
    */
   find(params?: P): OrPromise<DocumentPartial<D, U>[]> {
     if (!this.cache.collection.length) {
-      this.logger('Cache empty; consider calling #resetCache before search.')
+      this.logger('Cache empty; consider calling #setCache before search.')
       return Object.assign([], this.cache.collection)
     }
 
@@ -598,7 +598,7 @@ export default abstract class AbstractMangoFinder<
    * @param {D[]} [collection] - Documents to insert into cache
    * @return {OrPromise<MangoCacheFinder<D>>} Copy of updated cache
    */
-  resetCache(collection: D[] = []): OrPromise<MangoCacheFinder<D>> {
+  setCache(collection: D[] = []): OrPromise<MangoCacheFinder<D>> {
     if (!Array.isArray(collection)) collection = []
 
     const documents = Object.freeze(Object.assign([], collection))

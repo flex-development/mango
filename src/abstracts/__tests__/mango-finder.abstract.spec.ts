@@ -489,13 +489,13 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
     })
   })
 
-  describe('#resetCache', () => {
+  describe('#setCache', () => {
     it('should clear #cache.collection', () => {
       // Arrange
       const Subject = new TestSubject(OPTIONS)
 
       // Act
-      Subject.resetCache()
+      Subject.setCache()
 
       // Expect
       expect(Subject.cache.collection).toBeArrayOfSize(0)
@@ -507,7 +507,7 @@ describe('unit:abstracts/AbstractMangoFinder', () => {
       const collection = [...CACHE.collection]
 
       // Act
-      SubjectE.resetCache(collection)
+      SubjectE.setCache(collection)
 
       // Expect
       expect(SubjectE.cache).toMatchObject(CACHE)
