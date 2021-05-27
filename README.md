@@ -226,7 +226,7 @@ accepted by the [`MangoParser`](src/mixins/mango-parser.mixin.ts).
 ### Mango Repository
 
 The Mango Repositories extend the [Mango Finder](#mango-finder) plugins and
-allow users to perform write operations on their repository.
+allow users to perform write operations on an object collection.
 
 #### Repository Documentation
 
