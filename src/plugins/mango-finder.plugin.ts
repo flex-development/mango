@@ -81,7 +81,6 @@ export default class MangoFinder<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>[]} Search results
-   * @throws {Exception}
    */
   find(params?: P): DocumentPartial<D, U>[] {
     return super.find(params) as DocumentPartial<D, U>[]
@@ -98,7 +97,6 @@ export default class MangoFinder<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>[]} Documents
-   * @throws {Exception}
    */
   findByIds(uids?: UID[], params?: P): DocumentPartial<D, U>[] {
     return super.findByIds(uids, params) as DocumentPartial<D, U>[]
@@ -117,7 +115,6 @@ export default class MangoFinder<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U> | null} Document or null
-   * @throws {Exception}
    */
   findOne(uid: UID, params?: P): DocumentPartial<D, U> | null {
     return super.findOne(uid, params) as DocumentPartial<D, U> | null
@@ -136,7 +133,6 @@ export default class MangoFinder<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>} Document
-   * @throws {Exception}
    */
   findOneOrFail(uid: UID, params?: P): DocumentPartial<D, U> {
     return super.findOneOrFail(uid, params) as DocumentPartial<D, U>

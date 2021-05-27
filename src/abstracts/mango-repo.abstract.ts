@@ -263,6 +263,7 @@ export default abstract class AbstractMangoRepository<
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
    * @return {AE} Formatted `dto` casted as entity
+   * @throws {Exception}
    */
   static formatCreateEntityDTO<
     AF extends Path<AE>,
@@ -399,7 +400,6 @@ export default abstract class AbstractMangoRepository<
    * @param {OneOrMany<UID>} [uid] - Entity uid or array of uids
    * @param {boolean} [should_exist] - Throw if any entities don't exist
    * @return {OrPromise<UID[]>} Array of uids
-   * @throws {Exception}
    */
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]> {
     // Delete entities and create new cache
@@ -423,7 +423,6 @@ export default abstract class AbstractMangoRepository<
    *
    * @param {E[]} [collection] - Entities to insert into cache
    * @return {OrPromise<MangoCacheRepo<E>>} Copy of updated repository cache
-   * @throws {Exception}
    */
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>> {
     // @ts-expect-error resetting caches (mango plugin and repository)
