@@ -4,6 +4,7 @@ import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
 import Exception from '@flex-development/exceptions/exceptions/base.exception'
 import type { ObjectPlain, ObjectUnknown } from '@flex-development/tutils'
 import type { ClassTransformOptions as TransformOpts } from 'class-transformer'
+import { classToPlain } from 'class-transformer'
 import type { ClassType } from 'class-transformer-validator'
 import {
   transformAndValidate as tv,
@@ -112,11 +113,15 @@ export default class MangoValidator<E extends ObjectPlain = ObjectUnknown>
   ): Promise<E | Value> {
     if (!this.enabled) return value
 
+    let data = {} as E
+
     try {
-      return (await this.validator<E>(this.model, value as any, this.tvo)) as E
+      data = (await this.validator<E>(this.model, value as any, this.tvo)) as E
     } catch (error) {
       throw this.handleError(error)
     }
+
+    return classToPlain<E>(data) as E
   }
 
   /**
@@ -133,11 +138,15 @@ export default class MangoValidator<E extends ObjectPlain = ObjectUnknown>
   ): E | Value {
     if (!this.enabled) return value
 
+    let data = {} as E
+
     try {
-      return this.validatorSync<E>(this.model, value as any, this.tvo) as E
+      data = this.validatorSync<E>(this.model, value as any, this.tvo) as E
     } catch (error) {
       throw this.handleError(error)
     }
+
+    return classToPlain<E>(data) as E
   }
 
   /**

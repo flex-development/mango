@@ -175,7 +175,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<AD>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @param {DocumentArray<AD, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
@@ -250,7 +250,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<AD>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @param {DocumentArray<AD, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
@@ -310,7 +310,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<AD>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @param {DocumentArray<AD, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
@@ -357,7 +357,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<AD>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @param {DocumentArray<AD, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
@@ -433,7 +433,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {OrPromise<DocumentPartial<D, U>[]>} Search results
    */
   find(params?: P): OrPromise<DocumentPartial<D, U>[]> {
@@ -458,7 +458,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {OrPromise<DocumentPartial<D, U>[]>} Specified documents
    */
   findByIds(uids?: UID[], params?: P): OrPromise<DocumentPartial<D, U>[]> {
@@ -481,7 +481,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {OrPromise<DocumentPartial<D, U> | null>} Document or null
    */
   findOne(uid: UID, params?: P): OrPromise<DocumentPartial<D, U> | null> {
@@ -504,7 +504,7 @@ export default abstract class AbstractMangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {OrPromise<DocumentPartial<D, U>>} Document
    * @throws {Exception}
    */
