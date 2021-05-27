@@ -1,21 +1,12 @@
-import type { MangoRepoOptionsDTO } from '@/dtos'
-import { ExceptionStatusCode } from '@flex-development/exceptions/enums'
-import Exception from '@flex-development/exceptions/exceptions/base.exception'
-import type { ObjectPlain } from '@flex-development/tutils'
+import Super from '@/abstracts/mango-repo.abstract'
+import { MangoRepoOptions } from '@/interfaces'
 import {
   Car,
-  CarParams,
-  CarQuery,
-  CARS_MOCK_CACHE as mockCache,
-  CARS_MOCK_CACHE_EMPTY as mockCacheEmpty,
-  CARS_UID as EUID,
+  CARS_MANGO_OPTIONS as OPTIONS,
+  CARS_MOCK_CACHE_EMPTY,
   CarUID,
   ICar
 } from '@tests/fixtures/cars.fixture'
-import { dequal } from 'dequal'
-import faker from 'faker'
-import merge from 'lodash.merge'
-import omit from 'lodash.omit'
 import TestSubject from '../mango.repository'
 
 /**
@@ -23,122 +14,75 @@ import TestSubject from '../mango.repository'
  * @module repositories/tests/MangoRepository
  */
 
-const mockMerge = merge as jest.MockedFunction<typeof merge>
-const mockOmit = omit as jest.MockedFunction<typeof omit>
+// @ts-expect-error testing mock
+const MockSuper = Super as jest.MockedClass<typeof Super>
 
-describe.skip('unit:repositories/MangoRepository', () => {
-  const CACHE = false
-  const ENTITY = Object.assign({}, mockCache.collection[0])
+describe('unit:repositories/MangoRepository', () => {
+  const Subject = new TestSubject<ICar, CarUID>(Car, OPTIONS)
 
-  /**
-   * Returns a test repository.
-   *
-   * If {@param emptyCache} is `true`, the repository will be initialized with
-   * an empty cache. Otherwise the mockCache will be used.
-   *
-   * @param {boolean} [emptyCache] - Initialize with empty mock cache
-   * @return {TestSubject<ICar, CarParams, CarQuery>} Test repo
-   */
-  const getSubject = (
-    emptyCache: boolean = true
-  ): TestSubject<ICar, CarUID, CarParams, CarQuery> => {
-    return new TestSubject<ICar, CarUID, CarParams, CarQuery>(Car, {
-      cache: Object.assign(
-        {},
-        emptyCache ? mockCacheEmpty : mockCache
-      ) as MangoRepoOptionsDTO<ICar>['cache'],
-      mingo: { idKey: EUID }
-    })
-  }
-
-  describe('constructor', () => {
-    it('should initialize instance properties', () => {
-      // Arrange
-      const eoptions = { mingo: { idKey: EUID }, validation: {} }
-
-      // Act
-      const Subject = getSubject()
-
-      // Expect
-      expect(Subject.cache).toMatchObject(mockCacheEmpty)
-      expect(dequal(Subject.model, Car)).toBeTruthy()
-      expect(Subject.options).toMatchObject(eoptions)
-      expect(Subject.validator).toBeDefined()
-    })
+  const SubjectE = new TestSubject<ICar, CarUID>(Car, {
+    ...CARS_MOCK_CACHE_EMPTY,
+    mingo: OPTIONS.mingo
   })
 
-  describe('#clear', () => {
-    const Subject = getSubject()
+  const MOPTIONS = OPTIONS.mingo as MangoRepoOptions<ICar, CarUID>['mingo']
 
-    it('should call #setCache', () => {
+  const ENTITY = Object.assign({}, Subject.cache.collection[3])
+  const UID = ENTITY[OPTIONS.mingo?.idKey as string]
+
+  describe('#aggregate', () => {
+    it('should run aggregation pipeline', () => {
       // Arrange
-      const spy_setCache = jest.spyOn(Subject, 'setCache')
+
+      const spy_super_aggregate = jest.spyOn(MockSuper.prototype, 'aggregate')
 
       // Act
-      Subject.clear()
+      const result = Subject.aggregate()
 
       // Expect
-      expect(spy_setCache).toBeCalledTimes(1)
-      expect(spy_setCache).toBeCalledWith()
+      expect(spy_super_aggregate).toBeCalledTimes(1)
+      expect(result).toIncludeSameMembers(Subject.cache.collection as ICar[])
     })
   })
 
   describe('#create', () => {
-    const Subject = getSubject()
-
-    beforeEach(() => {
-      // @ts-expect-error mocking
-      Subject.cache = mockCacheEmpty
+    afterEach(() => {
+      // @ts-expect-error manually resetting cache
+      SubjectE.cache = CARS_MOCK_CACHE_EMPTY
     })
 
-    it('should assign uid if dto uid is nullable or empty string', async () => {
+    it('should call .formatCreateEntityDTO', () => {
+      // Arrange
+      const spy_method = 'formatCreateEntityDTO'
+      const spy_formatCreateEntityDTO = jest.spyOn(TestSubject, spy_method)
+
       // Act
-      await Subject.create({ ...ENTITY })
+      SubjectE.create(ENTITY)
 
       // Expect
-      expect(mockMerge.mock.results[0].value[EUID]).toBeString()
+      expect(spy_formatCreateEntityDTO).toBeCalledTimes(1)
     })
 
-    it('should throw if entity with dto uid already exists', async () => {
+    it('should call #validator.checkSync', () => {
       // Arrange
-      const spy_findOne = jest.spyOn(Subject, 'findOne')
-      const this_dto = { ...ENTITY, [EUID]: ENTITY[EUID] }
-      const emessage_match = new RegExp(`"${this_dto[EUID]}" already exists`)
-      let exception = {} as Exception
+      const spy_validator_checkSync = jest.spyOn(
+        SubjectE.validator,
+        'checkSync'
+      )
 
       // Act
-      spy_findOne.mockReturnValueOnce(ENTITY)
-
-      try {
-        await Subject.create(this_dto)
-      } catch (error) {
-        exception = error
-      }
+      SubjectE.create(ENTITY)
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.CONFLICT)
-      expect(exception.data.dto).toMatchObject(this_dto)
-      expect((exception.errors as ObjectPlain)[EUID]).toBe(this_dto[EUID])
-      expect(exception.message).toMatch(emessage_match)
+      expect(spy_validator_checkSync).toBeCalledTimes(1)
     })
 
-    it('should call #validator.check', async () => {
+    it('should call #setCache', () => {
       // Arrange
-      const spy_validator_check = jest.spyOn(Subject.validator, 'check')
+      const spy_setCache = jest.spyOn(SubjectE, 'setCache')
 
       // Act
-      await Subject.create(ENTITY)
-
-      // Expect
-      expect(spy_validator_check).toBeCalledTimes(1)
-    })
-
-    it('should create new entity and call #setCache', async () => {
-      // Arrange
-      const spy_setCache = jest.spyOn(Subject, 'setCache')
-
-      // Act
-      const result = await Subject.create(ENTITY)
+      const result = SubjectE.create(ENTITY)
 
       // Expect
       expect(result).toMatchObject(ENTITY)
@@ -146,158 +90,179 @@ describe.skip('unit:repositories/MangoRepository', () => {
     })
   })
 
-  describe('#delete', () => {
-    const Subject = getSubject(CACHE)
-
-    it('should throw if any entity does not exist but should', () => {
+  describe('#find', () => {
+    it('should execute search', () => {
       // Arrange
-      const should_exist = true
-      const uids = [faker.datatype.string()]
-      let exception = {} as Exception
+      const spy_super_find = jest.spyOn(MockSuper.prototype, 'find')
 
       // Act
-      try {
-        Subject.delete(uids, should_exist)
-      } catch (error) {
-        exception = error
-      }
+      const result = Subject.find()
 
       // Expect
-      expect(exception.code).toBe(ExceptionStatusCode.NOT_FOUND)
-      expect(exception.data).toMatchObject({ should_exist, uids })
-    })
-
-    it('should filter out uids of entities that do not exist', () => {
-      // Arrange
-      const ids = [faker.datatype.string()]
-
-      // Act
-      const result = Subject.delete(ids)
-
-      // Expect
-      expect(mockOmit).toBeCalledWith(Subject.cache.root, [])
-      expect(result).toBeArrayOfSize(0)
-    })
-
-    it('should remove entities from root and call #setCache', () => {
-      // Arrange
-      const spy_setCache = jest.spyOn(Subject, 'setCache')
-      const uids = [ENTITY[EUID], faker.datatype.string()]
-
-      // Act
-      Subject.delete(uids)
-
-      // Expect
-      expect(spy_setCache).toBeCalledTimes(1)
-      expect(Subject.cache.root[ENTITY[EUID]]).not.toBeDefined()
+      expect(spy_super_find).toBeCalledTimes(1)
+      expect(result).toIncludeSameMembers(Subject.cache.collection as ICar[])
     })
   })
 
-  describe('#euid', () => {
-    it('should return name of entity uid field', () => {
-      expect(getSubject().euid()).toBe(EUID)
+  describe('#findByIds', () => {
+    it('should return specified documents', () => {
+      // Arrange
+      const spy_super_findByIds = jest.spyOn(MockSuper.prototype, 'findByIds')
+
+      // Act
+      const result = Subject.findByIds([UID])
+
+      // Expect
+      expect(spy_super_findByIds).toBeCalledTimes(1)
+      expect(result).toIncludeSameMembers([ENTITY])
+    })
+  })
+
+  describe('#findOne', () => {
+    it('should return document', () => {
+      // Arrange
+      const spy_super_findOne = jest.spyOn(MockSuper.prototype, 'findOne')
+
+      // Act
+      const result = Subject.findOne(UID)
+
+      // Expect
+      expect(spy_super_findOne).toBeCalledTimes(1)
+      expect(result).toMatchObject(ENTITY)
+    })
+  })
+
+  describe('#findOneOrFail', () => {
+    it('should return document', () => {
+      // Arrange
+      const spy = 'findOneOrFail'
+      const spy_super_findOneOrFail = jest.spyOn(MockSuper.prototype, spy)
+
+      // Act
+      const result = Subject.findOneOrFail(UID)
+
+      // Expect
+      expect(spy_super_findOneOrFail).toBeCalledTimes(1)
+      expect(result).toMatchObject(ENTITY)
     })
   })
 
   describe('#patch', () => {
-    const Subject = getSubject(CACHE)
-
-    it('should call #findOneOrFail', async () => {
+    it('should call .formatPatchEntityDTO', () => {
       // Arrange
-      const spy_findOneOrFail = jest.spyOn(Subject, 'findOneOrFail')
+      const spy_method = 'formatPatchEntityDTO'
+      const spy_formatPatchEntityDTO = jest.spyOn(TestSubject, spy_method)
 
       // Act
-      await Subject.patch(ENTITY[EUID], {})
+      Subject.patch(ENTITY[MOPTIONS.idKey], {})
 
       // Expect
-      expect(spy_findOneOrFail).toBeCalledTimes(1)
-      expect(spy_findOneOrFail).toBeCalledWith(ENTITY[EUID])
+      expect(spy_formatPatchEntityDTO).toBeCalledTimes(1)
     })
 
-    it('should remove readonly fields from dto', async () => {
+    it('should call #validator.checkSync', () => {
       // Arrange
-      const dto = { ...ENTITY, [EUID]: '' }
+      const spy_validator_checkSync = jest.spyOn(Subject.validator, 'checkSync')
 
       // Act
-      await Subject.patch(ENTITY[EUID], dto)
+      Subject.patch(ENTITY[MOPTIONS.idKey], {})
 
       // Expect
-      expect(mockMerge.mock.results[0].value[EUID]).not.toBe(dto[EUID])
+      expect(spy_validator_checkSync).toBeCalledTimes(1)
     })
 
-    it('should call #validator.check', async () => {
-      // Arrange
-      const spy_validator_check = jest.spyOn(Subject.validator, 'check')
-
-      // Act
-      await Subject.patch(ENTITY[EUID], {})
-
-      // Expect
-      expect(spy_validator_check).toBeCalledTimes(1)
-    })
-
-    it('should patch existing entity and call #setCache', async () => {
+    it('should call #setCache', () => {
       // Arrange
       const spy_setCache = jest.spyOn(Subject, 'setCache')
       const dto = { make: 'MAKE' }
 
       // Act
-      await Subject.patch(ENTITY[EUID], dto)
+      Subject.patch(ENTITY[MOPTIONS.idKey], dto)
 
       // Expect
-      expect(Subject.cache.root[ENTITY[EUID]]).toMatchObject(dto)
       expect(spy_setCache).toBeCalledTimes(1)
+      expect(Subject.cache.root[ENTITY[MOPTIONS.idKey]]).toMatchObject(dto)
     })
   })
 
-  describe('#setCache', () => {
-    it('should clear cache', () => {
+  describe('#query', () => {
+    it('should query documents', () => {
       // Arrange
-      const Subject = getSubject(CACHE)
+      const spy_super_query = jest.spyOn(MockSuper.prototype, 'query')
 
       // Act
-      Subject.setCache()
+      const result = Subject.query()
 
       // Expect
-      expect(Subject.cache).toMatchObject(mockCacheEmpty)
+      expect(spy_super_query).toBeCalledTimes(1)
+      expect(result).toIncludeSameMembers(Subject.cache.collection as ICar[])
     })
+  })
 
-    it('should insert new entities into cache', () => {
+  describe('#queryByIds', () => {
+    it('should return requested documents', () => {
       // Arrange
-      const Subject = getSubject(CACHE)
-      const collection = [ENTITY]
+      const spy_super_queryByIds = jest.spyOn(MockSuper.prototype, 'queryByIds')
 
       // Act
-      Subject.setCache(collection)
+      const result = Subject.queryByIds([UID])
 
       // Expect
-      expect(Subject.cache.collection).toIncludeAllMembers(collection)
-      expect(Subject.cache.root[ENTITY[EUID]]).toMatchObject(ENTITY)
+      expect(spy_super_queryByIds).toBeCalledTimes(1)
+      expect(result).toBeArrayOfSize(1)
+      expect(result[0][MOPTIONS.idKey]).toBe(ENTITY[MOPTIONS.idKey])
+    })
+  })
+
+  describe('#queryOne', () => {
+    it('should return document', () => {
+      // Arrange
+      const spy_super_queryOne = jest.spyOn(MockSuper.prototype, 'queryOne')
+
+      // Act
+      const result = Subject.queryOne(UID)
+
+      // Expect
+      expect(spy_super_queryOne).toBeCalledTimes(1)
+      expect(result?.[MOPTIONS.idKey]).toBe(ENTITY[MOPTIONS.idKey])
+    })
+  })
+
+  describe('#queryOneOrFail', () => {
+    it('should return document', () => {
+      // Arrange
+      const spy = 'queryOneOrFail'
+      const spy_super_queryOneOrFail = jest.spyOn(MockSuper.prototype, spy)
+
+      // Act
+      const result = Subject.queryOneOrFail(UID)
+
+      // Expect
+      expect(spy_super_queryOneOrFail).toBeCalledTimes(1)
+      expect(result?.[MOPTIONS.idKey]).toBe(ENTITY[MOPTIONS.idKey])
     })
   })
 
   describe('#save', () => {
-    const Subject = getSubject()
-
     const DTO_BASE = { make: 'MAKE', model: 'MODEL', model_year: -1 }
 
     const spy_findOne = jest.spyOn(Subject, 'findOne')
 
-    it('should create new entity', async () => {
+    it('should create new entity', () => {
       // Arrange
       const spy_create = jest.spyOn(Subject, 'create')
 
       // Act
       spy_findOne.mockReturnValueOnce(null)
 
-      await Subject.save(DTO_BASE)
+      Subject.save(DTO_BASE)
 
       // Expect
       expect(spy_create).toBeCalledTimes(1)
       expect(spy_create).toBeCalledWith(DTO_BASE)
     })
 
-    it('should patch existing entity', async () => {
+    it('should patch existing entity', () => {
       // Arrange
       const spy_patch = jest.spyOn(Subject, 'patch')
       const dto = { ...ENTITY, ...DTO_BASE }
@@ -305,11 +270,25 @@ describe.skip('unit:repositories/MangoRepository', () => {
       // Act
       spy_findOne.mockReturnValue(ENTITY)
 
-      await Subject.save(dto)
+      Subject.save(dto)
 
       // Expect
       expect(spy_patch).toBeCalledTimes(1)
-      expect(spy_patch).toBeCalledWith(dto[EUID], dto)
+      expect(spy_patch).toBeCalledWith(dto[MOPTIONS.idKey], dto)
+    })
+  })
+
+  describe('#setCache', () => {
+    it('should clear #cache.collection', () => {
+      // Arrange
+      const spy_super_setCache = jest.spyOn(MockSuper.prototype, 'setCache')
+
+      // Act
+      const result = Subject.setCache()
+
+      // Expect
+      expect(spy_super_setCache).toBeCalledTimes(1)
+      expect(result).toMatchObject({ collection: [] })
     })
   })
 })
