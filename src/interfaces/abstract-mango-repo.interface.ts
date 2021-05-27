@@ -45,9 +45,9 @@ export interface IAbstractMangoRepository<
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): OrPromise<E>
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
-  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): OrPromise<E[]>
+  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): OrPromise<E[]>
 }

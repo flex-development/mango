@@ -54,7 +54,6 @@ export default class MangoRepository<
    * If the cache is empty, a warning will be logged to the console instructing
    * developers to call `setCache`.
    *
-   * @async
    * @param {OneOrMany<AggregationStages<E>>} [pipeline] - Aggregation stage(s)
    * @return {PipelineResult<E>} Pipeline results
    */
@@ -131,7 +130,6 @@ export default class MangoRepository<
    * If the cache is empty, a warning will be logged to the console instructing
    * developers to call `setCache`.
    *
-   * @async
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<E>} [params.options] - Search options
    * @param {ProjectStage<E>} [params.options.$project] - Fields to include
@@ -147,7 +145,6 @@ export default class MangoRepository<
   /**
    * Finds multiple entities by id.
    *
-   * @async
    * @param {UID[]} [uids] - Array of unique identifiers
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<E>} [params.options] - Search options
@@ -166,7 +163,6 @@ export default class MangoRepository<
    *
    * Returns `null` if the entity isn't found.
    *
-   * @async
    * @param {UID} uid - Unique identifier for entity
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<E>} [params.options] - Search options
@@ -185,7 +181,6 @@ export default class MangoRepository<
    *
    * Throws an error if the entity isn't found.
    *
-   * @async
    * @param {UID} uid - Unique identifier for entity
    * @param {P} [params] - Search parameters
    * @param {QueryCriteriaOptions<E>} [params.options] - Search options
@@ -209,15 +204,14 @@ export default class MangoRepository<
    *
    * @template F - Object field paths of `dto`
    *
-   * @async
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} dto - Data to patch entity
+   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {E} Updated entity
    */
   patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): E {
     // Format dto
@@ -245,7 +239,6 @@ export default class MangoRepository<
    * If the cache is empty, a warning will be logged to the console instructing
    * developers to call `setCache`.
    *
-   * @async
    * @param {Q | string} [query] - Document query object or string
    * @return {PartialDoc<E, U>[]} Search results
    */
@@ -256,7 +249,6 @@ export default class MangoRepository<
   /**
    * Queries multiple entities by unique identifier.
    *
-   * @async
    * @param {UID[]} [uids] - Array of unique identifiers
    * @param {Q | string} [query] - Document query object or string
    * @return {PartialDoc<E, U>[]} Specified entities
@@ -270,7 +262,6 @@ export default class MangoRepository<
    *
    * Returns `null` if the entity isn't found.
    *
-   * @async
    * @param {UID} uid - Unique identifier for entity
    * @param {Q | string} [query] - Document query object or string
    * @return {PartialDoc<E, U> | null} Document or null
@@ -284,7 +275,6 @@ export default class MangoRepository<
    *
    * Throws an error if the entity isn't found.
    *
-   * @async
    * @param {UID} uid - Unique identifier for entity
    * @param {Q | string} [query] - Document query object or string
    * @return {PartialDoc<E, U>} Entity
@@ -301,11 +291,10 @@ export default class MangoRepository<
    *
    * @template F - Object field paths of `dto`
    *
-   * @async
-   * @param {OneOrMany<EntityDTO<E, F>>} dto - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
    * @return {E[]} New or updated entities
    */
-  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): E[] {
+  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>> = []): E[] {
     /**
      * Creates or updates a single entity.
      *
@@ -314,7 +303,6 @@ export default class MangoRepository<
      *
      * @template F - Object field paths of `dto`
      *
-     * @async
      * @param {EntityDTO<E, F>} dto - Data to upsert entity
      * @return {E} New or updated entity
      */

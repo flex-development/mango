@@ -76,6 +76,7 @@ export default class MangoRepositoryAsync<
   /**
    * Clears all data from the repository.
    *
+   * @async
    * @return {Promise<true>} Promise containing `true` when data is cleared
    */
   async clear(): Promise<true> {
@@ -129,6 +130,7 @@ export default class MangoRepositoryAsync<
    * If {@param should_exist} is `true`, a `404 NOT_FOUND` error will be thrown
    * if the entity or one of the entities doesn't exist.
    *
+   * @async
    * @param {OneOrMany<UID>} [uid] - Entity uid or array of uids
    * @param {boolean} [should_exist] - Throw if any entities don't exist
    * @return {Promise<UID[]>} Promise containing array of uids
@@ -223,13 +225,13 @@ export default class MangoRepositoryAsync<
    *
    * @async
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} dto - Data to patch entity
+   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {Promise<E>} Promise containing updated entity
    */
   async patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): Promise<E> {
     // Format dto
@@ -323,10 +325,12 @@ export default class MangoRepositoryAsync<
    * @template F - Object field paths of `dto`
    *
    * @async
-   * @param {OneOrMany<EntityDTO<E, F>>} dto - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
    * @return {Promise<E[]>} Promise containing new or updated entities
    */
-  async save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): Promise<E[]> {
+  async save<F extends Path<E>>(
+    dto: OneOrMany<EntityDTO<E, F>> = []
+  ): Promise<E[]> {
     /**
      * Creates or updates a single entity.
      *

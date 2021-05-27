@@ -332,7 +332,7 @@ export default abstract class AbstractMangoRepository<
    * @template AP - Repository search parameters (query criteria and options)
    *
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<AE, AF>} dto - Data to patch entity
+   * @param {PatchEntityDTO<AE, AF>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @param {DocumentArray<AE, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
@@ -347,7 +347,7 @@ export default abstract class AbstractMangoRepository<
     AP extends MangoSearchParams<AE> = MangoSearchParams<AE>
   >(
     uid: UID,
-    dto: PatchEntityDTO<AE, AF>,
+    dto: PatchEntityDTO<AE, AF> = {},
     rfields: string[] = [],
     collection: DocumentArray<AE, AU> = [],
     mingo_options: MingoOptions<AU> = { idKey: 'id' as AU },
@@ -447,24 +447,24 @@ export default abstract class AbstractMangoRepository<
    * @abstract
    * @template F - Object field paths of `dto`
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} dto - Data to patch entity
+   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {Promise<E>} Updated entity
    * @throws {Exception}
    */
   abstract patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): OrPromise<E>
 
   /**
    * @abstract
    * @template F - Object field paths of `dto`
-   * @param {OneOrMany<EntityDTO<E, F>>} dto - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
    * @return {Promise<E[]>} New or updated entities
    */
   abstract save<F extends Path<E>>(
-    dto: OneOrMany<EntityDTO<E, F>>
+    dto?: OneOrMany<EntityDTO<E, F>>
   ): OrPromise<E[]>
 }

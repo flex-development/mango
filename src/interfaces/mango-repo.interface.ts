@@ -34,12 +34,12 @@ export interface IMangoRepository<
 > extends IMangoFinder<E, U, P, Q> {
   clear(): boolean
   create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): E
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): UID[]
+  delete(uid?: OneOrMany<UID>, should_exist?: boolean): UID[]
   patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): E
   setCache(collection?: E[]): MangoCacheRepo<E>
-  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): E[]
+  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): E[]
 }

@@ -37,9 +37,9 @@ export interface IMangoRepositoryAsync<
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): Promise<UID[]>
   patch<F extends Path<E>>(
     uid: UID,
-    dto: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E, F>,
     rfields?: string[]
   ): Promise<E>
   setCache(collection?: E[]): Promise<MangoCacheRepo<E>>
-  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): Promise<E[]>
+  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): Promise<E[]>
 }
