@@ -84,7 +84,7 @@ The Mango Finder plugins allow users to run aggregation pipelines and execute
 searches against in-memory object collections. Query documents using a URL
 query, or search for them using a query criteria and options object.
 
-#### Documentation
+#### Plugin Documentation
 
 - [`AbstractMangoFinder`](src/abstracts/mango-finder.abstract.ts)
 - [`MangoFinderAsync`](src/plugins/mango-finder-async.plugin.ts)
@@ -94,8 +94,8 @@ query, or search for them using a query criteria and options object.
 /**
  * `AbstractMangoFinder` plugin interface.
  *
- * This class is used to inject common functionality into the `MangoFinder`
- * and `MangoFinderAsync` classes.
+ * Used to define class contract of `MangoFinder`, `MangoFinderAsync`, and
+ * possible derivatives.
  *
  * See:
  *
@@ -145,8 +145,8 @@ export interface IAbstractMangoFinder<
 A document is an object from an in-memory collection. Each document should have
 a unique identifier (uid).
 
-By default, this value is assumed to map to the `id` field of each document.
-This can be changed via the [plugin settings](#plugin-settings).
+By default, this value is assumed to map to the `id` field of each document, but
+can be changed via the [plugin settings](#plugin-settings).
 
 ```typescript
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
@@ -164,7 +164,7 @@ export type PersonQuery = MangoParsedUrlQuery<IPerson>
 
 #### Creating a New Finder
 
-Both the `MangoFinder` and `MangoFinderAsync` plugins accept an options object
+Both the `MangoFinder` and `MangoFinderAsync` plugins accept an `options` object
 thats gets passed down to the [mingo][5] and [qs-to-mongo][6] modules.
 
 Via the options dto, you can:
@@ -225,46 +225,51 @@ accepted by the [`MangoParser`](src/mixins/mango-parser.mixin.ts).
 
 ### Mango Repository
 
-The `MangoRepository` extends the `MangoFinder` plugin and allows users to
-perform write operations on their repository.
+The Mango Repositories extend the [Mango Finder](#mango-finder) plugins and
+allow users to perform write operations on their repository.
 
-Documentation can be viewed [here](src/repositories/mango.repository.ts).
+#### Repository Documentation
+
+- [`AbstractMangoRepository`](src/abstracts/mango-repo.abstract.ts)
+- [`MangoRepositoryAsync`](src/repositories/mango-async.repository.ts)
+- [`MangoRepository`](src/repositories/mango.repository.ts)
 
 ```typescript
 /**
- * `MangoRepository` class interface.
+ * `AbstractMangoRepository` class interface.
+ *
+ * Used to define class contract of `MangoRepository`, `MangoRepositoryAsync`,
+ * and possible derivatives.
  *
  * @template E - Entity
  * @template U - Name of entity uid field
  * @template P - Repository search parameters (query criteria and options)
  * @template Q - Parsed URL query object
+ *
+ * @extends IAbstractMangoFinder
  */
-export interface IMangoRepository<
-  E extends ObjectPlain = ObjectPlain,
+export interface IAbstractMangoRepository<
+  E extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IMangoFinder<E, U, P, Q> {
+> extends IAbstractMangoFinder<E, U, P, Q> {
   readonly cache: MangoCacheRepo<E>
-  readonly model: ClassType<E>
   readonly options: MangoRepoOptions<E, U>
   readonly validator: IMangoValidator<E>
 
   clear(): OrPromise<boolean>
-  create(dto: CreateEntityDTO<E, U>): OrPromise<E>
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
-  euid(): string
-  patch(uid: UID, dto: PatchEntityDTO<E, U>, rfields?: string[]): OrPromise<E>
+  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): OrPromise<E>
+  delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
+  patch<F extends Path<E>>(
+    uid: UID,
+    dto: PatchEntityDTO<E, F>,
+    rfields?: string[]
+  ): OrPromise<E>
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
-  save(dto: OneOrMany<EntityDTO<E, U>>): OrPromise<E[]>
+  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>>): OrPromise<E[]>
 }
 ```
-
-With the exception of `create`, `patch`, and `save`, all `MangoRepository`
-methods are implemented as **synchronous** functions.
-
-The `IMangoRepository` interface, however, allows classes and interfaces that
-`extend` the repository to use asynchronous overrides (`OrPromise`).
 
 #### Modeling Entities
 
@@ -329,11 +334,11 @@ Mango also exposes a set of [custom decorators](src/decorators/index.ts).
 
 #### Creating a New Repository
 
-The `MangoRepository` class accepts an options object that gets passed down to
-the [`MangoFinder`](#creating-a-new-finder) and
-[`MangoValidator`](#mango-validator).
+The `MangoRepository` class accepts an `options` object that gets passed down to
+the [`MangoFinder`](#mango-finder) and [`MangoValidator`](#mango-validator).
 
 ```typescript
+import { MangoRepository, MangoRepositoryAsync } from '@mango'
 import type { MangoRepoOptionsDTO } from '@mango/dtos'
 
 const options: MangoRepoOptionsDTO<IUser, PersonUID> = {
@@ -350,6 +355,10 @@ const options: MangoRepoOptionsDTO<IUser, PersonUID> = {
 }
 
 export const UsersRepo = new MangoRepository<IUser, PersonUID>(User, options)
+export const UsersRepoA = new MangoRepositoryAsync<IUser, PersonUID>(
+  User,
+  options
+)
 ```
 
 See [Mango Validator](#mango-validator) for more information about `validation`
@@ -358,9 +367,12 @@ options.
 ### Mango Validator
 
 The `MangoValidator` mixin allows for **decorator-based** model validation.
+
 Under the hood, it uses [class-transformer-validator][1].
 
-Documentation can be viewed [here](src/mixins/mango-validator.mixin.ts).
+#### Validator Documentation
+
+- [`MangoValidator`](src/mixins/mango-validator.mixin.ts)
 
 ```typescript
 /**
@@ -382,8 +394,8 @@ export interface IMangoValidator<E extends ObjectPlain = ObjectUnknown> {
 }
 ```
 
-Each `MangoRepository` has it owns validator, but the validator can be used
-standalone as well.
+Each [repository](#mango-repository) has it owns validator, but the validator
+can be used standalone as well.
 
 ```typescript
 import { MangoValidator } from '@mango'

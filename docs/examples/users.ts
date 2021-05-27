@@ -1,4 +1,4 @@
-import { MangoRepository } from '@mango'
+import { MangoRepository, MangoRepositoryAsync } from '@mango'
 import { IsStrongPassword, IsUnixTimestamp } from '@mango/decorators'
 import type { MangoRepoOptionsDTO } from '@mango/dtos'
 import type { MangoParsedUrlQuery, MangoSearchParams } from '@mango/types'
@@ -67,3 +67,7 @@ const options: MangoRepoOptionsDTO<IUser, PersonUID> = {
 }
 
 export const UsersRepo = new MangoRepository<IUser, PersonUID>(User, options)
+export const UsersRepoA = new MangoRepositoryAsync<IUser, PersonUID>(
+  User,
+  options
+)
