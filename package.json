@@ -1,7 +1,7 @@
 {
   "name": "@flex-development/mango",
   "description": "MongoDB query plugin and repository API for in-memory object collections",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "keywords": [
     "in-memory",
     "in-memory-database",

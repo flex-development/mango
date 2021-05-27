@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/flex-development/mango/compare/v3.1.1...v4.0.0) (2021-05-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **repo:** `MangoRepository extends AbstractMangoRepository`
+* **mango:** rename `*.resetCache` methods to `*.setCache`
+
+### :bug: Fixes
+
+* type instantiation is excessively deep and possibly infinite ([b3f4ea6](https://github.com/flex-development/mango/commit/b3f4ea6df5ad4060c0e84b9e32d1759512461b56))
+
+
+### :nail_care: Formatting & Structure
+
+* **mango:** rename `*.resetCache` methods to `*.setCache` ([68bb0fb](https://github.com/flex-development/mango/commit/68bb0fb598fb46dbda700b552c5d81b72b6e4a20))
+* **repo:** use `F` in generics to represent field paths of `dto` ([ea6708a](https://github.com/flex-development/mango/commit/ea6708aafb994c1049968aaf9ba2cb4980ff7642))
+
+
+### :book: Documentation
+
+* **mango:** fix use of `[@throws](https://github.com/throws) {Exception}` ([6bcab30](https://github.com/flex-development/mango/commit/6bcab30eb2d77305e97cdf54d2dd6717e1db1e98))
+* **mango:** sorting rules ([de2707c](https://github.com/flex-development/mango/commit/de2707c1d92f3127f6a8cf460eb92db9263d1953))
+* **validator:** update code sample in `README` ([04de572](https://github.com/flex-development/mango/commit/04de572d38d50e3a5dc2e43c3055af467ccb4bea))
+
+
+### :recycle: Code Improvements
+
+* **repo:** `MangoRepository extends AbstractMangoRepository` ([2367918](https://github.com/flex-development/mango/commit/2367918751b6cc91faf317436d00ee0148f51590))
+* **validator:** use `ObjectUnknown` as default `E` in generic ([92f5c57](https://github.com/flex-development/mango/commit/92f5c577f930a8c8f0506347cea8a248ae8c8782))
+
+
+### :sparkles: Features
+
+* **abstracts:** add `AbstractMangoFinder` ([fbb8c4b](https://github.com/flex-development/mango/commit/fbb8c4b74b8f8b02aa7cac1446434f3629c0cad8))
+* **abstracts:** add `AbstractMangoRepository` ([7ac2164](https://github.com/flex-development/mango/commit/7ac21647b13359abd568b34d6d08cdbb20888857))
+* **finder:** add `AbstractMangoFinder#uid` ([e0d9dc1](https://github.com/flex-development/mango/commit/e0d9dc1646bb610ea0976341e1027c35dc3cc148))
+* **interfaces:** add `IAbstractMangoRepository` ([48a6111](https://github.com/flex-development/mango/commit/48a61113bb42bca75933fba01e4be110ce8c7102))
+* **interfaces:** add `IMangoRepositoryAsync` ([8df94de](https://github.com/flex-development/mango/commit/8df94deba66d8e49a16b3a3619b2744913f6b2ca))
+* **plugins:** add `MangoFinderAsync` ([b2c51df](https://github.com/flex-development/mango/commit/b2c51dfe00eeb5c23f60806f429353962ee1c6b3))
+* **repositories:** `MangoRepositoryAsync` ([e4def6a](https://github.com/flex-development/mango/commit/e4def6a749935325e0f33277f71fbd20e8e335e3))
+
 ### [3.1.1](https://github.com/flex-development/mango/compare/v3.1.0...v3.1.1) (2021-05-25)
 
 
