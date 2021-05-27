@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.1](https://github.com/flex-development/mango/compare/v4.0.0...v4.0.1) (2021-05-27)
+
+
+### :book: Documentation
+
+* **repo:** update description in `README` ([a46200c](https://github.com/flex-development/mango/commit/a46200c363d99b5c9433e97d11e69a24778e370b))
+
+
+### :bug: Fixes
+
+* **interfaces:** `IMangoRepositoryAsync#delete` ([06c4a50](https://github.com/flex-development/mango/commit/06c4a50221e1076eed101ba2d7f82c9db25c2b07))
+
+
+### :recycle: Code Improvements
+
+* **repo:** allow optional `dto` arguments ([2819d1d](https://github.com/flex-development/mango/commit/2819d1d7c977cf6277317f183615b0ae3b5fa299))
+
 ## [4.0.0](https://github.com/flex-development/mango/compare/v3.1.1...v4.0.0) (2021-05-27)
 
 
