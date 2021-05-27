@@ -13,6 +13,8 @@ import type { MangoValidatorOptions } from './mango-validator-options.interface'
  *
  * @template E - Entity
  * @template U - Name of entity uid field
+ *
+ * @extends MangoFinderOptions
  */
 export interface MangoRepoOptions<
   E extends ObjectPlain = ObjectPlain,

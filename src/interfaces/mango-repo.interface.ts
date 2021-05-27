@@ -24,6 +24,8 @@ import type { IMangoValidator } from './mango-validator.interface'
  * @template U - Name of entity uid field
  * @template P - Repository search parameters (query criteria and options)
  * @template Q - Parsed URL query object
+ *
+ * @extends IAbstractMangoFinder
  */
 export interface IMangoRepository<
   E extends ObjectPlain = ObjectPlain,

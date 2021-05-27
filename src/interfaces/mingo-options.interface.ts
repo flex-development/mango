@@ -1,5 +1,5 @@
 import type { DUID } from '@/types'
-import type { Options } from 'mingo/core'
+import type { Options as OriginalMingoOptions } from 'mingo/core'
 
 /**
  * @file Interface - MingoOptions
@@ -12,10 +12,12 @@ import type { Options } from 'mingo/core'
  * @template D - Document (collection object)
  * @template U - Name of document uid field
  *
+ * @extends OriginalMingoOptions
+ *
  * [1]: https://github.com/kofrasa/mingo
  */
 export interface MingoOptions<U extends string = DUID>
-  extends Omit<Options, 'idKey'> {
+  extends Omit<OriginalMingoOptions, 'idKey'> {
   /**
    * Name of the field containing a unique identifier for a document.
    *
