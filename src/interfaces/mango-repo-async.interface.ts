@@ -34,7 +34,7 @@ export interface IMangoRepositoryAsync<
 > extends IMangoFinderAsync<E, U, P, Q> {
   clear(): Promise<boolean>
   create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): Promise<E>
-  delete(uid: OneOrMany<UID>, should_exist?: boolean): Promise<UID[]>
+  delete(uid?: OneOrMany<UID>, should_exist?: boolean): Promise<UID[]>
   patch<F extends Path<E>>(
     uid: UID,
     dto: PatchEntityDTO<E, F>,
