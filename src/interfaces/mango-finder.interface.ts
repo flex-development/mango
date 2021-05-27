@@ -27,6 +27,8 @@ import type { MangoCacheFinder } from './mango-cache-finder.interface'
  * @template U - Name of document uid field
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
+ *
+ * @extends IAbstractMangoFinder
  */
 export interface IMangoFinder<
   D extends ObjectPlain = ObjectUnknown,

@@ -11,6 +11,8 @@ import type { BucketStage } from './bucket-stage.interface'
  *
  * @template D - Document (collection object)
  *
+ * @extends BucketStage
+ *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/bucketAuto
  */
 export interface BucketStageAuto<D extends ObjectPlain = ObjectPlain>

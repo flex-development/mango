@@ -13,6 +13,8 @@ import type { MangoFinderOptionsDTO } from './mango-finder-options.dto'
  *
  * @template E - Entity
  * @template U - Name of entity uid field
+ *
+ * @extends MangoFinderOptionsDTO
  */
 export interface MangoRepoOptionsDTO<
   E extends ObjectPlain = ObjectPlain,

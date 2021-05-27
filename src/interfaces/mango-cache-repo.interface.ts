@@ -11,6 +11,8 @@ import type { MangoCacheFinder } from './mango-cache-finder.interface'
  * `MangoRepository` data cache.
  *
  * @template E - Entity
+ *
+ * @extends MangoCacheFinder
  */
 export interface MangoCacheRepo<E extends ObjectPlain = ObjectPlain>
   extends MangoCacheFinder<E> {

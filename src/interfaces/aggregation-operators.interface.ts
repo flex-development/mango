@@ -21,6 +21,8 @@ import type { CustomAccumulator } from './custom-accumulator.interface'
  *
  * @template D - Document (collection object)
  *
+ * @extends AccumulatorOperators
+ *
  * [1]: https://docs.mongodb.com/manual/reference/operator/aggregation/#alphabetical-listing-of-expression-operators
  */
 export interface AggregationOperators<D extends ObjectPlain = ObjectUnknown>
