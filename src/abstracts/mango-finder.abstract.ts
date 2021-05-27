@@ -315,7 +315,6 @@ export default abstract class AbstractMangoFinder<
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
    * @return {OrPromise<DocumentPartial<AD, AU> | null>} Document or null
-   * @throws {Exception}
    */
   static findOne<
     AD extends ObjectPlain = ObjectUnknown,
@@ -506,7 +505,6 @@ export default abstract class AbstractMangoFinder<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {OrPromise<DocumentPartial<D, U>>} Document
-   * @throws {Exception}
    */
   findOneOrFail(uid: UID, params?: P): OrPromise<DocumentPartial<D, U>> {
     return AbstractMangoFinder.findOneOrFail(

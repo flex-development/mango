@@ -71,7 +71,6 @@ export default class MangoFinderAsync<
    * @async
    * @param {OneOrMany<AggregationStages<D>>} [pipeline] - Aggregation stage(s)
    * @return {Promise<PipelineResult<D>>} Promise containing pipeline results
-   * @throws {Exception}
    */
   async aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
@@ -93,7 +92,6 @@ export default class MangoFinderAsync<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {Promise<PartialDoc<D, U>[]>} Promise containing search results
-   * @throws {Exception}
    */
   async find(params?: P): Promise<PartialDoc<D, U>[]> {
     return super.find(params)
@@ -111,7 +109,6 @@ export default class MangoFinderAsync<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {Promise<PartialDoc<D, U>[]>} Promise containing specified docs
-   * @throws {Exception}
    */
   async findByIds(uids?: UID[], params?: P): Promise<PartialDoc<D, U>[]> {
     return super.findByIds(uids, params)
@@ -131,7 +128,6 @@ export default class MangoFinderAsync<
    * @param {number} [params.options.skip] - Skips the first n documents
    * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {Promise<PartialDoc<D, U> | null>} Promise containing doc or null
-   * @throws {Exception}
    */
   async findOne(uid: UID, params?: P): Promise<PartialDoc<D, U> | null> {
     return super.findOne(uid, params)
