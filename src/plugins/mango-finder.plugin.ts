@@ -79,7 +79,7 @@ export default class MangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>[]} Search results
    * @throws {Exception}
    */
@@ -96,7 +96,7 @@ export default class MangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>[]} Documents
    * @throws {Exception}
    */
@@ -115,7 +115,7 @@ export default class MangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U> | null} Document or null
    * @throws {Exception}
    */
@@ -134,7 +134,7 @@ export default class MangoFinder<
    * @param {ProjectStage<D>} [params.options.$project] - Fields to include
    * @param {number} [params.options.limit] - Limit number of results
    * @param {number} [params.options.skip] - Skips the first n documents
-   * @param {DocumentSortingRules} [params.options.sort] - Sorting rules
+   * @param {DocumentSortingRules<D>} [params.options.sort] - Sorting rules
    * @return {DocumentPartial<D, U>} Document
    * @throws {Exception}
    */
