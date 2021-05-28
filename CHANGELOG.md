@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/flex-development/mango/compare/v5.0.0...v5.1.0) (2021-05-28)
+
+
+### :sparkles: Features
+
+* **interfaces:** `IAbstractMangoFinderBase` ([073401f](https://github.com/flex-development/mango/commit/073401fd82c14ba84dedb4a0cf9721548bb12fb4))
+* **interfaces:** `IAbstractMangoRepositoryBase` ([9b976a6](https://github.com/flex-development/mango/commit/9b976a6c00912fda3551e92d4d5b72bc21b77de0))
+
 ## [5.0.0](https://github.com/flex-development/mango/compare/v4.0.1...v5.0.0) (2021-05-28)
 
 
