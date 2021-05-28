@@ -1,6 +1,11 @@
 import type { MangoFinderOptionsDTO } from '@/dtos'
 import type { MangoCacheFinder } from '@/interfaces'
-import type { MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
+import type {
+  DTOFilter,
+  MangoParsedUrlQuery,
+  MangoSearchParams,
+  UID
+} from '@/types'
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
 
 /**
@@ -18,6 +23,8 @@ export interface ICar {
 export type CarUID = 'vin'
 export type CarParams = MangoSearchParams<ICar>
 export type CarQuery = MangoParsedUrlQuery<ICar>
+
+export type CarDTOFilter = DTOFilter<ICar, 'make' | 'model' | 'model_year'>
 
 export class Car implements ICar {
   @IsString()
