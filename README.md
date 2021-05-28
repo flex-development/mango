@@ -106,19 +106,15 @@ query, or search for them using a query criteria and options object.
  * @template U - Name of document uid field
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
+ *
+ * @extends IAbstractMangoFinderBase
  */
 export interface IAbstractMangoFinder<
   D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
-> {
-  readonly cache: Readonly<MangoCacheFinder<D>>
-  readonly logger: Debugger
-  readonly mingo: typeof mingo
-  readonly mparser: IMangoParser<D>
-  readonly options: MangoFinderOptions<D, U>
-
+> extends IAbstractMangoFinderBase<D, U> {
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
   ): OrPromise<AggregationPipelineResult<D>>
@@ -137,6 +133,27 @@ export interface IAbstractMangoFinder<
   ): OrPromise<DocumentPartial<D, U> | null>
   queryOneOrFail(uid: UID, query?: Q | string): OrPromise<DocumentPartial<D, U>>
   setCache(collection?: D[]): OrPromise<MangoCacheFinder<D>>
+  uid(): string
+}
+
+/**
+ * Base `AbstractMangoFinder` plugin interface.
+ *
+ * Used to define properties of `MangoFinder`, `MangoFinderAsync`, and
+ * possible derivatives.
+ *
+ * @template D - Document (collection object)
+ * @template U - Name of document uid field
+ */
+export interface IAbstractMangoFinderBase<
+  D extends ObjectPlain = ObjectUnknown,
+  U extends string = DUID
+> {
+  readonly cache: Readonly<MangoCacheFinder<D>>
+  readonly logger: Debugger
+  readonly mingo: typeof mingo
+  readonly mparser: IMangoParser<D>
+  readonly options: MangoFinderOptions<D, U>
 }
 ```
 

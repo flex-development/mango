@@ -12,12 +12,9 @@ import type {
   OneOrMany,
   OrPromise
 } from '@flex-development/tutils'
-import type { Debugger } from 'debug'
-import mingo from 'mingo'
+import type { IAbstractMangoFinderBase } from './abstract-mango-finder-base.interface'
 import type { AggregationStages } from './aggregation-stages.interface'
 import type { MangoCacheFinder } from './mango-cache-finder.interface'
-import type { MangoFinderOptions } from './mango-finder-options.interface'
-import type { IMangoParser } from './mango-parser.interface'
 
 /**
  * @file Interface - IAbstractMangoFinder
@@ -39,19 +36,15 @@ import type { IMangoParser } from './mango-parser.interface'
  * @template U - Name of document uid field
  * @template P - Search parameters (query criteria and options)
  * @template Q - Parsed URL query object
+ *
+ * @extends IAbstractMangoFinderBase
  */
 export interface IAbstractMangoFinder<
   D extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<D> = MangoSearchParams<D>,
   Q extends MangoParsedUrlQuery<D> = MangoParsedUrlQuery<D>
-> {
-  readonly cache: Readonly<MangoCacheFinder<D>>
-  readonly logger: Debugger
-  readonly mingo: typeof mingo
-  readonly mparser: IMangoParser<D>
-  readonly options: MangoFinderOptions<D, U>
-
+> extends IAbstractMangoFinderBase<D, U> {
   aggregate(
     pipeline?: OneOrMany<AggregationStages<D>>
   ): OrPromise<AggregationPipelineResult<D>>
