@@ -5,6 +5,7 @@
 
 export type { IAbstractMangoFinderBase } from './abstract-mango-finder-base.interface'
 export type { IAbstractMangoFinder } from './abstract-mango-finder.interface'
+export type { IAbstractMangoRepositoryBase } from './abstract-mango-repo-base.interface'
 export type { IAbstractMangoRepository } from './abstract-mango-repo.interface'
 export type { AccumulatorOperators } from './accumulator-operators.interface'
 export type { AggregationOperators } from './aggregation-operators.interface'

@@ -5,6 +5,7 @@ import type {
   ObjectUnknown,
   OneOrMany
 } from '@flex-development/tutils'
+import { IAbstractMangoRepositoryBase } from './abstract-mango-repo-base.interface'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
 import type { IMangoFinderAsync } from './mango-finder-async.interface'
 
@@ -24,13 +25,15 @@ import type { IMangoFinderAsync } from './mango-finder-async.interface'
  * @template Q - Parsed URL query object
  *
  * @extends IMangoFinderAsync
+ * @extends IAbstractMangoRepositoryBase
  */
 export interface IMangoRepositoryAsync<
   E extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IMangoFinderAsync<E, U, P, Q> {
+> extends Omit<IMangoFinderAsync<E, U, P, Q>, 'cache' | 'options'>,
+    IAbstractMangoRepositoryBase<E, U> {
   clear(): Promise<boolean>
   create(dto: CreateEntityDTO<E>): Promise<E>
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): Promise<UID[]>

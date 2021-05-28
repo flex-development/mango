@@ -264,23 +264,41 @@ allow users to perform write operations on an object collection.
  * @template Q - Parsed URL query object
  *
  * @extends IAbstractMangoFinder
+ * @extends IAbstractMangoRepositoryBase
  */
 export interface IAbstractMangoRepository<
   E extends ObjectPlain = ObjectUnknown,
   U extends string = DUID,
   P extends MangoSearchParams<E> = MangoSearchParams<E>,
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
-> extends IAbstractMangoFinder<E, U, P, Q> {
-  readonly cache: MangoCacheRepo<E>
-  readonly options: MangoRepoOptions<E, U>
-  readonly validator: IMangoValidator<E>
-
+> extends Omit<IAbstractMangoFinder<E, U, P, Q>, 'cache' | 'options'>,
+    IAbstractMangoRepositoryBase<E, U> {
   clear(): OrPromise<boolean>
   create(dto: CreateEntityDTO<E>): OrPromise<E>
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
   patch(uid: UID, dto?: PatchEntityDTO<E>, rfields?: string[]): OrPromise<E>
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
   save(dto?: OneOrMany<EntityDTO<E>>): OrPromise<E[]>
+}
+
+/**
+ * Base `AbstractMangoRepository` class interface.
+ *
+ * Used to define properties of `MangoRepository`, `MangoRepositoryAsync`,
+ * and possible derivatives.
+ *
+ * @template E - Entity
+ * @template U - Name of entity uid field
+ *
+ * @extends IAbstractMangoFinderBase
+ */
+export interface IAbstractMangoRepositoryBase<
+  E extends ObjectPlain = ObjectUnknown,
+  U extends string = DUID
+> extends IAbstractMangoFinderBase<E, U> {
+  readonly cache: MangoCacheRepo<E>
+  readonly options: MangoRepoOptions<E, U>
+  readonly validator: IMangoValidator<E>
 }
 ```
 
