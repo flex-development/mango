@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/flex-development/mango/compare/v4.0.1...v5.0.0) (2021-05-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **dtos:** integrate `DTOFilter`
+
+### :hammer: Build
+
+* use `@flex-development/tutils@3.1.0` ([fde654a](https://github.com/flex-development/mango/commit/fde654a2317d198e6ca121eef986c697ab725427))
+
+
+### :sparkles: Features
+
+* **types:** `DTOFilter` ([b861719](https://github.com/flex-development/mango/commit/b86171947f92bff077a1b2678fe6bc8bd31c5a9c))
+
+
+### :recycle: Code Improvements
+
+* **dtos:** integrate `DTOFilter` ([ec86961](https://github.com/flex-development/mango/commit/ec8696104ed8e9f88a54edaac79a0fb6257a86f0))
+
 ### [4.0.1](https://github.com/flex-development/mango/compare/v4.0.0...v4.0.1) (2021-05-27)
 
 
