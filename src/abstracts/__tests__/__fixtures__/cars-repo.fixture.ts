@@ -1,7 +1,8 @@
 import type { CreateEntityDTO, EntityDTO, PatchEntityDTO } from '@/dtos'
 import type { UID } from '@/types'
-import type { OneOrMany, OrPromise, Path } from '@flex-development/tutils'
+import type { OneOrMany, OrPromise } from '@flex-development/tutils'
 import type {
+  CarDTOFilter,
   CarParams,
   CarQuery,
   CarUID,
@@ -20,21 +21,19 @@ export default class CarsRepo extends AbstractMangoRepository<
   CarParams,
   CarQuery
 > {
-  create<F extends Path<ICar>>(dto: CreateEntityDTO<ICar, F>): OrPromise<ICar> {
+  create(dto: CreateEntityDTO<ICar, CarDTOFilter>): OrPromise<ICar> {
     throw new Error('Method not implemented')
   }
 
-  patch<F extends Path<ICar>>(
+  patch(
     uid: UID,
-    dto: PatchEntityDTO<ICar, F>,
+    dto: PatchEntityDTO<ICar, CarDTOFilter>,
     rfields?: string[]
   ): OrPromise<ICar> {
     throw new Error('Method not implemented')
   }
 
-  save<F extends Path<ICar>>(
-    dto: OneOrMany<EntityDTO<ICar, F>>
-  ): OrPromise<ICar[]> {
+  save(dto: OneOrMany<EntityDTO<ICar, CarDTOFilter>>): OrPromise<ICar[]> {
     throw new Error('Method not implemented')
   }
 }

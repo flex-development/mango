@@ -34,7 +34,6 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean": "rm -rf node_modules || true",
-    "clear:jest": "jest --clearCache",
     "postinstall": "husky-run install",
     "format": "prettier --write \"./\"",
     "lint": "eslint . --ext js,ts --fix --cache",
@@ -91,7 +90,7 @@
     "eslint-plugin-tree-shaking": "latest",
     "faker": "latest",
     "husky": "4.3.8",
-    "jest": "27.0.0-next.8",
+    "jest": "next",
     "jest-extended": "latest",
     "lint-staged": "latest",
     "npm": "latest",

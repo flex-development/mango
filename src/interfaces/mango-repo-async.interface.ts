@@ -3,8 +3,7 @@ import type { DUID, MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
 import type {
   ObjectPlain,
   ObjectUnknown,
-  OneOrMany,
-  Path
+  OneOrMany
 } from '@flex-development/tutils'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
 import type { IMangoFinderAsync } from './mango-finder-async.interface'
@@ -33,13 +32,9 @@ export interface IMangoRepositoryAsync<
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
 > extends IMangoFinderAsync<E, U, P, Q> {
   clear(): Promise<boolean>
-  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): Promise<E>
+  create(dto: CreateEntityDTO<E>): Promise<E>
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): Promise<UID[]>
-  patch<F extends Path<E>>(
-    uid: UID,
-    dto?: PatchEntityDTO<E, F>,
-    rfields?: string[]
-  ): Promise<E>
+  patch(uid: UID, dto?: PatchEntityDTO<E>, rfields?: string[]): Promise<E>
   setCache(collection?: E[]): Promise<MangoCacheRepo<E>>
-  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): Promise<E[]>
+  save(dto?: OneOrMany<EntityDTO<E>>): Promise<E[]>
 }

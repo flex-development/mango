@@ -4,8 +4,7 @@ import type {
   ObjectPlain,
   ObjectUnknown,
   OneOrMany,
-  OrPromise,
-  Path
+  OrPromise
 } from '@flex-development/tutils'
 import type { IAbstractMangoFinder } from './abstract-mango-finder.interface'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
@@ -41,13 +40,9 @@ export interface IAbstractMangoRepository<
   readonly validator: IMangoValidator<E>
 
   clear(): OrPromise<boolean>
-  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): OrPromise<E>
+  create(dto: CreateEntityDTO<E>): OrPromise<E>
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): OrPromise<UID[]>
-  patch<F extends Path<E>>(
-    uid: UID,
-    dto?: PatchEntityDTO<E, F>,
-    rfields?: string[]
-  ): OrPromise<E>
+  patch(uid: UID, dto?: PatchEntityDTO<E>, rfields?: string[]): OrPromise<E>
   setCache(collection?: E[]): OrPromise<MangoCacheRepo<E>>
-  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): OrPromise<E[]>
+  save(dto?: OneOrMany<EntityDTO<E>>): OrPromise<E[]>
 }

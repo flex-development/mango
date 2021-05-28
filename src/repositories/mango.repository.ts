@@ -19,8 +19,7 @@ import type {
 import type {
   ObjectPlain,
   ObjectUnknown,
-  OneOrMany,
-  Path
+  OneOrMany
 } from '@flex-development/tutils'
 
 /**
@@ -81,14 +80,12 @@ export default class MangoRepository<
    *
    * [1]: https://github.com/uuidjs/uuid
    *
-   * @template F - Object field paths of `dto`
-   *
-   * @param {CreateEntityDTO<E, F>} dto - Data to create new entity
+   * @param {CreateEntityDTO<E>} dto - Data to create new entity
    * @return {E} New entity
    */
-  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): E {
+  create(dto: CreateEntityDTO<E>): E {
     // Format dto
-    let data = MangoRepository.formatCreateEntityDTO(
+    let data = MangoRepository.formatCreateEntityDTO<E, U, P>(
       dto,
       this.cache.collection,
       this.options.mingo,
@@ -202,20 +199,14 @@ export default class MangoRepository<
    * Throws an error if the entity isn't found, or if schema validation is
    * enabled and fails.
    *
-   * @template F - Object field paths of `dto`
-   *
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
+   * @param {PatchEntityDTO<E>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {E} Updated entity
    */
-  patch<F extends Path<E>>(
-    uid: UID,
-    dto?: PatchEntityDTO<E, F>,
-    rfields?: string[]
-  ): E {
+  patch(uid: UID, dto?: PatchEntityDTO<E>, rfields?: string[]): E {
     // Format dto
-    let data = MangoRepository.formatPatchEntityDTO(
+    let data = MangoRepository.formatPatchEntityDTO<E, U, P>(
       uid,
       dto,
       rfields,
@@ -289,12 +280,10 @@ export default class MangoRepository<
    * If any entity already exists, it will be patched.
    * If any entity does not exist in the database, it will be inserted.
    *
-   * @template F - Object field paths of `dto`
-   *
-   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E>>} [dto] - Entities to upsert
    * @return {E[]} New or updated entities
    */
-  save<F extends Path<E>>(dto: OneOrMany<EntityDTO<E, F>> = []): E[] {
+  save(dto: OneOrMany<EntityDTO<E>> = []): E[] {
     /**
      * Creates or updates a single entity.
      *
@@ -303,22 +292,22 @@ export default class MangoRepository<
      *
      * @template F - Object field paths of `dto`
      *
-     * @param {EntityDTO<E, F>} dto - Data to upsert entity
+     * @param {EntityDTO<E>} dto - Data to upsert entity
      * @return {E} New or updated entity
      */
-    const upsert = (dto: EntityDTO<E, F>): E => {
+    const upsert = (dto: EntityDTO<E>): E => {
       const uid = dto[this.uid()] as UID
 
       const exists = this.findOne(uid)
 
-      if (!exists) return this.create<F>(dto as CreateEntityDTO<E, F>)
-      return this.patch<F>(uid, dto as PatchEntityDTO<E, F>)
+      if (!exists) return this.create(dto as CreateEntityDTO<E>)
+      return this.patch(uid, dto as PatchEntityDTO<E>)
     }
 
     // Convert into array of DTOs
-    const dtos = Array.isArray(dto) ? dto : [dto]
+    const dtos: EntityDTO<E>[] = Array.isArray(dto) ? dto : [dto]
 
-    // Perform upsert
+    // @ts-expect-error performing upsert
     return dtos.map(d => upsert(d))
   }
 
