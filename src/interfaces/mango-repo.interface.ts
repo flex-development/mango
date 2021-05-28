@@ -3,8 +3,7 @@ import type { DUID, MangoParsedUrlQuery, MangoSearchParams, UID } from '@/types'
 import type {
   ObjectPlain,
   ObjectUnknown,
-  OneOrMany,
-  Path
+  OneOrMany
 } from '@flex-development/tutils'
 import type { MangoCacheRepo } from './mango-cache-repo.interface'
 import type { IMangoFinder } from './mango-finder.interface'
@@ -33,13 +32,9 @@ export interface IMangoRepository<
   Q extends MangoParsedUrlQuery<E> = MangoParsedUrlQuery<E>
 > extends IMangoFinder<E, U, P, Q> {
   clear(): boolean
-  create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): E
+  create(dto: CreateEntityDTO<E>): E
   delete(uid?: OneOrMany<UID>, should_exist?: boolean): UID[]
-  patch<F extends Path<E>>(
-    uid: UID,
-    dto?: PatchEntityDTO<E, F>,
-    rfields?: string[]
-  ): E
+  patch(uid: UID, dto?: PatchEntityDTO<E>, rfields?: string[]): E
   setCache(collection?: E[]): MangoCacheRepo<E>
-  save<F extends Path<E>>(dto?: OneOrMany<EntityDTO<E, F>>): E[]
+  save(dto?: OneOrMany<EntityDTO<E>>): E[]
 }

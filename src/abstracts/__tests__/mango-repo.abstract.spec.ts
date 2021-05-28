@@ -125,7 +125,7 @@ describe('unit:abstracts/AbstractMangoRepository', () => {
       const euid = uid.trim()
 
       // Act
-      const result = TestSubject.formatCreateEntityDTO(
+      const result = TestSubject.formatCreateEntityDTO<ICar, CarUID>(
         dto as CreateEntityDTO<ICar>,
         COLLECTION,
         MOPTIONS
@@ -147,7 +147,7 @@ describe('unit:abstracts/AbstractMangoRepository', () => {
 
       // Act
       try {
-        TestSubject.formatCreateEntityDTO(
+        TestSubject.formatCreateEntityDTO<ICar, CarUID>(
           dto as CreateEntityDTO<ICar>,
           COLLECTION,
           MOPTIONS
@@ -173,7 +173,13 @@ describe('unit:abstracts/AbstractMangoRepository', () => {
       const spy_findOneOrFail = jest.spyOn(TestSubjectAbstract, 'findOneOrFail')
 
       // Act
-      TestSubject.formatPatchEntityDTO(ENTITY_UID, {}, [], COLLECTION, MOPTIONS)
+      TestSubject.formatPatchEntityDTO<ICar, CarUID>(
+        ENTITY_UID,
+        {},
+        [],
+        COLLECTION,
+        MOPTIONS
+      )
 
       // Expect
       expect(spy_findOneOrFail).toBeCalledTimes(1)
@@ -186,7 +192,7 @@ describe('unit:abstracts/AbstractMangoRepository', () => {
       const rfields = ['foo']
 
       // Act
-      const result = TestSubject.formatPatchEntityDTO(
+      const result = TestSubject.formatPatchEntityDTO<ICar, CarUID>(
         ENTITY_UID,
         dto,
         rfields,
@@ -204,7 +210,7 @@ describe('unit:abstracts/AbstractMangoRepository', () => {
       const dto = { make: 'MAKE' }
 
       // Act
-      const result = TestSubject.formatPatchEntityDTO(
+      const result = TestSubject.formatPatchEntityDTO<ICar, CarUID>(
         ENTITY_UID,
         dto,
         [],

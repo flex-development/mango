@@ -20,8 +20,7 @@ import type {
 import type {
   ObjectPlain,
   ObjectUnknown,
-  OneOrMany,
-  Path
+  OneOrMany
 } from '@flex-development/tutils'
 import type { Debugger } from 'debug'
 
@@ -94,15 +93,13 @@ export default class MangoRepositoryAsync<
    *
    * [1]: https://github.com/uuidjs/uuid
    *
-   * @template F - Object field paths of `dto`
-   *
    * @async
-   * @param {CreateEntityDTO<E, F>} dto - Data to create new entity
+   * @param {CreateEntityDTO<E>} dto - Data to create new entity
    * @return {Promise<E>} Promise containing new entity
    */
-  async create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): Promise<E> {
+  async create(dto: CreateEntityDTO<E>): Promise<E> {
     // Format dto
-    let data = MangoRepositoryAsync.formatCreateEntityDTO(
+    let data = MangoRepositoryAsync.formatCreateEntityDTO<E, U, P>(
       dto,
       this.cache.collection,
       this.options.mingo,
@@ -221,21 +218,19 @@ export default class MangoRepositoryAsync<
    * Throws an error if the entity isn't found, or if schema validation is
    * enabled and fails.
    *
-   * @template F - Object field paths of `dto`
-   *
    * @async
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
+   * @param {PatchEntityDTO<E>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {Promise<E>} Promise containing updated entity
    */
-  async patch<F extends Path<E>>(
+  async patch(
     uid: UID,
-    dto?: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E>,
     rfields?: string[]
   ): Promise<E> {
     // Format dto
-    let data = MangoRepositoryAsync.formatPatchEntityDTO(
+    let data = MangoRepositoryAsync.formatPatchEntityDTO<E, U, P>(
       uid,
       dto,
       rfields,
@@ -322,40 +317,34 @@ export default class MangoRepositoryAsync<
    * If any entity already exists, it will be patched.
    * If any entity does not exist in the database, it will be inserted.
    *
-   * @template F - Object field paths of `dto`
-   *
    * @async
-   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E>>} [dto] - Entities to upsert
    * @return {Promise<E[]>} Promise containing new or updated entities
    */
-  async save<F extends Path<E>>(
-    dto: OneOrMany<EntityDTO<E, F>> = []
-  ): Promise<E[]> {
+  async save(dto: OneOrMany<EntityDTO<E>> = []): Promise<E[]> {
     /**
      * Creates or updates a single entity.
      *
      * If the entity already exists in the database, it will be updated.
      * If the entity does not exist in the database, it will be inserted.
      *
-     * @template F - Object field paths of `dto`
-     *
      * @async
-     * @param {EntityDTO<E, F>} dto - Data to upsert entity
+     * @param {EntityDTO<E>} dto - Data to upsert entity
      * @return {Promise<E>} Promise containing new or updated entiy
      */
-    const upsert = async (dto: EntityDTO<E, F>): Promise<E> => {
+    const upsert = async (dto: EntityDTO<E>): Promise<E> => {
       const uid = dto[this.uid()] as UID
 
       const exists = await this.findOne(uid)
 
-      if (!exists) return await this.create<F>(dto as CreateEntityDTO<E, F>)
-      return await this.patch<F>(uid, dto as PatchEntityDTO<E, F>)
+      if (!exists) return await this.create(dto as CreateEntityDTO<E>)
+      return await this.patch(uid, dto as PatchEntityDTO<E>)
     }
 
     // Convert into array of DTOs
     const dtos = Array.isArray(dto) ? dto : [dto]
 
-    // Perform upsert
+    // @ts-expect-error performing upsert
     return await Promise.all(dtos.map(async d => upsert(d)))
   }
 

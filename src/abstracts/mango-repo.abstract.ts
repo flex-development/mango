@@ -30,8 +30,7 @@ import type {
   ObjectPlain,
   ObjectUnknown,
   OneOrMany,
-  OrPromise,
-  Path
+  OrPromise
 } from '@flex-development/tutils'
 import type { ClassType } from 'class-transformer-validator'
 import type { Debugger } from 'debug'
@@ -253,12 +252,11 @@ export default abstract class AbstractMangoRepository<
    *
    * Throws a `409 CONFLICT` error if an entity with the same uid exists.
    *
-   * @template AF - Object field paths of `dto`
    * @template AE - Entity
    * @template AU - Name of entity uid field
    * @template AP - Repository search parameters (query criteria and options)
    *
-   * @param {CreateEntityDTO<AE, AF>} dto - Data to create new entity
+   * @param {CreateEntityDTO<AE>} dto - Data to create new entity
    * @param {DocumentArray<AE, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
    * @param {typeof MINGO} [mingo] - MongoDB query language client
@@ -266,12 +264,11 @@ export default abstract class AbstractMangoRepository<
    * @throws {Exception}
    */
   static formatCreateEntityDTO<
-    AF extends Path<AE>,
     AE extends ObjectPlain = ObjectUnknown,
     AU extends string = DUID,
     AP extends MangoSearchParams<AE> = MangoSearchParams<AE>
   >(
-    dto: CreateEntityDTO<AE, AF>,
+    dto: CreateEntityDTO<AE>,
     collection: DocumentArray<AE, AU> = [],
     mingo_options: MingoOptions<AU> = { idKey: 'id' as AU },
     mingo: typeof MINGO = MINGO
@@ -326,13 +323,12 @@ export default abstract class AbstractMangoRepository<
    *
    * Throws if the entity isn't found.
    *
-   * @template AF - Object field paths of `dto`
    * @template AE - Entity
    * @template AU - Name of entity uid field
    * @template AP - Repository search parameters (query criteria and options)
    *
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<AE, AF>} [dto] - Data to patch entity
+   * @param {PatchEntityDTO<AE>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @param {DocumentArray<AE, AU>} [collection] - Document collection
    * @param {MingoOptions<AU>} [mingo_options] - `mingo` options
@@ -341,13 +337,12 @@ export default abstract class AbstractMangoRepository<
    * @throws {Exception}
    */
   static formatPatchEntityDTO<
-    AF extends Path<AE>,
     AE extends ObjectPlain = ObjectUnknown,
     AU extends string = DUID,
     AP extends MangoSearchParams<AE> = MangoSearchParams<AE>
   >(
     uid: UID,
-    dto: PatchEntityDTO<AE, AF> = {},
+    dto: PatchEntityDTO<AE> = {} as PatchEntityDTO<AE>,
     rfields: string[] = [],
     collection: DocumentArray<AE, AU> = [],
     mingo_options: MingoOptions<AU> = { idKey: 'id' as AU },
@@ -367,7 +362,7 @@ export default abstract class AbstractMangoRepository<
       rfields = uniq([mingo_options.idKey as string].concat(rfields))
 
       // Return entity merged with dto
-      return merge({}, entity, { ...omit(dto, rfields) }) as AE
+      return (merge({}, entity, { ...omit(dto, rfields) }) as unknown) as AE
     } catch (error) {
       const code = ExceptionStatusCode.INTERNAL_SERVER_ERROR
       const { message, stack } = error
@@ -436,35 +431,30 @@ export default abstract class AbstractMangoRepository<
 
   /**
    * @abstract
-   * @template F - Object field paths of `dto`
-   * @param {CreateEntityDTO<E, F>} dto - Data to create new entity
+   * @param {CreateEntityDTO<E>} dto - Data to create new entity
    * @return {OrPromise<E>} New entity
    * @throws {Exception}
    */
-  abstract create<F extends Path<E>>(dto: CreateEntityDTO<E, F>): OrPromise<E>
+  abstract create(dto: CreateEntityDTO<E>): OrPromise<E>
 
   /**
    * @abstract
-   * @template F - Object field paths of `dto`
    * @param {UID} uid - Entity uid
-   * @param {PatchEntityDTO<E, F>} [dto] - Data to patch entity
+   * @param {PatchEntityDTO<E>} [dto] - Data to patch entity
    * @param {string[]} [rfields] - Additional readonly fields
    * @return {Promise<E>} Updated entity
    * @throws {Exception}
    */
-  abstract patch<F extends Path<E>>(
+  abstract patch(
     uid: UID,
-    dto?: PatchEntityDTO<E, F>,
+    dto?: PatchEntityDTO<E>,
     rfields?: string[]
   ): OrPromise<E>
 
   /**
    * @abstract
-   * @template F - Object field paths of `dto`
-   * @param {OneOrMany<EntityDTO<E, F>>} [dto] - Entities to upsert
+   * @param {OneOrMany<EntityDTO<E>>} [dto] - Entities to upsert
    * @return {Promise<E[]>} New or updated entities
    */
-  abstract save<F extends Path<E>>(
-    dto?: OneOrMany<EntityDTO<E, F>>
-  ): OrPromise<E[]>
+  abstract save(dto?: OneOrMany<EntityDTO<E>>): OrPromise<E[]>
 }

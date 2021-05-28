@@ -54,6 +54,7 @@ describe('unit:repositories/MangoRepository', () => {
     it('should call .formatCreateEntityDTO', () => {
       // Arrange
       const spy_method = 'formatCreateEntityDTO'
+      // @ts-expect-error testing invocation
       const spy_formatCreateEntityDTO = jest.spyOn(TestSubject, spy_method)
 
       // Act
