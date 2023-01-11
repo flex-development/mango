@@ -55,7 +55,7 @@
     "@types/uuid": "8.3.0",
     "class-transformer": "0.4.0",
     "class-transformer-validator": "0.9.1",
-    "class-validator": "0.13.1",
+    "class-validator": "0.14.0",
     "debug": "4.3.1",
     "lodash.isboolean": "3.0.3",
     "lodash.isempty": "4.4.0",
